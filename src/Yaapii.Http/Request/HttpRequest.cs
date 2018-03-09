@@ -8,6 +8,7 @@ using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Error;
+using Yaapii.Http.RequestUri;
 using Yaapii.Http.Wire;
 
 namespace Yaapii.Http
@@ -95,7 +96,7 @@ namespace Yaapii.Http
 
         public IRequestUri Uri()
         {
-            throw new NotImplementedException();
+            return new BaseUri(this, BaseUri());
         }
 
         private Uri BaseUri()
