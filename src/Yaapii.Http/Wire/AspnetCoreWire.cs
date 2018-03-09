@@ -110,7 +110,13 @@ namespace Yaapii.Http.Wire
             {
                 req.Headers.Add(header.Key, header.Value);
             }
-            req.Content = new ByteArrayContent(new BytesOf(body).AsBytes());
+
+            var bytes = new BytesOf(body).AsBytes();
+            if (bytes.Length > 0 && verb != new Get())
+            {
+                req.Content = new ByteArrayContent(bytes);
+            }
+
             return req;
         }
     }
