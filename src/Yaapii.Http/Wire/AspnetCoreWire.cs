@@ -49,10 +49,10 @@ namespace Yaapii.Http.Wire
         )
         {
             //TODO: Should we make this method async?
-            using (HttpClient client = WithHeaders(new HttpClient(), headers))
+            using (HttpClient client = WithTimeout(WithHeaders(new HttpClient(), headers), timeout))
             using (HttpResponseMessage response =
                 client.SendAsync(
-                    ASPNCoreRequest(method, address, headers, body, timeout)
+                    ASPNCoreRequest(method, address, headers, body)
                 ).GetAwaiter().GetResult()
             )
             using (HttpContent resContent = response.Content)
@@ -103,7 +103,7 @@ namespace Yaapii.Http.Wire
             return client;
         }
 
-        private HttpRequestMessage ASPNCoreRequest(IMethod verb, Uri address, IEnumerable<KeyValuePair<string,string>> headers, IInput body, TimeSpan timeout)
+        private HttpRequestMessage ASPNCoreRequest(IMethod verb, Uri address, IEnumerable<KeyValuePair<string,string>> headers, IInput body)
         {
             var req = new HttpRequestMessage(_methods[verb], address.AbsoluteUri);
             foreach (var header in headers)
