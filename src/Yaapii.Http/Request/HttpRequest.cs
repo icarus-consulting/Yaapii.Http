@@ -37,7 +37,7 @@ namespace Yaapii.Http
             _attributes =
                 new StickyScalar<IDictionary<string, string>>(() =>
                      new MapOf<string, string>(
-                         new KeyValuePair<string, string>("connect-timeout", timeout.Milliseconds.ToString()),
+                         new KeyValuePair<string, string>("connect-timeout", timeout.TotalMilliseconds.ToString()),
                          new KeyValuePair<string, string>("uri", uri.AbsoluteUri.ToString())
                      )
                 );
