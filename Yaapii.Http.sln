@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{168672
 		build.ps1 = build.ps1
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Yaapii.Http", "tests\Test.Yaapii.Http\Test.Yaapii.Http.csproj", "{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
