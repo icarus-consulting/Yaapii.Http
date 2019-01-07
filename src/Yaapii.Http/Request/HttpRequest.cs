@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
@@ -15,10 +16,10 @@ namespace Yaapii.Http
 {
     public sealed class HttpRequest : IRequest
     {
-        private readonly IMethod _method;
-        private readonly IBytes _body;
-        private readonly IDictionary<string, string> _headers;
-        private readonly IScalar<IDictionary<string, string>> _attributes;
+        private readonly IMethod method;
+        private readonly IBytes body;
+        private readonly IDictionary<string, string> headers;
+        private readonly IScalar<IDictionary<string, string>> attributes;
 
         public HttpRequest(IMethod method, Uri uri, IDictionary<string,string> headers, TimeSpan timeout) : this(method, uri, headers, new EmptyBytes(), timeout)
         { }
@@ -31,10 +32,10 @@ namespace Yaapii.Http
             TimeSpan timeout
         )
         {
-            _headers = headers;
-            _method = method;
-            _body = body;
-            _attributes =
+            this.headers = headers;
+            this.method = method;
+            this.body = body;
+            this.attributes =
                 new StickyScalar<IDictionary<string, string>>(() =>
                      new MapOf<string, string>(
                          new KeyValuePair<string, string>("connect-timeout", timeout.TotalMilliseconds.ToString()),
@@ -47,40 +48,40 @@ namespace Yaapii.Http
         {
             return
                 new HttpRequest(
-                    this._method,
+                    this.method,
                     BaseUri(),
                     new MapOf<string, string>(
-                        this._headers,
+                        this.headers,
                         new KeyValuePair<string, string>(name, value)
                     ),
-                    this._body,
+                    this.body,
                     ConnectionTimeout()
                 );
         }
 
         public IRequestBody Body()
         {
-            return new RequestBodyOf(this, this._body);
+            return new RequestBodyOf(this, this.body);
         }
 
         public IRequest Method(IMethod verb)
         {
-            return new HttpRequest(verb, this.BaseUri(), this._headers, this._body, this.ConnectionTimeout());
+            return new HttpRequest(verb, this.BaseUri(), this.headers, this.body, this.ConnectionTimeout());
         }
 
         public IRequest Timeout(TimeSpan timeout)
         {
-            return new HttpRequest(this._method, this.BaseUri(), this._headers, this._body, timeout);
+            return new HttpRequest(this.method, this.BaseUri(), this.headers, this.body, timeout);
         }
 
         public IResponse Response()
         {
-            return this.FetchedResponse(new InputOf(this._body));
+            return this.FetchedResponse(new InputOf(this.body));
         }
 
         public IResponse Response(IInput input)
         {
-            if (new LengthOf(new InputOf(this._body)).Value() > 0) //@TODO: Test, possible issue is that a reader is placed at the end after LengthOf.
+            if (new LengthOf(new InputOf(this.body)).Value() > 0) //@TODO: Test, possible issue is that a reader is placed at the end after LengthOf.
             {
                 throw new IllegalStateException("Request body is not empty, use fetch() instead");
             }
@@ -91,7 +92,7 @@ namespace Yaapii.Http
         private IResponse FetchedResponse(IInput body)
         {
             var start = DateTime.Now;
-            return new ASPNCoreWire().Send(this, BaseUri(), this._method, this._headers, new InputOf(this._body), ConnectionTimeout());
+            return new ASPNCoreWire().Send(this, BaseUri(), this.method, this.headers, new InputOf(this.body), ConnectionTimeout());
         }
 
         public IRequestUri Uri()
@@ -101,17 +102,17 @@ namespace Yaapii.Http
 
         private Uri BaseUri()
         {
-            return new System.Uri(this._attributes.Value()["uri"]);
+            return new System.Uri(this.attributes.Value()["uri"]);
         }
 
         private TimeSpan ConnectionTimeout()
         {
-            return new TimeSpan(0, 0, 0, 0, new NumberOf(this._attributes.Value()["connect-timeout"]).AsInt());
+            return new TimeSpan(0, 0, 0, 0, new NumberOf(this.attributes.Value()["connect-timeout"]).AsInt());
         }
 
         public IRequest Uri(Uri url)
         {
-            return new HttpRequest(this._method, url, this._headers, this._body, ConnectionTimeout());
+            return new HttpRequest(this.method, url, this.headers, this.body, ConnectionTimeout());
         }
     }
 }
