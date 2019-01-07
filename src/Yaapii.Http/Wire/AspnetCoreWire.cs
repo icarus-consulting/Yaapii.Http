@@ -16,14 +16,14 @@ namespace Yaapii.Http.Wire
     /// </summary>
     public class ASPNCoreWire : IWire
     {
-        private readonly IDictionary<IMethod, HttpMethod> _methods;
+        private readonly IDictionary<IMethod, HttpMethod> methods;
            
         /// <summary>
         /// Make a new wire.
         /// </summary>
         public ASPNCoreWire()
         {
-            _methods = 
+            methods = 
                 new MapOf<IMethod, HttpMethod>(
                     new KeyValuePair<IMethod, HttpMethod>(new Method.Delete(), HttpMethod.Delete),
                     new KeyValuePair<IMethod, HttpMethod>(new Method.Get(), HttpMethod.Get),
@@ -105,7 +105,7 @@ namespace Yaapii.Http.Wire
 
         private HttpRequestMessage ASPNCoreRequest(IMethod verb, Uri address, IEnumerable<KeyValuePair<string,string>> headers, IInput body)
         {
-            var req = new HttpRequestMessage(_methods[verb], address.AbsoluteUri);
+            var req = new HttpRequestMessage(methods[verb], address.AbsoluteUri);
             foreach (var header in headers)
             {
                 req.Headers.Add(header.Key, header.Value);
