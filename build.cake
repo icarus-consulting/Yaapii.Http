@@ -32,8 +32,7 @@ var netstandard         = "netstandard2.0";
 var owner = "icarus-consulting";
 var repository = "Yaapii.Http";
 
-var username = "";
-var password = "";
+var githubtoken = "";
 var codecovToken = "";
 
 
@@ -141,12 +140,11 @@ Task("Pack")
 ///////////////////////////////////////////////////////////////////////////////
 // Release
 ///////////////////////////////////////////////////////////////////////////////
-Task("GetCredentials")
+Task("GetAuth")
 	.WithCriteria(() => isAppVeyor)
     .Does(() =>
 {
-    username = EnvironmentVariable("GITHUB_USERNAME");
-    password = EnvironmentVariable("GITHUB_PASSWORD");
+    githubtoken = EnvironmentVariable("GITHUB_TOKEN");
 	codecovToken = EnvironmentVariable("CODECOV_TOKEN");
 });
 
@@ -154,27 +152,28 @@ Task("Release")
   .WithCriteria(() => isAppVeyor && BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
   .IsDependentOn("Version")
   .IsDependentOn("Pack")
-  .IsDependentOn("GetCredentials")
+  .IsDependentOn("GetAuth")
   .Does(() => {
-     GitReleaseManagerCreate(username, password, owner, repository, new GitReleaseManagerCreateSettings {
+     GitReleaseManagerCreate(githubtoken, owner, repository, new GitReleaseManagerCreateSettings {
             Milestone         = version,
             Name              = version,
             Prerelease        = false,
             TargetCommitish   = "master"
     });
 
-	var nugetFiles = string.Join(";", GetFiles("./artifacts/**/*.nupkg").Select(f => f.FullPath) );
+	var nugetFiles = string.Join(",", GetFiles("./artifacts/**/*.nupkg").Select(f => f.FullPath) );
 	Information("Nuget artifacts: " + nugetFiles);
 
 	GitReleaseManagerAddAssets(
-		username,
-		password,
+		githubtoken,
 		owner,
 		repository,
 		version,
 		nugetFiles
 		);
-	});
+
+	GitReleaseManagerPublish(githubtoken, owner, repository, version);
+});
 
 
 Task("Default")
