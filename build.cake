@@ -172,7 +172,7 @@ Task("Release")
 		nugetFiles
 		);
 
-	GitReleaseManagerPublish(githubToken, owner, repository, version);
+	GitReleaseManagerPublish(githubtoken, owner, repository, version);
 });
 
 
