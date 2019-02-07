@@ -92,7 +92,7 @@ namespace Yaapii.Http.Wire
         {
             foreach (var header in headers)
             {
-                client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key, header.Value);
             }
             return client;
         }
@@ -108,14 +108,19 @@ namespace Yaapii.Http.Wire
             var req = new HttpRequestMessage(methods[verb], address.AbsoluteUri);
             foreach (var header in headers)
             {
-                req.Headers.Add(header.Key, header.Value);
+                req.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
-
             var bytes = new BytesOf(body).AsBytes();
             if (bytes.Length > 0 && verb != new Get())
             {
                 req.Content = new ByteArrayContent(bytes);
+                foreach (var header in headers)
+                {
+                    req.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
             }
+
+           
 
             return req;
         }

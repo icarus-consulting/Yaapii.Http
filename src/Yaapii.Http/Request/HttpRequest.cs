@@ -21,6 +21,8 @@ namespace Yaapii.Http
         private readonly IDictionary<string, string> headers;
         private readonly IScalar<IDictionary<string, string>> attributes;
 
+        public HttpRequest(IMethod method, Uri url,IBytes body, TimeSpan timeout) : this(method,url,new MapOf<string,string>(),body,timeout)
+        { }
         public HttpRequest(IMethod method, Uri uri, IDictionary<string,string> headers, TimeSpan timeout) : this(method, uri, headers, new EmptyBytes(), timeout)
         { }
 
