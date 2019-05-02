@@ -36,10 +36,10 @@ namespace Yaapii.Http
             this.method = method;
             this.body = body;
             this.attributes =
-                new StickyScalar<IDictionary<string, string>>(() =>
-                     new MapOf<string, string>(
-                         new KeyValuePair<string, string>("connect-timeout", timeout.TotalMilliseconds.ToString()),
-                         new KeyValuePair<string, string>("uri", uri.AbsoluteUri.ToString())
+                new Sticky<IDictionary<string, string>>(() =>
+                     new StringMap(
+                         "connect-timeout", timeout.TotalMilliseconds.ToString(),
+                         "uri", uri.AbsoluteUri.ToString()
                      )
                 );
         }

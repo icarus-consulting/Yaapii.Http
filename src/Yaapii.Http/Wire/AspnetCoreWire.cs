@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
@@ -69,7 +70,10 @@ namespace Yaapii.Http.Wire
                 var contentStream = resContent.ReadAsStreamAsync().GetAwaiter().GetResult();
 
                 //read bytes fully to return them, since the resContent will be disposed after this method.
-                var bytes = new BytesOf(new InputOf(contentStream)).AsBytes();
+                var bytes = 
+                    new BytesOf(
+                        new InputOf(contentStream)
+                    ).AsBytes();
 
                 //Generate response
                 var res =
