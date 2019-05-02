@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Scalar;
@@ -50,7 +51,7 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port)
         {
-            this.server = new SolidScalar<MockServer>(() =>
+            this.server = new Solid<MockServer>(() =>
             {
                 return new MockServer(port, new EnumerableOf<MockHttpHandler>());
             });

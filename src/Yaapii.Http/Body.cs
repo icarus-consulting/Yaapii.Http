@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Encodings.Web;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Error;
@@ -11,31 +12,31 @@ namespace Yaapii.Http
 {
     public sealed class RequestBodyOf : IRequestBody
     {
-        private readonly IRequest _request;
-        private readonly IBytes _content;
-        private readonly string _prepend;
-        private readonly Encoding _encoding = Encoding.UTF8;
+        private readonly IRequest request;
+        private readonly IBytes content;
+        private readonly string prepend;
+        private readonly Encoding encoding = Encoding.UTF8;
 
         public RequestBodyOf(IRequest request, IBytes content, string prepend = "")
         {
-            _request = request;
-            _content = content;
-            _prepend = prepend;
+            this.request = request;
+            this.content = content;
+            this.prepend = prepend;
         }
 
         public IRequest Back()
         {
-            return _request;
+            return request;
         }
 
         public IText Content()
         {
-            return new TextOf(this._content, _encoding);
+            return new TextOf(this.content, encoding);
         }
 
         public IRequestBody With(IText body)
         {
-            return new RequestBodyOf(_request, new BytesOf(body));
+            return new RequestBodyOf(request, new BytesOf(body));
         }
 
         public IRequestBody FormParam(string name, string value)
@@ -44,12 +45,12 @@ namespace Yaapii.Http
             {
                 return
                     new RequestBodyOf(
-                        this._request,
+                        this.request,
                         new BytesOf(
                             new StringBuilder(
                                 this.Content().AsString()
                             )
-                            .Append(this._prepend)
+                            .Append(this.prepend)
                             .Append(name)
                             .Append('=')
                             .Append(UrlEncoder.Default.Encode(value)).ToString()
@@ -62,7 +63,7 @@ namespace Yaapii.Http
             {
                 throw
                     new IllegalStateException(
-                        new FormattedText("cannot url encode '{0}': {1}", value, ex.Message).AsString(),
+                        new Formatted("cannot url encode '{0}': {1}", value, ex.Message).AsString(),
                         ex
                     );
             }
