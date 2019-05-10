@@ -123,9 +123,6 @@ namespace Yaapii.Http.Wire
                     req.Content.Headers.TryAddWithoutValidation(header.Key, header.Value);
                 }
             }
-
-           
-
             return req;
         }
     }
