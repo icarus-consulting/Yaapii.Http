@@ -1,14 +1,22 @@
-﻿using System.Collections.Generic;
-using Yaapii.Atoms;
+﻿using Yaapii.Atoms;
+using Yaapii.Atoms.Dict;
 
 namespace Yaapii.Http
 {
-    public interface IResponse
+    /// <summary>
+    /// The response to a request.
+    /// </summary>
+    public interface IResponse2
     {
-        IRequest Back();
-        int Status();
-        IText Reason();
-        IDictionary<string, IList<string>> Headers();
-        IInput Body();
+        /// <summary>
+        /// Get the response from the request.
+        /// </summary>
+        /// <returns></returns>
+        IDict Dict();
+
+        /// <summary>
+        /// Touch the request without caring about the response.
+        /// </summary>
+        void Touch();
     }
 }

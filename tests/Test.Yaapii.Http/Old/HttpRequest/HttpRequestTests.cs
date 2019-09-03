@@ -1,12 +1,7 @@
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using Xunit;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Map;
 using Yaapii.Http;
-using Yaapii.Http.Method;
-using Yaapii.Http.Mock;
+using Yaapii.Http.MethodX;
 
 namespace Test.Yaapii.Http
 {

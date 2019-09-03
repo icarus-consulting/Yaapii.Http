@@ -6,7 +6,7 @@ using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.Method;
+using Yaapii.Http.MethodX;
 using Yaapii.Http.Response;
 
 namespace Yaapii.Http.Wire
@@ -26,12 +26,12 @@ namespace Yaapii.Http.Wire
         {
             methods = 
                 new MapOf<IMethod, HttpMethod>(
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Delete(), HttpMethod.Delete),
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Get(), HttpMethod.Get),
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Head(), HttpMethod.Head),
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Options(), HttpMethod.Options),
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Post(), HttpMethod.Post),
-                    new KeyValuePair<IMethod, HttpMethod>(new Method.Put(), HttpMethod.Put)
+                    new KeyValuePair<IMethod, HttpMethod>(new Delete(), HttpMethod.Delete),
+                    new KeyValuePair<IMethod, HttpMethod>(new Get(), HttpMethod.Get),
+                    new KeyValuePair<IMethod, HttpMethod>(new Head(), HttpMethod.Head),
+                    new KeyValuePair<IMethod, HttpMethod>(new Options(), HttpMethod.Options),
+                    new KeyValuePair<IMethod, HttpMethod>(new Post(), HttpMethod.Post),
+                    new KeyValuePair<IMethod, HttpMethod>(new Put(), HttpMethod.Put)
                 );
         }
 

@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Yaapii.Http.Method
+namespace Yaapii.Http.MethodX
 {
-    public sealed class Patch : IMethod
+    public sealed class Post : IMethod
     {
         private readonly string _name;
 
-        public Patch()
+        public Post()
         {
-            _name = "PATCH";
+            _name = "POST";
         }
-
         public string Name()
         {
             return _name;

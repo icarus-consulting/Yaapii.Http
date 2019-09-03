@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Yaapii.Http.Method
+namespace Yaapii.Http.MethodX
 {
-    public sealed class Delete : IMethod
+    public sealed class Patch : IMethod
     {
         private readonly string _name;
 
-        public Delete()
+        public Patch()
         {
-            _name = "DELETE";
+            _name = "PATCH";
         }
 
         public string Name()

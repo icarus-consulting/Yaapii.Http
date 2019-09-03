@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Yaapii.Http.Method
+namespace Yaapii.Http.MethodX
 {
-    public sealed class Put : IMethod
+    public sealed class Head : IMethod
     {
         private readonly string _name;
 
-        public Put()
+        public Head()
         {
-            _name = "PUT";
+            _name = "HEAD";
         }
 
         public string Name()
