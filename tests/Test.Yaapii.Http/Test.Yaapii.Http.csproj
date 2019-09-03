@@ -20,4 +20,8 @@
     <ProjectReference Include="..\..\src\Yaapii.Http\Yaapii.Http.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Verano-Port\" />
+  </ItemGroup>
+
 </Project>
