@@ -1,10 +1,4 @@
 #tool nuget:?package=GitReleaseManager
-//#tool nuget:?package=OpenCover
-//#tool nuget:?package=xunit.runner.console
-//#tool nuget:?package=Codecov
-//#tool nuget:?package=ReportGenerator
-
-#tool nuget:?package=GitReleaseManager
 #addin "Cake.Figlet"
 
 var target = Argument("target", "Default");
