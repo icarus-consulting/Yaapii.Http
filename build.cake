@@ -95,7 +95,6 @@ Task("Build")
 
     // Yaapii.Http
     var module = yaapiiHttp;
-    //var output = Directory($"{buildArtifacts.Path}/{module.Path.GetDirectoryName()}");
     DotNetCoreBuild(
         module,
         new DotNetCoreBuildSettings()
@@ -103,7 +102,6 @@ Task("Build")
             Configuration = configuration,
             Framework = netstandard,
             MSBuildSettings = new DotNetCoreMSBuildSettings().SetVersionPrefix(version),
-            //OutputDirectory = output,
             NoRestore = true
         }
     );
@@ -147,7 +145,7 @@ Task("Nuget")
         OutputDirectory = buildArtifacts,
 	  	VersionSuffix = ""
     };
-	//settings.ArgumentCustomization = args => args.Append("--include-symbols");
+	settings.ArgumentCustomization = args => args.Append("--include-symbols");
     settings.MSBuildSettings = new DotNetCoreMSBuildSettings().SetVersionPrefix(version);
 	
     var module = yaapiiHttp;
@@ -229,13 +227,16 @@ Task("NuGetFeed")
     var nugets = GetFiles($"{buildArtifacts.Path}/*.nupkg");
     foreach(var package in nugets)
 	{
-        NuGetPush(
-            package,
-            new NuGetPushSettings {
-                Source = nuGetSource,
-                ApiKey = appVeyorToken
-            }
-        );
+        if(!package.GetFilename().FullPath.Contains("symbols.nupkg"))
+        {
+            NuGetPush(
+                package,
+                new NuGetPushSettings {
+                    Source = nuGetSource,
+                    ApiKey = appVeyorToken
+                }
+            );
+        }
     }
 });
 
