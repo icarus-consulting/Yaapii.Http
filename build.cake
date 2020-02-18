@@ -38,7 +38,6 @@ var repository                      = "Yaapii.Http";
 var nuGetSource = "https://ci.appveyor.com/nuget/icarus/api/v2/package";
 
 // API key tokens for deployment
-var getTokensFromUser               = false; // Need for deployment from local machine after executing local obfuscation
 var gitHubToken                     = "";
 var appVeyorToken                   = "";
 
@@ -164,18 +163,8 @@ Task("Credentials")
 {
 	Information(Figlet("Credentials"));
 	
-    if(getTokensFromUser && !isAppVeyor)
-    {
-	    Console.Write("Enter GitHub API token: ");
-	    gitHubToken = Console.ReadLine();
-        Console.Write("Enter AppVeyor API token: ");
-	    appVeyorToken = Console.ReadLine();
-    }
-    else
-    {
-        gitHubToken = EnvironmentVariable("GITHUB_TOKEN");
-        appVeyorToken = EnvironmentVariable("APPVEYOR_TOKEN");
-    }
+    gitHubToken = EnvironmentVariable("GITHUB_TOKEN");
+    appVeyorToken = EnvironmentVariable("APPVEYOR_TOKEN");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
