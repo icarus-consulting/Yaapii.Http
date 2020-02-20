@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Lookup;
-using Yaapii.Http.Parts.Body;
+using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
-using Yaapii.Http.Response;
+using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Fake
 {
     /// <summary>
     /// A fake wire to convert http requests into responses.
     /// </summary>
-    public sealed class FkWire : Wire.Envelope
+    public sealed class FkWire : Wires.Envelope
     {
         /// <summary>
         /// A fake wire to convert http requests into responses.

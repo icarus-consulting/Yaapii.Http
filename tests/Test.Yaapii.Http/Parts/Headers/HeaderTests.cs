@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using Yaapii.Atoms.Lookup;
+using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -24,7 +25,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.Equal(
                 expected,
-                new Request.Request(
+                new Request(
                     new Header("same key", "first value"),
                     new Header("same key", "second value"),
                     new Header("same key", "third value")

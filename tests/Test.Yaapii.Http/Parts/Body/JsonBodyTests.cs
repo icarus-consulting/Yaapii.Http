@@ -2,7 +2,7 @@
 using Yaapii.Atoms.Lookup;
 using Yaapii.JSON;
 
-namespace Yaapii.Http.Parts.Body.Test
+namespace Yaapii.Http.Parts.Bodies.Test
 {
     public sealed class JsonBodyTests
     {

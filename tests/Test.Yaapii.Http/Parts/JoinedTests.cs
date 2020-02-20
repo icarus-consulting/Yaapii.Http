@@ -2,6 +2,7 @@
 using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
+using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Test
 {
@@ -45,7 +46,7 @@ namespace Yaapii.Http.Parts.Test
         {
             Assert.Equal(
                 expected,
-                new Request.Request(
+                new Request(
                     new Joined(
                         new Header("same key", "first value")
                     ),

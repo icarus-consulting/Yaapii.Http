@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using Yaapii.Atoms.Lookup;
 
-namespace Yaapii.Http.Parts.Body.Test
+namespace Yaapii.Http.Parts.Bodies.Test
 {
     public sealed class HtmlBodyTests
     {
