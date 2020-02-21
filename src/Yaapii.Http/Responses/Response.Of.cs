@@ -17,7 +17,7 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// A response with the given status, reason, headers and body.
             /// </summary>
-            public Of(int status, string reason, IDictionary<string, string> headers, IText body) : this(
+            public Of(int status, string reason, IEnumerable<IKvp> headers, IText body) : this(
                 new Many.Of<IMapInput>(
                     new Status(status),
                     new Reason(reason),
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// A response with the given status, reason and headers.
             /// </summary>
-            public Of(int status, string reason, IDictionary<string, string> headers) : this(
+            public Of(int status, string reason, IEnumerable<IKvp> headers) : this(
                 new Many.Of<IMapInput>(
                     new Status(status),
                     new Reason(reason),

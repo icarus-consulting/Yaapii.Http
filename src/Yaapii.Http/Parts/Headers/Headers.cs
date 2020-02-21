@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Lookup;
@@ -26,6 +27,28 @@ namespace Yaapii.Http.Parts.Headers
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
         public Headers(params KeyValuePair<string, string>[] headers) : this(new Many.Of<KeyValuePair<string, string>>(headers))
+        { }
+
+        /// <summary>
+        /// Adds header fields to a request.
+        /// The same key can be used multiple times to add multiple values to the same header field.
+        /// </summary>
+        public Headers(NameValueCollection headers) : this(
+            new Many.Of<IKvp>(() =>
+            {
+                var kvps = new List<IKvp>();
+                foreach(var key in headers.AllKeys)
+                {
+                    foreach(var value in headers.GetValues(key))
+                    {
+                        kvps.Add(
+                            new Kvp.Of(key, value)
+                        );
+                    }
+                }
+                return kvps;
+            })
+        )
         { }
 
         /// <summary>

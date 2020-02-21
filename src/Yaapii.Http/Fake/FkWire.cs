@@ -30,6 +30,13 @@ namespace Yaapii.Http.Fake
 
         /// <summary>
         /// A fake wire to convert http requests into responses.
+        /// Always returns status code 200 and no headers.
+        /// </summary>
+        public FkWire(IText body) : this(200, "OK", new Map.Of(new MapInput.Of()), body)
+        { }
+
+        /// <summary>
+        /// A fake wire to convert http requests into responses.
         /// Always returns status code 200.
         /// </summary>
         public FkWire(IDictionary<string, string> headers, IText body) : this(200, "OK", headers, body)

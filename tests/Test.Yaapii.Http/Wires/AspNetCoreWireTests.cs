@@ -1,10 +1,12 @@
-﻿using MockHttpServer;
-using System;
+﻿using System;
 using Xunit;
-using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Lookup;
 using Yaapii.Atoms.Scalar;
+using Yaapii.Atoms.Text;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Mock;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -20,10 +22,11 @@ namespace Yaapii.Http.Wires.Test
         public void SendsRequest()
         {
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) => { }
-                )
+                new HttpMock(
+                    new Kvp.Of<IWire>("test/asdf",
+                        new FkWire()
+                    )
+                ).Value()
             )
             {
                 Assert.Equal(
@@ -34,7 +37,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Scheme("http"),
                                 new Host("localhost"),
                                 new Port(server.Port),
-                                new Path("test")
+                                new Path("test/asdf")
                             )
                         )
                     ).AsInt()
@@ -47,16 +50,16 @@ namespace Yaapii.Http.Wires.Test
         {
             var hasHeader = false;
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) => 
+                new HttpMock(
+                    new FkWire(req =>
                     {
-                        if(req.Headers["Authorization"] == "Basic dXNlcjpwYXNzd29yZA==")
+                        if(new FirstOf<string>(new Authorization.Of(req)).Value() == "Basic dXNlcjpwYXNzd29yZA==")
                         {
                             hasHeader = true;
                         }
-                    }
-                )
+                        return new Response.Of(200, "OK");
+                    })
+                ).Value()
             )
             {
                 new AspNetCoreWire().Response(
@@ -64,7 +67,6 @@ namespace Yaapii.Http.Wires.Test
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(server.Port),
-                        new Path("test"),
                         new Header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                     )
                 );
@@ -77,16 +79,20 @@ namespace Yaapii.Http.Wires.Test
         {
             var hasHeader = false;
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) =>
+                new HttpMock(
+                    new FkWire(req =>
                     {
-                        if (req.Headers["Accept"] == "aplication/json, aplication/xml, test/plain")
+                        var accept = new Acccept.Of(req);
+                        if (
+                            new Contains<string>(accept, "aplication/json").Value() &&
+                            new Contains<string>(accept, "aplication/xml").Value()
+                        )
                         {
                             hasHeader = true;
                         }
-                    }
-                )
+                        return new Response.Of(200, "OK");
+                    })
+                ).Value()
             )
             {
                 new AspNetCoreWire().Response(
@@ -94,7 +100,6 @@ namespace Yaapii.Http.Wires.Test
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(server.Port),
-                        new Path("test"),
                         new Headers(
                             new Kvp.Of("Accept", "aplication/json"),
                             new Kvp.Of("Accept", "aplication/xml"),
@@ -110,13 +115,17 @@ namespace Yaapii.Http.Wires.Test
         public void ReturnsHeaders()
         {
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) =>
+                new HttpMock(
+                    new FkWire(req =>
                     {
-                        res.Header("Allow", "GET");
-                    }
-                )
+                        return 
+                            new Response.Of(200, "OK",
+                                new Many.Of<IKvp>(
+                                    new Kvp.Of("Allow", "GET")
+                                )
+                            );
+                    })
+                ).Value()
             )
             {
                 Assert.Equal(
@@ -127,8 +136,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Get(
                                     new Scheme("http"),
                                     new Host("localhost"),
-                                    new Port(server.Port),
-                                    new Path("test")
+                                    new Port(server.Port)
                                 )
                             ),
                             "Allow"
@@ -146,16 +154,20 @@ namespace Yaapii.Http.Wires.Test
         public void ReturnsMultipleHeaderValues(int index, string expected)
         {
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) =>
+                new HttpMock(
+                    new FkWire(req =>
                     {
-                        res.Header("Allow", "DELETE");
-                        res.Header("Allow", "GET");
-                        res.Header("Allow", "POST");
-                        res.Header("Allow", "PUT");
-                    }
-                )
+                        return
+                            new Response.Of(200, "OK",
+                                new Many.Of<IKvp>(
+                                    new Kvp.Of("Allow", "DELETE"),
+                                    new Kvp.Of("Allow", "GET"),
+                                    new Kvp.Of("Allow", "POST"),
+                                    new Kvp.Of("Allow", "PUT")
+                                )
+                            );
+                    })
+                ).Value()
             )
             {
                 Assert.Equal(
@@ -166,9 +178,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Get(
                                     new Scheme("http"),
                                     new Host("localhost"),
-                                    new Port(server.Port),
-                                    new Path("test"),
-                                    new Header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
+                                    new Port(server.Port)
                                 )
                             ),
                             "Allow"
@@ -184,16 +194,16 @@ namespace Yaapii.Http.Wires.Test
         {
             var hasBody = false;
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) =>
+                new HttpMock(
+                    new FkWire(req =>
                     {
-                        if (req.Content() == "very important content")
+                        if (new Body.Of(req).AsString() == "very important content")
                         {
                             hasBody = true;
                         }
-                    }
-                )
+                        return new Response.Of(200, "OK");
+                    })
+                ).Value()
             )
             {
                 new AspNetCoreWire().Response(
@@ -201,7 +211,6 @@ namespace Yaapii.Http.Wires.Test
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(server.Port),
-                        new Path("test"),
                         new TextBody("very important content")
                     )
                 );
@@ -213,10 +222,11 @@ namespace Yaapii.Http.Wires.Test
         public void ReturnsBody()
         {
             using (var server =
-                new MockServer(0, // pick random unused port
-                    "test",
-                    (req, res, prms) => "very important content"
-                )
+                new HttpMock(
+                    new FkWire(
+                        new TextOf("very important content")
+                    )
+                ).Value()
             )
             {
                 Assert.Equal(
@@ -226,8 +236,7 @@ namespace Yaapii.Http.Wires.Test
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
-                                new Port(server.Port),
-                                new Path("test")
+                                new Port(server.Port)
                             )
                         )
                     ).AsString()

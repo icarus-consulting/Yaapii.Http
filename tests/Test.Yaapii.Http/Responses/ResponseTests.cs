@@ -32,6 +32,24 @@ namespace Yaapii.Http.Responses.Test
         }
 
         [Fact]
+        public void OnlySendsOnce()
+        {
+            var count = 0;
+            var response =
+                new Response(
+                    new FkWire(req =>
+                    {
+                        count++;
+                        return new Map.Of(new MapInput.Of());
+                    }),
+                    new Get()
+                );
+            response.GetEnumerator();
+            response.GetEnumerator();
+            Assert.Equal(1, count);
+        }
+
+        [Fact]
         public void ReadsResponse()
         {
             Assert.Equal(
