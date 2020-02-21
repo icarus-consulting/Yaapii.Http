@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
@@ -48,15 +49,12 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsHeaders()
         {
-            var hasHeader = false;
+            var header = "";
             using (var server =
                 new HttpMock(
                     new FkWire(req =>
                     {
-                        if(new FirstOf<string>(new Authorization.Of(req)).Value() == "Basic dXNlcjpwYXNzd29yZA==")
-                        {
-                            hasHeader = true;
-                        }
+                        header = new FirstOf<string>(new Authorization.Of(req)).Value();
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -71,25 +69,23 @@ namespace Yaapii.Http.Wires.Test
                     )
                 );
             }
-            Assert.True(hasHeader);
+            Assert.Equal(
+                "Basic dXNlcjpwYXNzd29yZA==",
+                header
+            );
         }
 
-        [Fact]
-        public void SendsMultipleHeaderValues()
+        [Theory]
+        [InlineData("aplication/json")]
+        [InlineData("aplication/xml")]
+        public void SendsMultipleHeaderValues(string expected)
         {
-            var hasHeader = false;
+            IEnumerable<string> headers = new Many.Of<string>();
             using (var server =
                 new HttpMock(
                     new FkWire(req =>
                     {
-                        var accept = new Acccept.Of(req);
-                        if (
-                            new Contains<string>(accept, "aplication/json").Value() &&
-                            new Contains<string>(accept, "aplication/xml").Value()
-                        )
-                        {
-                            hasHeader = true;
-                        }
+                        headers = new Acccept.Of(req);
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -108,7 +104,10 @@ namespace Yaapii.Http.Wires.Test
                     )
                 );
             }
-            Assert.True(hasHeader);
+            Assert.Contains(
+                expected,
+                headers
+            );
         }
 
         [Fact]
@@ -147,11 +146,11 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Theory]
-        [InlineData(0, "DELETE")]
-        [InlineData(1, "GET")]
-        [InlineData(2, "POST")]
-        [InlineData(3, "PUT")]
-        public void ReturnsMultipleHeaderValues(int index, string expected)
+        [InlineData("DELETE")]
+        [InlineData("GET")]
+        [InlineData("POST")]
+        [InlineData("PUT")]
+        public void ReturnsMultipleHeaderValues(string expected)
         {
             using (var server =
                 new HttpMock(
@@ -170,21 +169,18 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                Assert.Equal(
+                Assert.Contains(
                     expected,
-                    new ItemAt<string>(
-                        new Header.Of(
-                            new AspNetCoreWire().Response(
-                                new Get(
-                                    new Scheme("http"),
-                                    new Host("localhost"),
-                                    new Port(server.Port)
-                                )
-                            ),
-                            "Allow"
+                    new Header.Of(
+                        new AspNetCoreWire().Response(
+                            new Get(
+                                new Scheme("http"),
+                                new Host("localhost"),
+                                new Port(server.Port)
+                            )
                         ),
-                        index
-                    ).Value()
+                        "Allow"
+                    )
                 );
             }
         }
@@ -192,15 +188,12 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsBody()
         {
-            var hasBody = false;
+            var body = "";
             using (var server =
                 new HttpMock(
                     new FkWire(req =>
                     {
-                        if (new Body.Of(req).AsString() == "very important content")
-                        {
-                            hasBody = true;
-                        }
+                        body = new Body.Of(req).AsString();
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -215,7 +208,10 @@ namespace Yaapii.Http.Wires.Test
                     )
                 );
             }
-            Assert.True(hasBody);
+            Assert.Equal(
+                "very important content",
+                body
+            );
         }
 
         [Fact]

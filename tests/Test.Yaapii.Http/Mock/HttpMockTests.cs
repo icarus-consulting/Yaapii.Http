@@ -139,15 +139,12 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ForwardsQueryParams()
         {
-            var hasQuery = false;
+            var queryParam = "";
             using (var server =
                 new HttpMock(
                     new FkWire(req =>
                     {
-                        if(new QueryParam.Of(req, "importantQueryParam").AsString() == "importantValue")
-                        {
-                            hasQuery = true;
-                        }
+                        queryParam = new QueryParam.Of(req, "importantQueryParam").AsString();
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -158,7 +155,10 @@ namespace Yaapii.Http.Mock.Test
                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
                 );
             }
-            Assert.True(hasQuery);
+            Assert.Equal(
+                "importantValue",
+                queryParam
+            );
         }
     }
 }

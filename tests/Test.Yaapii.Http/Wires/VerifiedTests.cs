@@ -15,15 +15,10 @@ namespace Yaapii.Http.Wires.Test
         {
             var verified = false;
             new Verified(
-                new FkWire(200, "OK",
-                    new Map.Of("some header key", "this is the right response")
-                ),
+                new FkWire(200, "OK"),
                 new Verification(res =>
                 {
-                    if (new FirstOf<string>(new Header.Of(res, "some header key")).Value() == "this is the right response")
-                    {
-                        verified = true;
-                    }
+                    verified = true;
                 })
             ).Response(new Get());
             Assert.True(verified);

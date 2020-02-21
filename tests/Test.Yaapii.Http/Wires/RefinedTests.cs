@@ -11,19 +11,19 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void AddsRequestParts()
         {
-            var hasToken = false;
+            var token = "";
             new Refined(
                 new FkWire(req =>
                 {
-                    if (new FirstOf<string>(new BearerTokenAuth.Of(req)).Value() == "this is a token")
-                    {
-                        hasToken = true;
-                    }
+                    token = new FirstOf<string>(new BearerTokenAuth.Of(req)).Value();
                     return new Responses.Response.Of(200, "OK");
                 }),
                 new BearerTokenAuth("this is a token")
             ).Response(new Get());
-            Assert.True(hasToken);
+            Assert.Equal(
+                "this is a token",
+                token
+            );
         }
     }
 }

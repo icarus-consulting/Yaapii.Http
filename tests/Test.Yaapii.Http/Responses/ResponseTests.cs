@@ -1,8 +1,6 @@
 ﻿using Xunit;
 using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Fake;
-using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Responses.Test
@@ -16,17 +14,10 @@ namespace Yaapii.Http.Responses.Test
             new Response(
                 new FkWire(req =>
                 {
-                    if (new FirstOf<string>(new Header.Of(req, "some header key")).Value() == "this is the right request")
-                    {
-                        requestSent = true;
-                    }
+                    requestSent = true;
                     return new Map.Of(new MapInput.Of());
                 }),
-                new Get(
-                    new Header(
-                        "some header key", "this is the right request"
-                    )
-                )
+                new Get()
             ).GetEnumerator();
             Assert.True(requestSent);
         }
@@ -71,22 +62,12 @@ namespace Yaapii.Http.Responses.Test
         {
             var verified = false;
             new Response(
-                new FkWire(
-                    200,
-                    "this is the right response"
-                ),
+                new FkWire(200, "OK"),
                 new Verifications.Verification(res =>
                 {
-                    if (new Reason.Of(res).AsString() == "this is the right response")
-                    {
-                        verified = true;
-                    }
+                    verified = true;
                 }),
-                new Get(
-                    new Header(
-                        "some header key", "this is the right request"
-                    )
-                )
+                new Get()
             ).GetEnumerator();
             Assert.True(verified);
         }
