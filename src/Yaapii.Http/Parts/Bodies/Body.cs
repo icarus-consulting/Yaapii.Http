@@ -20,12 +20,6 @@ namespace Yaapii.Http.Parts.Bodies
         /// <summary>
         /// Adds a body to a request.
         /// </summary>
-        public Body(IInput content) : this(new TextOf(content))
-        { }
-
-        /// <summary>
-        /// Adds a body to a request.
-        /// </summary>
         public Body(IText content) : base(() =>
             new MapInput.Of(
                 new Kvp.Of(KEY, () => content.AsString())
