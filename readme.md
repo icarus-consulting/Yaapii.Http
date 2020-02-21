@@ -2,11 +2,24 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/m8xpbtmd873o4vu9/branch/master?svg=true)](https://ci.appveyor.com/project/icarus-consulting/yaapii-http/branch/master)
 
-Object oriented http client.
-C# Port of [verano-http](https://github.com/Vatavuk/verano-http).
+Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.com/Vatavuk/verano-http).
+
+1. [Creating Requests](#creating-requests)
+    * [Specifying a Request Method](#specifying-a-request-method)
+    * [Specifying an Address](#specifying-an-address)
+    * [Request Headers](#request-headers)
+    * [Request Bodies](#request-bodies)
+    * [Serialization and Deserialization](#serialization-and-deserialization)
+2. [Sending Requests](#sending-requests)
+3. [Handling Responses](#handling-responses)
+    * [Extracting Data from a Response](#extracting-data-from-a-response)
+    * [Response Verification](#response-verification)
+4. [Unit Testing](#unit-testing)
+    * [Fake Classes](#fake-classes)
+    * [HttpMock](#httpmock)
 
 ## Creating Requests
-Requests are created from separate parts like a method, an address to send it to, headers and a body. For Example:
+Requests are created from separate parts like a method, an address to send it to, headers or a body. For Example:
 ```csharp
 new Request(
     new Method("get"),
@@ -131,9 +144,15 @@ new Post(
 
 Other examples of this are:
 * ```HtmlBody``` will set the content type header to ```text/html```,
-* ```XmlBody``` will set the content type header to ```application/xml``` and is created from an ```IXML``` (see Yaapii.Xml),
-* ```JsonBody``` will set the content type header to ```application/json``` and is created from an ```IJSON``` (see Yaapii.Json),
-* ```FormParam``` or ```FormParams``` will set the content type header to ```application/x-www-form-urlencoded```,
+* ```XmlBody``` will set the content type header to ```application/xml```,
+* ```JsonBody``` will set the content type header to ```application/json```,
+* ```FormParam``` or ```FormParams``` will set the content type header to ```application/x-www-form-urlencoded```.
+
+### Serialization and Deserialization
+Some body classes allow the serialization/deserialization of certain data formats into/from text. These include:
+* ```XmlBody``` / ```XmlBody.Of``` uses ```IXML``` (see Yaapii.Xml),
+* ```JsonBody``` / ```JsonBody.Of``` uses ```IJSON``` (see Yaapii.Json),
+* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Atoms). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
 
 ## Sending Requests
 Requests are sent over an ```IWire```.
@@ -177,6 +196,7 @@ new Refined(
 ```
 
 ## Handling Responses
+### Extracting Data from a Response
 Most request part classes (bodies and headers) also have a ```*.Of``` sub class that can be used to extract information from a response.
 Header classes will return ```IEnumerable<string>```, since a header can have multiple values.
 For Example:
@@ -194,6 +214,7 @@ var json = new JsonBody.Of(response) // implements IJSON, see Yaapii.Json. Fails
 var xml = new XmlBody.Of(response) // implements IXML, see Yaapii.Xml. Fails if the body can not be parsed as xml.
 ```
 
+### Response Verification
 The ```IVerification``` interface allows to check if a response meets certain criteria. There is also a wire decorator, that will run a given verification for each response coming from the wire:
 ```csharp
 new Verified(
@@ -213,6 +234,7 @@ new Verified(
 ```
 
 ## Unit Testing
+### Fake Classes
 A lot of classes can be tested without sending actual http requests. A fake wire is available to pretend sending requests and receiving responses in unit tests:
 ```csharp
 new FkWire(req =>
@@ -224,6 +246,7 @@ new FkWire(req =>
 )
 ```
 
+### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
 It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
