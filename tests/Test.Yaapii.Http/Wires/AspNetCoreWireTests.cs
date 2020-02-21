@@ -76,8 +76,9 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Theory]
-        [InlineData("aplication/json")]
-        [InlineData("aplication/xml")]
+        [InlineData("application/json")]
+        [InlineData("application/xml")]
+        [InlineData("text/plain")]
         public void SendsMultipleHeaderValues(string expected)
         {
             IEnumerable<string> headers = new Many.Of<string>();
@@ -97,16 +98,16 @@ namespace Yaapii.Http.Wires.Test
                         new Host("localhost"),
                         new Port(server.Port),
                         new Headers(
-                            new Kvp.Of("Accept", "aplication/json"),
-                            new Kvp.Of("Accept", "aplication/xml"),
-                            new Kvp.Of("Accept", "test/plain")
+                            new Kvp.Of("Accept", "application/json"),
+                            new Kvp.Of("Accept", "application/xml"),
+                            new Kvp.Of("Accept", "text/plain")
                         )
                     )
                 );
             }
             Assert.Contains(
                 expected,
-                headers
+                new Yaapii.Atoms.Text.Joined(", ", headers).AsString()
             );
         }
 
