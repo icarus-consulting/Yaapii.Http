@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Uri;
@@ -25,13 +26,13 @@ namespace Yaapii.Http.Mock.Test
             )
             {
                 var port = server.Port;
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -72,13 +73,13 @@ namespace Yaapii.Http.Mock.Test
             )
             {
                 var port = server.Port;
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -100,7 +101,7 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire().Response(
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -128,7 +129,7 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     404,
                     new Status.Of(
-                        new AspNetCoreWire().Response(
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                             new Get($"http://localhost:{port}/unknown/path")
                         )
                     ).AsInt()
@@ -151,7 +152,7 @@ namespace Yaapii.Http.Mock.Test
             )
             {
                 var port = server.Port;
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
                 );
             }

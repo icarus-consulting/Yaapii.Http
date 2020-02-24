@@ -33,7 +33,7 @@ namespace Yaapii.Http.Wires.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire().Response(
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -60,7 +60,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
@@ -92,7 +92,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
@@ -132,7 +132,7 @@ namespace Yaapii.Http.Wires.Test
                     "GET",
                     new FirstOf<string>(
                         new Header.Of(
-                            new AspNetCoreWire().Response(
+                            new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                                 new Get(
                                     new Scheme("http"),
                                     new Host("localhost"),
@@ -173,7 +173,7 @@ namespace Yaapii.Http.Wires.Test
                 Assert.Contains(
                     expected,
                     new Header.Of(
-                        new AspNetCoreWire().Response(
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -200,7 +200,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
@@ -229,7 +229,7 @@ namespace Yaapii.Http.Wires.Test
                 Assert.Equal(
                     "very important content",
                     new Body.Of(
-                        new AspNetCoreWire().Response(
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -245,7 +245,7 @@ namespace Yaapii.Http.Wires.Test
         public void RejectsMissingMethod()
         {
             Assert.Throws<ArgumentException>(() =>
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Requests.Request(
                         new Address("http://localhost")
                     )
@@ -257,7 +257,7 @@ namespace Yaapii.Http.Wires.Test
         public void RejectsUnknownMethod()
         {
             Assert.Throws<ArgumentException>(() =>
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Requests.Request(
                         new Method("unknownMethod"),
                         new Address("http://localhost")
@@ -270,7 +270,7 @@ namespace Yaapii.Http.Wires.Test
         public void RejectsMissingAddress()
         {
             Assert.Throws<ArgumentException>(() =>
-                new AspNetCoreWire().Response(
+                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
                     new Get()
                 )
             );
@@ -283,7 +283,7 @@ namespace Yaapii.Http.Wires.Test
                 "<!doctype html>",
                 new Body.Of(
                     new Response(
-                        new AspNetCoreWire(),
+                        new AspNetCoreWire(new TimeSpan(0, 5, 0)),
                         new Get(
                             "https://example.com"
                         )
