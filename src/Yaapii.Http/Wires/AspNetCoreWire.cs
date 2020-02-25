@@ -11,6 +11,7 @@ using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Responses;
+using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Wires
 {
@@ -74,8 +75,12 @@ namespace Yaapii.Http.Wires
         public IDictionary<string, string> Response(IDictionary<string, string> request)
         {
             this.requestVerification.Verify(request);
-            using (var aspnetClient = AspNetClient(request))
-            using (var aspnetResponse = AspNetResponse(aspnetClient, AspNetRequest(request)))
+
+            System.Net.ServicePointManager.FindServicePoint(
+                new Address.Of(request).Value()
+            ).ConnectionLeaseTimeout = (int)this.timeout.TotalMilliseconds; // see  http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
+            
+            using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
             {
                 var body =
@@ -120,18 +125,7 @@ namespace Yaapii.Http.Wires
             }
             return headers;
         }
-
-        private HttpClient AspNetClient(IDictionary<string, string> request)
-        {
-            var client = new HttpClient();
-            client.Timeout = this.timeout;
-            foreach (var header in new Headers.Of(request))
-            {
-                client.DefaultRequestHeaders.TryAddWithoutValidation(header.Key(), header.Value());
-            }
-            return client;
-        }
-
+        
         private HttpRequestMessage AspNetRequest(IDictionary<string, string> request)
         {
             var headers = new Headers.Of(request);
@@ -156,10 +150,10 @@ namespace Yaapii.Http.Wires
             return aspnetRequest;
         }
 
-        private HttpResponseMessage AspNetResponse(HttpClient client, HttpRequestMessage request)
+        private HttpResponseMessage AspNetResponse(HttpRequestMessage request)
         {
             return
-                client.SendAsync(
+                new AspNetCoreClient(this.timeout).Value().SendAsync(
                     request
                 ).GetAwaiter().GetResult();
         }
