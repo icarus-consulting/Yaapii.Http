@@ -34,10 +34,23 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="MockServer"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(params IKvp<IWire>[] pathWirePairs) : this(
-            new Many.Of<IKvp<IWire>>(pathWirePairs),
-            0,
-            "localhost"
+        public HttpMock(int port, string hostname, string path, IWire wire) : this(
+            port,
+            hostname,
+            new Kvp.Of<IWire>(path, wire)
+        )
+        { }
+
+        /// <summary>
+        /// Hosts a local http server for unit testing.
+        /// Handles incoming requests using the wire specified for that path.
+        /// Always dispose this or the returned <see cref="MockServer"/> after use.
+        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
+        /// </summary>
+        public HttpMock(int port, string path, IWire wire) : this(
+            port,
+            "localhost",
+            new Kvp.Of<IWire>(path, wire)
         )
         { }
 
@@ -48,8 +61,8 @@ namespace Yaapii.Http.Mock
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
         public HttpMock(int port, params IKvp<IWire>[] pathWirePairs) : this(
-            new Many.Of<IKvp<IWire>>(pathWirePairs),
             port, 
+            new Many.Of<IKvp<IWire>>(pathWirePairs),
             "localhost"
         )
         { }
@@ -60,22 +73,9 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="MockServer"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(string hostName, params IKvp<IWire>[] pathWirePairs) : this(
-            new Many.Of<IKvp<IWire>>(pathWirePairs),
-            0,
-            hostName
-        )
-        { }
-
-        /// <summary>
-        /// Hosts a local http server for unit testing.
-        /// Handles incoming requests using the wire specified for that path.
-        /// Always dispose this or the returned <see cref="MockServer"/> after use.
-        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
-        /// </summary>
         public HttpMock(int port, string hostName, params IKvp<IWire>[] pathWirePairs) : this(
+            port,
             new Many.Of<IKvp<IWire>>(pathWirePairs),
-            port,
             hostName
         )
         { }
@@ -86,9 +86,9 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="MockServer"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(IEnumerable<IKvp<IWire>> pathWirePairs, int port = 0, string hostName = "localhost") : this(
+        public HttpMock(int port, IEnumerable<IKvp<IWire>> pathWirePairs, string hostName = "localhost") : this(
+            port,
             new Map.Of<IWire>(pathWirePairs),
-            port,
             hostName
         )
         { }
@@ -99,7 +99,8 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="MockServer"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(IDictionary<string, IWire> wires, int port = 0, string hostName = "localhost") : this(
+        public HttpMock(int port, IDictionary<string, IWire> wires, string hostName = "localhost") : this(
+            port,
             new FkWire(req =>
             {
                 var path = new Path.Of(req).AsString();
@@ -112,7 +113,6 @@ namespace Yaapii.Http.Mock
                 }
                 return new Response.Of(404, $"Path not Found. No wire has been configured for '{path}'.");
             }),
-            port,
             hostName
         )
         { }
@@ -123,7 +123,7 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="MockServer"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(IWire wire, int port = 0, string hostName = "localhost")
+        public HttpMock(int port, IWire wire, string hostName = "localhost")
         {
             this.wire = wire;
             this.server = 

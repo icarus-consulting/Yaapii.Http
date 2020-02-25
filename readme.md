@@ -254,7 +254,7 @@ Calling ```HttpMock.Value()``` for the first time will initialize the server.
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
 ```csharp
 using( var server =
-    new HttpMock(
+    new HttpMock(1337,
         new FkWire() // will handle all paths
     ).Value()
 )
@@ -278,9 +278,6 @@ using( var server =
     // ... testing code goes here
 }
 ```
-If the port is set to 0 or no port is specified (0 is the default in that case), [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) will find a random unused port.
-This way you can ensure the port isn't already in use by something else, for example when running tests in parallel. It may trigger a firewall warning and may require admin rights, as described [here](https://github.com/jrharmon/MockHttpServer#usage).
-You can get the port via ```HttpMock.Value().Port```.
 
 **Always dispose the ```HttpMock``` or the ```MockServer``` it returned!**
 
@@ -289,18 +286,18 @@ This means calling ```HttpMock.Dispose()``` will do the same thing as calling ``
 If not disposed, it will keep running in the background, listening for requests, keeping the port occupied.
 The easiest way to do this is to put either ```new HttpMock``` or ```HttpMock.Value()``` in a using block as follows:
 ```csharp
-using( var server =
-    new HttpMock(
+using( var httpMock =
+    new HttpMock(1337,
         new FkWire()
     )
 )
 {
-    var port = server.Value().Port; // this would start the server
+    var server = httpMock.Value(); // this would start the server
     // ... testing code goes here
 } // this disposes the server
 
 using( var server =
-    new HttpMock(
+    new HttpMock(1337,
         new FkWire()
     ).Value() // start the server immediately
 )

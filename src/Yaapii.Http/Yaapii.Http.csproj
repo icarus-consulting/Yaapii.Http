@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="MockHttpServer" Version="1.4.0" />
     <PackageReference Include="Yaapii.Atoms" Version="1.2.0" />
-    <PackageReference Include="Yaapii.JSON" Version="12.0.0" />
+    <PackageReference Include="Yaapii.JSON" Version="12.2.0" />
     <PackageReference Include="Yaapii.Xml" Version="0.16.0" />
   </ItemGroup>
 
