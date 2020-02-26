@@ -25,10 +25,13 @@ namespace Yaapii.Http.Wires.AspNetCore
 
         public HttpClient Value()
         {
-            if(client.Count == 0)
+            lock (client)
             {
-                client.Add(new HttpClient());
-                client[0].Timeout = this.timeout;
+                if(client.Count == 0)
+                {
+                    client.Add(new HttpClient());
+                    client[0].Timeout = this.timeout;
+                }
             }
             return client[0];
         }
