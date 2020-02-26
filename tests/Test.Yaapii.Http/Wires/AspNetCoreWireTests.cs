@@ -18,6 +18,7 @@ using Yaapii.Web.Asp;
 
 namespace Yaapii.Http.Wires.Test
 {
+    [Collection("actual http tests")]
     public sealed class AspNetCoreWireTests
     {
         [Fact]

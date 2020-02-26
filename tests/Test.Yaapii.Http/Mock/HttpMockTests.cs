@@ -10,6 +10,7 @@ using Yaapii.Web.Asp;
 
 namespace Yaapii.Http.Mock.Test
 {
+    [Collection("actual http tests")]
     public sealed class HttpMockTests
     {
         [Fact]
