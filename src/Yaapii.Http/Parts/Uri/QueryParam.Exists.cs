@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class QueryParam : MapInput.Envelope
+    public sealed partial class QueryParam
     {
         /// <summary>
         /// Checks if a request contains the specified query parameter.

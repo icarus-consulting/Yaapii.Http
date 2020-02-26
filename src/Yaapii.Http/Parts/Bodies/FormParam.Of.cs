@@ -4,7 +4,7 @@ using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed partial class FormParam : MapInput.Envelope
+    public sealed partial class FormParam
     {
         /// <summary>
         /// Gets a form param from a request.

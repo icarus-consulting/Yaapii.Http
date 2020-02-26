@@ -5,7 +5,7 @@ using Yaapii.Atoms.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed partial class FormParams : MapInput.Envelope
+    public sealed partial class FormParams
     {
         /// <summary>
         /// Gets the form params from a request.

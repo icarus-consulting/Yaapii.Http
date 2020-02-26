@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Address : MapInput.Envelope
+    public sealed partial class Address
     {
         /// <summary>
         /// Extracts the <see cref="System.Uri"/> from a request.

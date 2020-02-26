@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Port : MapInput.Envelope
+    public sealed partial class Port
     {
         /// <summary>
         /// Checks if the port of a <see cref="System.Uri"/> has been specified for a request.

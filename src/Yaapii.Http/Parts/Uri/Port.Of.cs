@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Atoms.Number;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Port : MapInput.Envelope
+    public sealed partial class Port
     {
         /// <summary>
         /// Extracts the port of a <see cref="System.Uri"/> from a request.

@@ -5,7 +5,7 @@ using Yaapii.Atoms.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class QueryParams : MapInput.Envelope
+    public sealed partial class QueryParams
     {
         /// <summary>
         /// Extracts query parameters from a request.

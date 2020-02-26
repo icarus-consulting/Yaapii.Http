@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts
 {
-    public sealed partial class Method : MapInput.Envelope
+    public sealed partial class Method
     {
         /// <summary>
         /// Gets the method of a request.

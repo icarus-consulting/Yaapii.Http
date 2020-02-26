@@ -2,7 +2,7 @@
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class Header : HeaderEnvelope
+    public sealed partial class Header
     {
         /// <summary>
         /// Gets the values of a header field from a request.

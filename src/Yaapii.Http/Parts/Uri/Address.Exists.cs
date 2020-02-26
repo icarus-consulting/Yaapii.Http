@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Address : MapInput.Envelope
+    public sealed partial class Address
     {
         /// <summary>
         /// Checks if a request contains the required parts of a <see cref="System.Uri"/>

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Atoms.Number;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
 {
-    public sealed partial class Status : MapInput.Envelope
+    public sealed partial class Status
     {
         /// <summary>
         /// Gets the status code of a response.

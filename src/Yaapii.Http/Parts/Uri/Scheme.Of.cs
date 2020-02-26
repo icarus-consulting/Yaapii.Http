@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Scheme : MapInput.Envelope
+    public sealed partial class Scheme
     {
         /// <summary>
         /// Extracts the scheme part of a <see cref="System.Uri"/> from a request.

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed partial class FormParam : MapInput.Envelope
+    public sealed partial class FormParam
     {
         /// <summary>
         /// Checks if a form param exists in a request.

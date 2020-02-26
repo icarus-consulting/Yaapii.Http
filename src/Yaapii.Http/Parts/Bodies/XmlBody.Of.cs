@@ -5,7 +5,7 @@ using Yaapii.XML;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed partial class XmlBody : Envelope
+    public sealed partial class XmlBody
     {
         /// <summary>
         /// Gets the body of a request or response as <see cref="IXML"/>.

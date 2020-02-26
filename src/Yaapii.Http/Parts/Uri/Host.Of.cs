@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
 {
-    public sealed partial class Host : MapInput.Envelope
+    public sealed partial class Host
     {
         /// <summary>
         /// Extracts the host part of a <see cref="System.Uri"/> from a request.

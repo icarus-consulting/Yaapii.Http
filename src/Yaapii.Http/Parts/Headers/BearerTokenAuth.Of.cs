@@ -3,7 +3,7 @@ using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class BearerTokenAuth : HeaderEnvelope
+    public sealed partial class BearerTokenAuth
     {
         /// <summary>
         /// Extracts tokens from bearer token authorization headers.

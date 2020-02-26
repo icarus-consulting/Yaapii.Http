@@ -7,7 +7,7 @@ using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Responses
 {
-    public sealed partial class Response : Map.Envelope
+    public sealed partial class Response
     {
         /// <summary>
         /// A response from the given parts.

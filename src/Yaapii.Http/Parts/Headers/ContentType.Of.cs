@@ -2,7 +2,7 @@
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class ContentType : HeaderEnvelope
+    public sealed partial class ContentType
     {
         /// <summary>
         /// Gets the values of the 'Content-Type' header field from a request.

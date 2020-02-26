@@ -5,7 +5,7 @@ using Yaapii.Atoms.Lookup;
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class Headers : MapInput.Envelope
+    public sealed partial class Headers
     {
         /// <summary>
         /// Extracts header values from a request or response.

@@ -4,7 +4,7 @@ using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class BasicAuth : HeaderEnvelope
+    public sealed partial class BasicAuth
     {
         /// <summary>
         /// Extracts credentials from basic authorization headers.

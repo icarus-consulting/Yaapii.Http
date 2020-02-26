@@ -2,7 +2,7 @@
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class Authorization : HeaderEnvelope
+    public sealed partial class Authorization
     {
         /// <summary>
         /// Gets the values of the 'Authorization' header field from a request.

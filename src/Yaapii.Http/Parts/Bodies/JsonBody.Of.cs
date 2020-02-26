@@ -4,7 +4,7 @@ using Yaapii.JSON;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed partial class JsonBody : Envelope
+    public sealed partial class JsonBody
     {
         /// <summary>
         /// Gets the body of a request or response as <see cref="IJSON"/>.
