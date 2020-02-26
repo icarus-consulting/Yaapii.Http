@@ -12,7 +12,7 @@ namespace Yaapii.Http.Fake
     /// <summary>
     /// A fake wire to convert http requests into responses.
     /// </summary>
-    public sealed class FkWire : Wires.Envelope
+    public sealed class FkWire : Wires.WireEnvelope
     {
         /// <summary>
         /// A fake wire to convert http requests into responses.

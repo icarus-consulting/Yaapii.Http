@@ -6,14 +6,14 @@ namespace Yaapii.Http.Wires
     /// <summary>
     /// Envelope for a <see cref="IWire"/>.
     /// </summary>
-    public abstract class Envelope : IWire
+    public abstract class WireEnvelope : IWire
     {
         private readonly Func<IDictionary<string, string>, IDictionary<string, string>> response;
 
         /// <summary>
         /// Envelope for a <see cref="IWire"/>.
         /// </summary>
-        protected Envelope(Func<IDictionary<string, string>, IDictionary<string, string>> response)
+        protected WireEnvelope(Func<IDictionary<string, string>, IDictionary<string, string>> response)
         {
             this.response = response;
         }

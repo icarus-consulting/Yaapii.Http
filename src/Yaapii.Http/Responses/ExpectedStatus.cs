@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Error;
+using Yaapii.Http.Verifications;
 
 namespace Yaapii.Http.Responses
 {
     /// <summary>
     /// Verifies that a response has a specific status.
     /// </summary>
-    public sealed class ExpectedStatus : Verifications.Envelope
+    public sealed class ExpectedStatus : VerificationEnvelope
     {
         /// <summary>
         /// Verifies that a response has a specific status.

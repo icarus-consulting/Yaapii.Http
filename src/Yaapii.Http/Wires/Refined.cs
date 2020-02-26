@@ -6,7 +6,7 @@ namespace Yaapii.Http.Wires
     /// <summary>
     /// A wire that adds extra parts to every request.
     /// </summary>
-    public sealed class Refined : Envelope
+    public sealed class Refined : WireEnvelope
     {
         /// <summary>
         /// A wire that adds extra parts to every request.

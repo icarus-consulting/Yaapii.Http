@@ -3,7 +3,7 @@
     /// <summary>
     /// A wire that verifies each response.
     /// </summary>
-    public sealed class Verified : Envelope
+    public sealed class Verified : WireEnvelope
     {
         /// <summary>
         /// A wire that verifies each response.

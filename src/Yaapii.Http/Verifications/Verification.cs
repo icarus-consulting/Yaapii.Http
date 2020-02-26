@@ -8,7 +8,7 @@ namespace Yaapii.Http.Verifications
     /// <summary>
     /// Verifies that a request or response fulfills a given condition.
     /// </summary>
-    public sealed class Verification : Envelope
+    public sealed class Verification : VerificationEnvelope
     {
         /// <summary>
         /// Verifies that a request or response fulfills a given condition.

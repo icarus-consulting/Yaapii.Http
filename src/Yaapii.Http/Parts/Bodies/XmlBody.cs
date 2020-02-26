@@ -7,7 +7,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body from an <see cref="IXML"/> to a request.
     /// Sets the content type header to application/xml.
     /// </summary>
-    public sealed partial class XmlBody : Envelope
+    public sealed partial class XmlBody : BodyEnvelope
     {
         /// <summary>
         /// Adds a body from an <see cref="IXML"/> to a request.

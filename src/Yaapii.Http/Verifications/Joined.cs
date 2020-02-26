@@ -7,7 +7,7 @@ namespace Yaapii.Http.Verifications
     /// <summary>
     /// Several verifications joined as one.
     /// </summary>
-    public sealed class Joined : Envelope
+    public sealed class Joined : VerificationEnvelope
     {
         /// <summary>
         /// Several verifications joined as one.

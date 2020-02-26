@@ -7,7 +7,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body from an <see cref="IJSON"/> to a request.
     /// Sets the content type header to application/json.
     /// </summary>
-    public sealed partial class JsonBody : Envelope
+    public sealed partial class JsonBody : BodyEnvelope
     {
         /// <summary>
         /// Adds a body from an <see cref="IJSON"/> to a request.

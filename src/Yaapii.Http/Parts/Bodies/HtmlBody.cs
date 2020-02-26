@@ -7,7 +7,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body to a request.
     /// Sets the content type header to text/html.
     /// </summary>
-    public sealed class HtmlBody : Envelope
+    public sealed class HtmlBody : BodyEnvelope
     {
         /// <summary>
         /// Adds a body to a request.

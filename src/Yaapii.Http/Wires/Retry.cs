@@ -11,7 +11,7 @@ namespace Yaapii.Http.Wires
     /// A wire that catches exceptions and retries multiple times to send the request.
     /// Throws an exception if the last attempt fails.
     /// </summary>
-    public sealed class Retry : Envelope
+    public sealed class Retry : WireEnvelope
     {
         /// <summary>
         /// A wire that catches exceptions and tries up to 3 times to send the request.
