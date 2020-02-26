@@ -12,7 +12,7 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 "application/json",
                 new FirstOf<string>(
-                    new Acccept.Of(
+                    new Accept.Of(
                         new Map.Of("header:0:Accept", "application/json")
                     )
                 ).Value()

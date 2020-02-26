@@ -2,7 +2,7 @@
 
 namespace Yaapii.Http.Parts.Headers
 {
-    public sealed partial class Acccept
+    public sealed partial class Accept
     {
         /// <summary>
         /// Gets the values of the 'Accept' header field from a request.

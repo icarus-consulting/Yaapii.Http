@@ -10,7 +10,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.Equal(
                 "application/json",
-                new Acccept("application/json").Apply(
+                new Accept("application/json").Apply(
                     new Map.Of(new MapInput.Of())
                 )["header:0:Accept"]
             );

@@ -91,7 +91,7 @@ namespace Yaapii.Http.Wires.Test
                 new HttpMock(port,
                     new FkWire(req =>
                     {
-                        headers = new Acccept.Of(req);
+                        headers = new Accept.Of(req);
                         return new Response.Of(200, "OK");
                     })
                 ).Value()

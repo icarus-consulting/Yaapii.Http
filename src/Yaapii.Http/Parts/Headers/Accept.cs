@@ -4,7 +4,7 @@
     /// Adds an 'Accept' header field to a request.
     /// Specifies media type(s) that is/are acceptable as a response.
     /// </summary>
-    public sealed partial class Acccept : HeaderEnvelope
+    public sealed partial class Accept : HeaderEnvelope
     {
         private const string KEY = "Accept";
 
@@ -12,7 +12,7 @@
         /// Adds an 'Accept' header field to a request.
         /// Specifies media type(s) that is/are acceptable as a response.
         /// </summary>
-        public Acccept(string contentType) : base(KEY, contentType)
+        public Accept(string contentType) : base(KEY, contentType)
         { }
     }
 }
