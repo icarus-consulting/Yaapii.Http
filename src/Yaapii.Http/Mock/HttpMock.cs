@@ -149,38 +149,52 @@ namespace Yaapii.Http.Mock
 
         private void Respond(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var res =
+            var wireResponse =
                 new Response(
                     this.wire,
                     Request(request)
                 );
-            response.StatusCode = new Status.Of(res).AsInt();
-            response.StatusDescription = new Reason.Of(res).AsString();
-            foreach(var header in new Headers.Of(res))
+            response.StatusCode = new Status.Of(wireResponse).AsInt();
+            response.StatusDescription = new Reason.Of(wireResponse).AsString();
+            foreach(var header in new Headers.Of(wireResponse))
             {
                 response.Header(header.Key(), header.Value());
             }
-            var formParams = new FormParams.Of(res);
-            if(formParams.Count > 0)
+            SendBody(response, wireResponse);
+        }
+
+        private void SendBody(HttpListenerResponse aspNetResponse, IDictionary<string, string> wireResponse)
+        {
+            using (var stream = aspNetResponse.OutputStream)
             {
-                new InputOf(
-                    new Yaapii.Atoms.Text.Joined("&",
-                        new Mapped<KeyValuePair<string, string>, string>(kvp =>
-                            $"{kvp.Key}={kvp.Value}",
-                            formParams
-                        )
+                var formParams = new FormParams.Of(wireResponse);
+                if (formParams.Count > 0)
+                {
+                    using (var body =
+                        new InputOf(
+                            new Yaapii.Atoms.Text.Joined("&",
+                                new Mapped<KeyValuePair<string, string>, string>(kvp =>
+                                    $"{kvp.Key}={kvp.Value}",
+                                    formParams
+                                )
+                            )
+                        ).Stream()
                     )
-                ).Stream().CopyTo(
-                    response.OutputStream
-                );
-            }
-            else if(new Body.Exists(res).Value())
-            {
-                new InputOf(
-                    new Body.Of(res)
-                ).Stream().CopyTo(
-                    response.OutputStream
-                );
+                    {
+                        body.CopyTo(stream);
+                    }
+                }
+                else if (new Body.Exists(wireResponse).Value())
+                {
+                    using (var body =
+                        new InputOf(
+                            new Body.Of(wireResponse)
+                        ).Stream()
+                    )
+                    {
+                        body.CopyTo(stream);
+                    }
+                }
             }
         }
 
@@ -194,16 +208,25 @@ namespace Yaapii.Http.Mock
                     new Conditional(
                         () => request.HasEntityBody,
                         new Body(
-                            new TextOf(
-                                new BytesOf(
-                                    new InputOf(
-                                        request.InputStream
-                                    )
-                                ).AsBytes() // read entire stream before it gets disposed
-                            )
+                            RequestBody(request)
                         )
                     )
                 );
+        }
+
+        private IText RequestBody(HttpListenerRequest request)
+        {
+            using (var stream = request.InputStream)
+            {
+                return
+                    new TextOf(
+                        new BytesOf(
+                            new InputOf(
+                                stream
+                            )
+                        ).AsBytes() // read entire stream before it gets disposed
+                    );
+            }
         }
     }
 }

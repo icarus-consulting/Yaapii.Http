@@ -82,13 +82,12 @@ namespace Yaapii.Http.Wires
             
             using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
+            using (var responseStream = responseContent.ReadAsStreamAsync().GetAwaiter().GetResult())
             {
                 var body =
                     new BytesOf(
-                        new InputOf(
-                            responseContent.ReadAsStreamAsync().GetAwaiter().GetResult()
-                        )
-                    ).AsBytes(); // read stream to end, before responseContent gets disposed
+                        new InputOf(responseStream)
+                    ).AsBytes(); // read stream to end, before it gets disposed
                 var response =
                     new Responses.Response.Of(
                         new Status((int)aspnetResponse.StatusCode),
@@ -101,7 +100,7 @@ namespace Yaapii.Http.Wires
                             )
                         )
                     );
-                
+
                 return response;
             }
         }
