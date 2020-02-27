@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Bytes;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Text;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Bytes;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.IO;
+using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
@@ -172,7 +172,7 @@ namespace Yaapii.Http.Mock
                 {
                     using (var body =
                         new InputOf(
-                            new Yaapii.Atoms.Text.Joined("&",
+                            new Yaapii.Http.AtomsTemp.Text.Joined("&",
                                 new Mapped<KeyValuePair<string, string>, string>(kvp =>
                                     $"{kvp.Key}={kvp.Value}",
                                     formParams

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Enumerable;
+using Yaapii.Http.AtomsTemp.Enumerable;
 
 namespace Yaapii.Http.Parts.Headers
 {

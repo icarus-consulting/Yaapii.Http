@@ -152,7 +152,7 @@ Other examples of this are:
 Some body classes allow the serialization/deserialization of certain data formats into/from text. These include:
 * ```XmlBody``` / ```XmlBody.Of``` uses ```IXML``` (see Yaapii.Xml),
 * ```JsonBody``` / ```JsonBody.Of``` uses ```IJSON``` (see Yaapii.Json),
-* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Atoms). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
+* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
 
 ## Sending Requests
 Requests are sent over an ```IWire```.
@@ -206,10 +206,10 @@ var response =
         new AspNetCoreWire(),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
+var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
 var contentType = new ContentType.Of(response) // implements IEnumerable<string>
 var server = new Header.Of("Server") // implements IEnumerable<string>
-var body = new Body.Of(response) // implements IText, see Yaapii.Atoms
+var body = new Body.Of(response) // implements IText, see Yaapii.Http.AtomsTemp
 var json = new JsonBody.Of(response) // implements IJSON, see Yaapii.Json. Fails if the body can not be parsed as json.
 var xml = new XmlBody.Of(response) // implements IXML, see Yaapii.Xml. Fails if the body can not be parsed as xml.
 ```
@@ -249,7 +249,7 @@ new FkWire(req =>
 ### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
-It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
+It's an ```IScalar``` (see Yaapii.Http.AtomsTemp) returning a ```MockServer``` (see MockHttpServer). 
 Calling ```HttpMock.Value()``` for the first time will initialize the server.
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
 ```csharp

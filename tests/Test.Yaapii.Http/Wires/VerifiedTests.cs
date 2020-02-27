@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Scalar;
+using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Scalar;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;

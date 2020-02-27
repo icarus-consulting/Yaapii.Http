@@ -1,7 +1,7 @@
 ﻿using Xunit;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Scalar;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Scalar;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {

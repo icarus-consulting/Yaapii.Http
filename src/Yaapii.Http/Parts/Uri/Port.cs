@@ -1,4 +1,4 @@
-﻿using Yaapii.Atoms.Lookup;
+﻿using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
 {

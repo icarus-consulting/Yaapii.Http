@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yaapii.Atoms.Error;
+using Yaapii.Http.AtomsTemp.Error;
 using Yaapii.Http.Verifications;
 
 namespace Yaapii.Http.Responses

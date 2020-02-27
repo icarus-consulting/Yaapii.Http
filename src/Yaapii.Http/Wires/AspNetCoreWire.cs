@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Yaapii.Atoms.Bytes;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Text;
+using Yaapii.Http.AtomsTemp.Bytes;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.IO;
+using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -63,7 +63,7 @@ namespace Yaapii.Http.Wires
                             new Formatted(
                                 "Unknown method '{0}'. Known methods are {1}",
                                 new Method.Of(req).AsString(),
-                                new Yaapii.Atoms.Text.Joined(", ",
+                                new Yaapii.Http.AtomsTemp.Text.Joined(", ",
                                     this.methods.Keys
                                 ).AsString()
                             ).AsString()
@@ -164,7 +164,7 @@ namespace Yaapii.Http.Wires
             if(formParams.Count > 0)
             {
                 body =
-                    new Yaapii.Atoms.Text.Joined("&",
+                    new Yaapii.Http.AtomsTemp.Text.Joined("&",
                         new Mapped<KeyValuePair<string, string>, string>(kvp =>
                             $"{kvp.Key}={kvp.Value}",
                             formParams

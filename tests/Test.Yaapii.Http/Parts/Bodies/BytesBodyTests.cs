@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using Yaapii.Atoms.Bytes;
+using Yaapii.Http.AtomsTemp.Bytes;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Bodies.Test

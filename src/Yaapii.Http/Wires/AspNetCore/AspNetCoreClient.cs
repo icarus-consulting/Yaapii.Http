@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Yaapii.Atoms;
+using Yaapii.Http.AtomsTemp;
 
 namespace Yaapii.Http.Wires.AspNetCore
 {

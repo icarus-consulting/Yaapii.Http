@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;

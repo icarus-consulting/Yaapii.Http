@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Scalar;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Scalar;
 using Yaapii.JSON;
 
 namespace Yaapii.Http.Facets

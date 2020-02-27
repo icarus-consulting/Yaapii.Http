@@ -1,5 +1,5 @@
-﻿using Yaapii.Atoms;
-using Yaapii.Atoms.Text;
+﻿using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.Parts.Bodies
 {

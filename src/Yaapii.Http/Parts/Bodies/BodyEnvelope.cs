@@ -1,5 +1,5 @@
-﻿using Yaapii.Atoms;
-using Yaapii.Atoms.Lookup;
+﻿using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies

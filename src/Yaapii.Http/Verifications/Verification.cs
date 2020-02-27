@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Error;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Error;
 
 namespace Yaapii.Http.Verifications
 {

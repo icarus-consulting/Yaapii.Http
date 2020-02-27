@@ -1,6 +1,6 @@
 ﻿using System;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Scalar;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Scalar;
 
 namespace Yaapii.Http.Facets
 {

@@ -1,4 +1,4 @@
-﻿using Yaapii.Atoms.Text;
+﻿using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies

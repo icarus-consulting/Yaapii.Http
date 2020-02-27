@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Headers.Test

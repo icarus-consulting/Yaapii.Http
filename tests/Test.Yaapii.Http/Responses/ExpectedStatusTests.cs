@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Responses.Test
 {

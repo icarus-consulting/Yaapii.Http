@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Number;
-using Yaapii.Atoms.Text;
+using Yaapii.Http.AtomsTemp.Number;
+using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.Responses
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -22,7 +22,7 @@ namespace Yaapii.Http.Requests
         /// A request with the specified method and the given parts.
         /// </summary>
         public Request(string method, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
                 new Many.Of<IMapInput>(parts),
                 new Method(method)
             )
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Requests
         /// A request with the specified <see cref="System.Uri"/> and the given parts.
         /// </summary>
         public Request(Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
                 new Many.Of<IMapInput>(parts),
                 new Address(uri)
             )
@@ -44,7 +44,7 @@ namespace Yaapii.Http.Requests
         /// A request with the specified method, <see cref="System.Uri"/> and the given parts.
         /// </summary>
         public Request(string method, Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
                 new Many.Of<IMapInput>(parts),
                 new Method(method),
                 new Address(uri)
@@ -56,7 +56,7 @@ namespace Yaapii.Http.Requests
         /// A request with the specified method, <see cref="System.Uri"/> and the given parts.
         /// </summary>
         public Request(string method, string uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
                 new Many.Of<IMapInput>(parts),
                 new Method(method),
                 new Address(uri)

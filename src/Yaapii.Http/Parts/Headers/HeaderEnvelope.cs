@@ -1,5 +1,5 @@
 ﻿using System;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Headers
 {

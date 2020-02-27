@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Specialized;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Headers
 {

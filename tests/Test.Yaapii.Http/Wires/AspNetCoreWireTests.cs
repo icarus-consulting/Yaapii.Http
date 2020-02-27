@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xunit;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
-using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Text;
+using Yaapii.Http.AtomsTemp;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Parts;
@@ -112,7 +112,7 @@ namespace Yaapii.Http.Wires.Test
             }
             Assert.Contains(
                 expected,
-                new Yaapii.Atoms.Text.Joined(", ", headers).AsString()
+                new Yaapii.Http.AtomsTemp.Text.Joined(", ", headers).AsString()
             );
         }
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Wires;
 
 namespace Yaapii.Http.Responses

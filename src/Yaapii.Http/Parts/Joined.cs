@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Lookup;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts
 {
