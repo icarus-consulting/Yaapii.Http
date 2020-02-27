@@ -14,7 +14,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Yaapii.JSON" Version="12.2.0" />
-    <PackageReference Include="Yaapii.Web.Asp" Version="0.4.0" />
     <PackageReference Include="Yaapii.Xml" Version="0.16.0" />
   </ItemGroup>
 

@@ -6,7 +6,6 @@ using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires;
-using Yaapii.Web.Asp;
 
 namespace Yaapii.Http.Mock.Test
 {
@@ -16,7 +15,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ListensToAnyPath()
         {
-            var port = new RandomPort().Value();
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
             var requests = 0;
             using (var server =
                 new HttpMock(port,
@@ -28,13 +27,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -47,7 +46,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void RoutesToPath()
         {
-            var port = new RandomPort().Value();
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
             var result = 0;
             using (var server =
                 new HttpMock(port,
@@ -75,13 +74,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -94,7 +93,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns200()
         {
-            var port = new RandomPort().Value();
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire()
@@ -104,7 +103,7 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                        new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -120,7 +119,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns404()
         {
-            var port = new RandomPort().Value();
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
                 new HttpMock(port,
                     new Kvp.Of<IWire>("path",
@@ -132,7 +131,7 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     404,
                     new Status.Of(
-                        new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                        new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                             new Get($"http://localhost:{port}/unknown/path")
                         )
                     ).AsInt()
@@ -143,7 +142,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ForwardsQueryParams()
         {
-            var port = new RandomPort().Value();
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
             var queryParam = "";
             using (var server =
                 new HttpMock(port,
@@ -155,7 +154,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 5, 0)).Response(
+                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
                 );
             }
