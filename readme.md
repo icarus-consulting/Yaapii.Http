@@ -151,7 +151,7 @@ Other examples of this are:
 ### Serialization and Deserialization
 Some body classes allow the serialization/deserialization of certain data formats into/from text. These include:
 * ```XmlBody``` / ```XmlBody.Of``` uses ```IXML``` (see Yaapii.Xml),
-* ```JsonBody``` / ```JsonBody.Of``` uses ```IJSON``` (see Yaapii.Json),
+* ```JsonBody``` / ```JsonBody.Of``` uses ```JToken``` (see Newtonsoft.Json),
 * ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
 
 ## Sending Requests
