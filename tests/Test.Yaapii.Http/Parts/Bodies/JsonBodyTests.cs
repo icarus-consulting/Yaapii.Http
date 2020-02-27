@@ -1,6 +1,6 @@
-﻿using Xunit;
+﻿using Newtonsoft.Json.Linq;
+using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.JSON;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -11,7 +11,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "application/json",
-                new JsonBody(new JSONOf("{}")).Apply(
+                new JsonBody(JObject.Parse("{}")).Apply(
                     new Map.Of(new MapInput.Of())
                 )["header:0:Content-Type"]
             );
@@ -22,7 +22,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "{}",
-                new JsonBody(new JSONOf("{}")).Apply(
+                new JsonBody(JObject.Parse("{}")).Apply(
                     new Map.Of(new MapInput.Of())
                 )["body"]
             );

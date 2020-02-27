@@ -12,7 +12,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 "{\r\n  \"key\": \"value\"\r\n}",
                 new JsonBody.Of(
                     new Map.Of("body", "{ \"key\" : \"value\" }")
-                ).Token().ToString()
+                ).Value().ToString()
             );
         }
     }
