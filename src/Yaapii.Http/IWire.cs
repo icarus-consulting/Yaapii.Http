@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Yaapii.Atoms;
+﻿using System.Collections.Generic;
 
 namespace Yaapii.Http
 {
+    /// <summary>
+    /// Converts a request to a response.
+    /// </summary>
     public interface IWire
     {
-        IResponse
-            Send(
-                IRequest req, 
-                Uri address, 
-                IMethod method,
-                IEnumerable<KeyValuePair<string, string>> headers, 
-                IInput content, 
-                TimeSpan timeout
-            );
+        /// <summary>
+        /// Sends the request, returns the response.
+        /// </summary>param>
+        IDictionary<string, string> Response(IDictionary<string, string> request);
     }
 }
