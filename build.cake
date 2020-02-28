@@ -209,9 +209,9 @@ Task("Default")
 .IsDependentOn("Version")
 .IsDependentOn("Build")
 .IsDependentOn("Test")
+.IsDependentOn("Nuget")
 .IsDependentOn("Credentials")
 .IsDependentOn("GitHubRelease")
-.IsDependentOn("NuGetFeed")
 ;
 
 RunTarget(target);
