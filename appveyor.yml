@@ -26,6 +26,6 @@ deploy:
       #branch: master
       appveyor_repo_tag: true
     api_key:
-      secure: 7RxiAmoG2CBmwCi8Cjg/cLb+n7K2bc8o3MBEwfz7L00AqiDcSTbixEBzQhQCuT+J
+      secure: sTXLbAavfCgGBGbsp+v6mMu4Ib6/F5kvntCT5d6iQrFwkBU+J8KCA/1VD7AKYroC
     skip_symbols: false
     artifact: /.*\.nupkg/
