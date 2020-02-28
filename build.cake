@@ -34,9 +34,6 @@ var netstandard                     = "netstandard2.0";
 var owner                           = "icarus-consulting";
 var repository                      = "Yaapii.Http";
 
-// For AppVeyor NuGetFeed
-var nuGetSource = "https://ci.appveyor.com/nuget/icarus/api/v2/package";
-
 // API key tokens for deployment
 var gitHubToken                     = "";
 var appVeyorToken                   = "";
@@ -204,32 +201,6 @@ Task("GitHubRelease")
 });
 
 ///////////////////////////////////////////////////////////////////////////////
-// NuGetFeed
-///////////////////////////////////////////////////////////////////////////////
-Task("NuGetFeed")
-.WithCriteria(() => isAppVeyor && BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
-.IsDependentOn("Nuget")
-.Does(() => 
-{
-	Information(Figlet("NuGetFeed"));
-	
-    var nugets = GetFiles($"{buildArtifacts.Path}/*.nupkg");
-    foreach(var package in nugets)
-	{
-        if(!package.GetFilename().FullPath.Contains("symbols.nupkg"))
-        {
-            NuGetPush(
-                package,
-                new NuGetPushSettings {
-                    Source = nuGetSource,
-                    ApiKey = appVeyorToken
-                }
-            );
-        }
-    }
-});
-
-///////////////////////////////////////////////////////////////////////////////
 // Default
 ///////////////////////////////////////////////////////////////////////////////
 Task("Default")
@@ -238,7 +209,6 @@ Task("Default")
 .IsDependentOn("Version")
 .IsDependentOn("Build")
 .IsDependentOn("Test")
-.IsDependentOn("Nuget")
 .IsDependentOn("Credentials")
 .IsDependentOn("GitHubRelease")
 .IsDependentOn("NuGetFeed")
