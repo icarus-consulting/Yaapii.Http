@@ -15,10 +15,10 @@ var version             = "1.0.0";
 // MODULES
 ///////////////////////////////////////////////////////////////////////////////
 var modules             = Directory("./src");
-var blacklistModules    = new List<string>() { "Yaapii.SimEngine.Tmx.Setup" };
+var blacklistedModules    = new List<string>() { };
 
 var tests               = Directory("./tests");
-var blacklistUnitTests  = new List<string>() { "Test.Yaapii.SimEngine.Remote" };
+var blacklistedUnitTests  = new List<string>() { };
 
 ///////////////////////////////////////////////////////////////////////////////
 // CONFIGURATION VARIABLES
@@ -94,31 +94,32 @@ Task("Build")
             NoRestore = true,
             MSBuildSettings = new DotNetCoreMSBuildSettings().SetVersionPrefix(version)
         };
-    var skipped = "";
-    foreach(var module in GetSubDirectories(modules))
-    {
+    var skipped = new List<string>();
+	foreach(var module in GetSubDirectories(modules))
+	{
         var name = module.GetDirectoryName();
-        if(!blacklistModules.Contains(name))
-        {
-            Information($"Building {name}");
-            
-            DotNetCoreBuild(
-                module.FullPath,
-                settings
-            );
-        }
-        else
-        {
-            skipped += $"Skipped build {name}{System.Environment.NewLine}";
-            Warning($"Skipping build {name}");
-        }
-    }
-    if (skipped != string.Empty)
+		if(!blacklistedModules.Contains(name))
+		{
+			Information($"Building {name}");
+			
+			DotNetCoreBuild(
+				module.FullPath,
+				settings
+			);
+		}
+		else
+		{
+            skipped.Add(name);
+		}
+	}
+    if (skipped.Count > 0)
     {
-        Warning("The following builds are skipped:");
-        Warning(skipped);
+        Warning("The following builds have been skipped:");
+        foreach(var name in skipped)
+        {
+            Warning($"  {name}");
+        }
     }
-    
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,31 +137,30 @@ Task("UnitTests")
             Configuration = configuration,
             NoRestore = true
         };
-    var skipped = "";
-    foreach(var test in GetSubDirectories(tests))
-    {
+    var skipped = new List<string>();
+	foreach(var test in GetSubDirectories(tests))
+	{
         var name = test.GetDirectoryName();
-        if(!blacklistUnitTests.Contains(name) && !name.StartsWith("TmxTest"))
+		if(blacklistedUnitTests.Contains(name))
+        {
+            skipped.Add(name);
+        }
+        else if(!name.StartsWith("TmxTest"))
         {
             Information($"Testing {name}");
-            DotNetCoreTest(
-                test.FullPath,
-                settings
-            );  
+			DotNetCoreTest(
+				test.FullPath,
+				settings
+			);
         }
-        else
-        {
-            if(!name.StartsWith("TmxTest"))
-            {
-                skipped += $"Skipped test {name}{System.Environment.NewLine}";
-                Warning($"Skipping test {name}");
-            }
-        }
-    }
-    if (skipped != string.Empty)
+	}
+    if (skipped.Count > 0)
     {
-        Warning("The following tests are skipped:");
-        Warning(skipped);
+        Warning("The following tests have been skipped:");
+        foreach(var name in skipped)
+        {
+            Warning($"  {name}");
+        }
     }
 });    
 
@@ -186,7 +186,7 @@ Task("NuGet")
     foreach(var module in GetSubDirectories(modules))
     {
         var name = module.GetDirectoryName();
-        if(!blacklistModules.Contains(name))
+        if(!blacklistedModules.Contains(name))
         {
             Information($"Creating NuGet package for {name}");
             
