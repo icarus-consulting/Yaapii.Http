@@ -28,12 +28,12 @@ namespace Yaapii.Http.Wires.AspNetCore.Test
         {
             var first =
                 new AspNetCoreClient(
-                    new TimeSpan(0, 1, 0)
+                    new TimeSpan(0, 1, 1)
                 ).Value();
-            first.BaseAddress = new Uri("http://localhost/this/is/a/test");
+                first.BaseAddress = new Uri("http://localhost/this/is/a/test");
             var second =
                 new AspNetCoreClient(
-                    new TimeSpan(0, 2, 0) // different timeout should return new client
+                    new TimeSpan(0, 2, 1) // different timeout should return new client
                 ).Value();
             Assert.NotEqual(
                 first.BaseAddress,
