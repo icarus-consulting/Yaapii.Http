@@ -40,11 +40,36 @@ namespace Yaapii.Http.Parts.Bodies.Test
         }
 
         [Fact]
-        public void WritesBody()
+        public void WritesObject()
         {
             Assert.Equal(
-                "{}",
-                new JsonBody(JObject.Parse("{}")).Apply(
+                new JObject(
+                    new JProperty("key", "value")
+                ).ToString(),
+                new JsonBody(
+                    new JObject(
+                        new JProperty("key", "value")
+                    )
+                ).Apply(
+                    new Map.Of(new MapInput.Of())
+                )["body"]
+            );
+        }
+
+        [Fact]
+        public void WritesArray()
+        {
+            Assert.Equal(
+                new JArray(
+                    "some value",
+                    "another value"
+                ).ToString(),
+                new JsonBody(
+                    new JArray(
+                        "some value",
+                        "another value"
+                    )
+                ).Apply(
                     new Map.Of(new MapInput.Of())
                 )["body"]
             );
