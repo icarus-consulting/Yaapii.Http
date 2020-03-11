@@ -23,48 +23,42 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using Yaapii.Http.AtomsTemp;
 
 namespace Yaapii.Http.Wires.AspNetCore
 {
     /// <summary>
-    /// A <see cref="HttpClient"/> with the given timeout.
-    /// Clients will be reused, if the same timeout has been used before.
-    /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why reusing them is necessary.
-    /// Clients won't be reused if a previously unused timeout is needed, because the timeout can only be set before the first request is sent.
+    /// Only add one of these to your application to make sure clients will be reused whenever possible.
+    /// This will return an existing client, if the same timeout has been used before.
+    /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
     /// </summary>
-    public sealed class AspNetCoreClient : IScalar<HttpClient>
+    public sealed class AspNetCoreClients : IAspHttpClients
     {
-        private readonly static IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
-        private readonly TimeSpan timeout;
+        private readonly IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
 
         /// <summary>
-        /// A <see cref="HttpClient"/> with the given timeout.
-        /// Clients will be reused, if the same timeout has been used before.
-        /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why reusing them is necessary.
-        /// Clients won't be reused if a previously unused timeout is needed, because the timeout can only be set before the first request is sent.
+        /// Only add one of these to your application to make sure clients will be reused whenever possible.
+        /// This will return an existing client, if the same timeout has been used before.
+        /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
         /// </summary>
-        public AspNetCoreClient(TimeSpan timeout)
-        {
-            this.timeout = timeout;
-        }
+        public AspNetCoreClients()
+        { }
 
-        public HttpClient Value()
+        public HttpClient Client(TimeSpan timeout)
         {
             lock (clients)
             {
-                if(!clients.Keys.Contains(this.timeout.Ticks))
+                if (!clients.Keys.Contains(timeout.Ticks))
                 {
                     clients.Add(
-                        this.timeout.Ticks,
+                        timeout.Ticks,
                         new HttpClient()
                         {
-                            Timeout = this.timeout
+                            Timeout = timeout
                         }
                     );
                 }
             }
-            return clients[this.timeout.Ticks];
+            return clients[timeout.Ticks];
         }
     }
 }
