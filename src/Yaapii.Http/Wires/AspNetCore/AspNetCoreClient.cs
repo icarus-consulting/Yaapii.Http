@@ -28,17 +28,21 @@ using Yaapii.Http.AtomsTemp;
 namespace Yaapii.Http.Wires.AspNetCore
 {
     /// <summary>
-    /// Encapsulates a singleton <see cref="HttpClient"/>.
-    /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why this is necessary.
+    /// A <see cref="HttpClient"/> with the given timeout.
+    /// Clients will be reused, if the same timeout has been used before.
+    /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why reusing them is necessary.
+    /// Clients won't be reused if a previously unused timeout is needed, because the timeout can only be set before the first request is sent.
     /// </summary>
     public sealed class AspNetCoreClient : IScalar<HttpClient>
     {
-        private readonly static IList<HttpClient> client = new List<HttpClient>();
+        private readonly static IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
         private readonly TimeSpan timeout;
 
         /// <summary>
-        /// Encapsulates a singleton <see cref="HttpClient"/>.
-        /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why this is necessary.
+        /// A <see cref="HttpClient"/> with the given timeout.
+        /// Clients will be reused, if the same timeout has been used before.
+        /// See https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/ for why reusing them is necessary.
+        /// Clients won't be reused if a previously unused timeout is needed, because the timeout can only be set before the first request is sent.
         /// </summary>
         public AspNetCoreClient(TimeSpan timeout)
         {
@@ -47,15 +51,20 @@ namespace Yaapii.Http.Wires.AspNetCore
 
         public HttpClient Value()
         {
-            lock (client)
+            lock (clients)
             {
-                if(client.Count == 0)
+                if(!clients.Keys.Contains(this.timeout.Ticks))
                 {
-                    client.Add(new HttpClient());
-                    client[0].Timeout = this.timeout;
+                    clients.Add(
+                        this.timeout.Ticks,
+                        new HttpClient()
+                        {
+                            Timeout = this.timeout
+                        }
+                    );
                 }
             }
-            return client[0];
+            return clients[this.timeout.Ticks];
         }
     }
 }
