@@ -1,21 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yaapii.Http", "src\Yaapii.Http\Yaapii.Http.csproj", "{1FD66438-2B13-42E2-92A6-879C51DD7419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yaapii.Http", "src\Yaapii.Http\Yaapii.Http.csproj", "{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Yaapii.Http", "tests\Test.Yaapii.Http\Test.Yaapii.Http.csproj", "{3339163F-C874-4D29-9600-0D526F5237B8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{C087081A-CBE4-4382-B847-8E6C77837B39}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{168672DF-876C-4C0B-8635-AB0D6E0C50D3}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
 		build.cake = build.cake
 		build.ps1 = build.ps1
-		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Yaapii.Http", "tests\Test.Yaapii.Http\Test.Yaapii.Http.csproj", "{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,19 +22,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1FD66438-2B13-42E2-92A6-879C51DD7419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1FD66438-2B13-42E2-92A6-879C51DD7419}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1FD66438-2B13-42E2-92A6-879C51DD7419}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1FD66438-2B13-42E2-92A6-879C51DD7419}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3339163F-C874-4D29-9600-0D526F5237B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3339163F-C874-4D29-9600-0D526F5237B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3339163F-C874-4D29-9600-0D526F5237B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3339163F-C874-4D29-9600-0D526F5237B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C50CF79-8B01-43DF-B3A6-9E4D791A7225}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {4D945ADF-D681-46B6-AA9A-0B2AFF200D10}
+		SolutionGuid = {8128F26D-3FDA-47A1-BE32-361AE1486E02}
 	EndGlobalSection
 EndGlobal
