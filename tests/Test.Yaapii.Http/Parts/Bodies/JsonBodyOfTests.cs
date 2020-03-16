@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
 
@@ -28,12 +29,37 @@ namespace Yaapii.Http.Parts.Bodies.Test
     public sealed class JsonBodyOfTests
     {
         [Fact]
-        public void ReadsBody()
+        public void ReadsObject()
         {
             Assert.Equal(
-                "{\r\n  \"key\": \"value\"\r\n}",
+                new JObject(
+                    new JProperty("key", "value")
+                ).ToString(),
                 new JsonBody.Of(
-                    new Map.Of("body", "{ \"key\" : \"value\" }")
+                    new Map.Of("body",
+                        new JObject(
+                            new JProperty("key", "value")
+                        ).ToString()
+                    )
+                ).Value().ToString()
+            );
+        }
+
+        [Fact]
+        public void ReadsArray()
+        {
+            Assert.Equal(
+                new JArray(
+                    "some value",
+                    "another value"
+                ).ToString(),
+                new JsonBody.Of(
+                    new Map.Of("body",
+                        new JArray(
+                            "some value",
+                            "another value"
+                        ).ToString()
+                    )
                 ).Value().ToString()
             );
         }
