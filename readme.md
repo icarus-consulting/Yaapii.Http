@@ -11,6 +11,8 @@ Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.c
     * [Request Bodies](#request-bodies)
     * [Serialization and Deserialization](#serialization-and-deserialization)
 2. [Sending Requests](#sending-requests)
+    * [Setting up an AspNetCoreWire](#setting-up-an-aspnetcorewire)
+    * [Communicating with a Wire](#communicating-with-a-wire)
 3. [Handling Responses](#handling-responses)
     * [Extracting Data from a Response](#extracting-data-from-a-response)
     * [Response Verification](#response-verification)
@@ -155,12 +157,40 @@ Some body classes allow the serialization/deserialization of certain data format
 * ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
 
 ## Sending Requests
-Requests are sent over an ```IWire```.
+### Setting up an AspNetCoreWire
+The ```AspNetCoreWire``` relies on a ```System.Net.Http.HttpClient``` to send http requests.
+The ```HttpClient``` should be reused when possible, according to https://aspnetmonsters.com/2016/08/2016-08-27-httpclientwrong/.
+For that reason, ```AspNetCoreClients``` exists to manage reuseable http clients.
+
+To make sure they are reused, **only use one instance of ```AspNetCoreClients``` in your application** 
+and pass it down to where it is needed via dependency injection.
+
+For example, when setting up a ```Microsoft.AspNetCore.WebHost```, add an instance of ```AspNetCoreClients``` to dependency injection of the ```WebHost```:
+```csharp
+var host = WebHost.CreateDefaultBuilder();
+host.ConfigureServices(svc =>
+{
+    svc.Add(
+        new ServiceDescriptor(
+            typeof(IAspHttpClients),
+            (prov) => new AspNetCoreClients(),
+            ServiceLifetime.Singleton
+        )
+    );
+});
+```
+
+At the place where you want to send a request, retrieve the instance of ```AspNetCoreClients``` from dependency injection and pass it to the ctor of ```AspNetCoreWire```.
+This way ```AspNetCoreWire``` will use an existing ```HttpClient``` whenever possible.
+
+### Communicating with a Wire
 You can create a ```Response``` that encapsulates an ```IWire``` and will send the request when it becomes necessary:
 ```csharp
 var response =
     new Response(
-        new AspNetCoreWire(),
+        new AspNetCoreWire(
+            new AspNetCoreClients() // should normally be passed down via dependency injection
+        ),
         new Get("https://example.com")
     );
 var status = new Status.Of(response);
@@ -172,7 +202,9 @@ To send a request immediately, you can trigger the lazy initialization like this
 ```csharp
 var response =
     new Response(
-        new AspNetCoreWire(),
+        new AspNetCoreWire(
+            new AspNetCoreClients() // should normally be passed down via dependency injection
+        ),
         new Get("https://example.com")
     );
 response.GetEnumerator();
@@ -181,7 +213,9 @@ response.GetEnumerator();
 Alternatively, you can ask a wire directly for a response:
 ```csharp
 var response =
-    new AspNetCoreWire().Response(
+    new AspNetCoreWire(
+        new AspNetCoreClients() // should normally be passed down via dependency injection
+    ).Response(
         new Get("https://example.com")
     );
 ```
@@ -190,7 +224,9 @@ Calling ```IWire.Reponse(request)``` will send the request immediately and retur
 There is a wire decorator to add extra parts to every request:
 ```csharp
 new Refined(
-    new AspNetCoreWire(),
+    new AspNetCoreWire(
+        new AspNetCoreClients() // should normally be passed down via dependency injection
+    ),
     new Header("User-Agent", "Yaapii.Http") // will be added to every request
 ).Response(new Get("https://example.com"))
 ```
@@ -203,7 +239,9 @@ For Example:
 ```csharp
 var response =
     new Response(
-        new AspNetCoreWire(),
+        new AspNetCoreWire(
+            new AspNetCoreClients() // should normally be passed down via dependency injection
+        ),
         new Get("https://example.com")
     );
 var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
@@ -218,7 +256,9 @@ var xml = new XmlBody.Of(response) // implements IXML, see Yaapii.Xml. Fails if 
 The ```IVerification``` interface allows to check if a response meets certain criteria. There is also a wire decorator, that will run a given verification for each response coming from the wire:
 ```csharp
 new Verified(
-    new AspNetCoreWire(),
+    new AspNetCoreWire(
+        new AspNetCoreClients() // should normally be passed down via dependency injection
+    ),
     new Verification(
         res => new Status.Of(res).AsInt() == 200,
         res => new ApplicationException("something went wrong")
@@ -228,7 +268,9 @@ new Verified(
 There is a less verbose way to verify the status code:
 ```csharp
 new Verified(
-    new AspNetCoreWire(),
+    new AspNetCoreWire(
+        new AspNetCoreClients() // should normally be passed down via dependency injection
+    ),
     new ExpectedStatus(200)
 ).Response(new Get("https://example.com"))
 ```

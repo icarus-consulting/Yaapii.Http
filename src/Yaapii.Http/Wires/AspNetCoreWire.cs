@@ -42,6 +42,7 @@ namespace Yaapii.Http.Wires
     /// </summary>
     public sealed class AspNetCoreWire : IWire
     {
+        private readonly IAspHttpClients clients;
         private readonly TimeSpan timeout;
         private readonly IDictionary<string, HttpMethod> methods;
         private readonly IVerification requestVerification;
@@ -50,14 +51,15 @@ namespace Yaapii.Http.Wires
         /// An <see cref="IWire"/> implemented using ASP.NET Core.
         /// Timeout is 1 minute.
         /// </summary>
-        public AspNetCoreWire() : this(new TimeSpan(0, 1, 0))
+        public AspNetCoreWire(IAspHttpClients clients) : this(clients, new TimeSpan(0, 1, 0))
         { }
 
         /// <summary>
         /// An <see cref="IWire"/> implemented using ASP.NET Core.
         /// </summary>
-        public AspNetCoreWire(TimeSpan timeout)
+        public AspNetCoreWire(IAspHttpClients clients, TimeSpan timeout)
         {
+            this.clients = clients;
             this.timeout = timeout;
             this.methods = 
                 new Map.Of<HttpMethod>(
@@ -174,7 +176,7 @@ namespace Yaapii.Http.Wires
         private HttpResponseMessage AspNetResponse(HttpRequestMessage request)
         {
             return
-                new AspNetCoreClient(this.timeout).Value().SendAsync(
+                this.clients.Client(this.timeout).SendAsync(
                     request
                 ).GetAwaiter().GetResult();
         }

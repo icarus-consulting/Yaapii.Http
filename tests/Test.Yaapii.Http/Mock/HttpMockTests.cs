@@ -28,6 +28,7 @@ using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires;
+using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Mock.Test
 {
@@ -38,6 +39,7 @@ namespace Yaapii.Http.Mock.Test
         public void ListensToAnyPath()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var clients = new AspNetCoreClients();
             var requests = 0;
             using (var server =
                 new HttpMock(port,
@@ -49,13 +51,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -69,6 +71,7 @@ namespace Yaapii.Http.Mock.Test
         public void RoutesToPath()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var clients = new AspNetCoreClients();
             var result = 0;
             using (var server =
                 new HttpMock(port,
@@ -96,13 +99,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -125,7 +128,10 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(), 
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
@@ -153,7 +159,10 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     404,
                     new Status.Of(
-                        new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
                             new Get($"http://localhost:{port}/unknown/path")
                         )
                     ).AsInt()
@@ -176,7 +185,10 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(new TimeSpan(0, 1, 0)).Response(
+                new AspNetCoreWire(
+                    new AspNetCoreClients(),
+                    new TimeSpan(0, 1, 0)
+                ).Response(
                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
                 );
             }
