@@ -36,7 +36,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// Gets the body of a request or response as <see cref="JToken"/>.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => JObject.Parse(input["body"]))
+            public Of(IDictionary<string, string> input) : base(() => JToken.Parse(input["body"]))
             { }
         }
     }
