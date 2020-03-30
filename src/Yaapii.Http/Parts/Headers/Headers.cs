@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Yaapii.Http.AtomsTemp;
@@ -36,6 +37,44 @@ namespace Yaapii.Http.Parts.Headers
     {
         private const string KEY_PREFIX = "header:";
         private const string INDEX_SEPARATOR = ":";
+
+        /// <summary>
+        /// Adds header fields to a request.
+        /// The same key can be used multiple times to add multiple values to the same header field.
+        /// </summary>
+        public Headers(params string[] pairSequence) : this(new Many.Of(pairSequence))
+        { }
+
+        /// <summary>
+        /// Adds header fields to a request.
+        /// The same key can be used multiple times to add multiple values to the same header field.
+        /// </summary>
+        public Headers(IEnumerable<string> pairSequence) : this(
+            new Many.Of<IKvp>(() =>
+            {
+                var length = new LengthOf(pairSequence).Value();
+                if (length % 2 != 0)
+                {
+                    throw 
+                        new ArgumentException(
+                            "Can not create headers from pair sequence. " +
+                            $"The number of given strings needs to be a multiple of two, but is {length}."
+                        );
+                }
+                var result = new List<IKvp>();
+                for(int i = 0; i < length; i += 2)
+                {
+                    result.Add(
+                        new Kvp.Of(
+                            new ItemAt<string>(pairSequence, i).Value(),
+                            new ItemAt<string>(pairSequence, i+1).Value()
+                        )
+                    );
+                }
+                return result;
+            })
+        )
+        { }
 
         /// <summary>
         /// Adds header fields to a request.
