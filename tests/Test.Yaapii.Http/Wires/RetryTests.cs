@@ -21,9 +21,11 @@
 //SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using Xunit;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Requests;
+using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -60,7 +62,7 @@ namespace Yaapii.Http.Wires.Test
             Assert.Throws<ApplicationException>(() =>
                 new Retry(
                     attempts,
-                    new FkWire(req =>
+                    new FkWire(requestAction: req =>
                     {
                         attempt++;
                         throw new Exception();
