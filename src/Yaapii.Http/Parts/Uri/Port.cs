@@ -55,7 +55,7 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(IScalar<int> port) : base(new Kvp.Of(KEY, () => $"{port.AsInt()}"))
+        public Port(IScalar<int> port) : base(new Kvp.Of(KEY, () => $"{port.Value()}"))
         { }
     }
 }
