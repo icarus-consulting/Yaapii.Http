@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Headers

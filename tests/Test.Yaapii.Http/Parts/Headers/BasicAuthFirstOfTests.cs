@@ -22,7 +22,7 @@
 
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
