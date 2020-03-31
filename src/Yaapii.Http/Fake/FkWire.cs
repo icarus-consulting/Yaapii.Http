@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using Yaapii.Atoms;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;

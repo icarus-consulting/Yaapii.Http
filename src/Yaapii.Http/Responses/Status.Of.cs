@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Number;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Atoms.Number;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
 {

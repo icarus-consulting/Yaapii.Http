@@ -1,6 +1,6 @@
 ﻿using System;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Facets
 {
@@ -34,6 +34,11 @@ namespace Yaapii.Http.Facets
         public string AsString()
         {
             return this.text.AsString();
+        }
+
+        public bool Equals(IText other)
+        {
+            return AsString().Equals(other.AsString());
         }
     }
 }

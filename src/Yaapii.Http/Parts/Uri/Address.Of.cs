@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
@@ -58,7 +58,7 @@ namespace Yaapii.Http.Parts.Uri
                             new QueryParams.Of(input),
                             dict => dict.Keys.Count > 0,
                             dict => "?" +
-                                new Yaapii.Http.AtomsTemp.Text.Joined("&",
+                                new Yaapii.Atoms.Text.Joined("&",
                                     new Mapped<KeyValuePair<string, string>, string>(kvp =>
                                         $"{kvp.Key}={kvp.Value}",
                                         new QueryParams.Of(input)

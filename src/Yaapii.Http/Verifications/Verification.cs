@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Error;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Error;
 
 namespace Yaapii.Http.Verifications
 {
