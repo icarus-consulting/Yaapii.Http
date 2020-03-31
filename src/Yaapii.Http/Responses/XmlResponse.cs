@@ -22,9 +22,9 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Yaapii.Http.AtomsTemp;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Scalar;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
 using Yaapii.Xml;

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
+using Yaapii.Atoms.Text;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -45,7 +46,9 @@ namespace Yaapii.Http.Parts.Bodies
                 this.xml =
                     new Sticky<IXML>(() =>
                         new XMLCursor(
-                            input["body"]
+                            new Base64Text(
+                                input["body"]
+                            )
                         )
                     );
             }

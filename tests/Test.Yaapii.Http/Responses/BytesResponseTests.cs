@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Bytes;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Bodies;
 
