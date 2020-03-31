@@ -20,9 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Scalar;
 
 namespace Yaapii.Http.Parts.Uri
 {

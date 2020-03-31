@@ -21,10 +21,11 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Scalar;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -60,7 +61,7 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 expected,
                 new ItemAt<IKvp>(
-                    new Filtered<IKvp>(kvp =>
+                    new Atoms.Enumerable.Filtered<IKvp>(kvp =>
                         kvp.Key() == "same key",
                         new Headers.Of(
                             new Map.Of(

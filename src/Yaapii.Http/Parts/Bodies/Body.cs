@@ -20,9 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -36,6 +36,12 @@ namespace Yaapii.Http.Parts.Bodies
         /// <summary>
         /// Adds a body to a request.
         /// </summary>
+        public Body(IInput content) : this(new TextOf(content))
+        { }
+
+        /// <summary>
+        /// Adds a body to a request.
+        /// </summary>
         public Body(string content) : this(new TextOf(content))
         { }
 
@@ -44,7 +50,7 @@ namespace Yaapii.Http.Parts.Bodies
         /// </summary>
         public Body(IText content) : base(() =>
             new MapInput.Of(
-                new Kvp.Of(KEY, () => content.AsString())
+                new Kvp.Of(KEY, () => new TextBase64(content).AsString())
             )
         )
         { }

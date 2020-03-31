@@ -21,10 +21,11 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 

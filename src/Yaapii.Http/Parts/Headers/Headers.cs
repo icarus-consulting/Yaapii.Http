@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;
@@ -52,7 +53,7 @@ namespace Yaapii.Http.Parts.Headers
         public Headers(IEnumerable<string> pairSequence) : this(
             new Many.Of<IKvp>(() =>
             {
-                var length = new LengthOf(pairSequence).Value();
+                var length = new Atoms.Enumerable.LengthOf(pairSequence).Value();
                 if (length % 2 != 0)
                 {
                     throw 
@@ -117,7 +118,7 @@ namespace Yaapii.Http.Parts.Headers
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
         public Headers(IEnumerable<KeyValuePair<string, string>> headers) : this(
-            new Mapped<KeyValuePair<string, string>, IKvp>(kvp =>
+            new Atoms.Enumerable.Mapped<KeyValuePair<string, string>, IKvp>(kvp =>
                 new Kvp.Of(kvp.Key, kvp.Value),
                 headers
             )
@@ -131,12 +132,12 @@ namespace Yaapii.Http.Parts.Headers
         public Headers(IEnumerable<IKvp> headers) : base(input =>
         {
             int index =
-                new LengthOf(
+                new Atoms.Enumerable.LengthOf(
                     new Headers.Of(input)
                 ).Value();
             return
                 new MapInput.Of(
-                    new Mapped<IKvp, IKvp>(kvp =>
+                    new Atoms.Enumerable.Mapped<IKvp, IKvp>(kvp =>
                         new Kvp.Of(
                             $"{KEY_PREFIX}{index++}{INDEX_SEPARATOR}{kvp.Key()}", 
                             kvp.Value()

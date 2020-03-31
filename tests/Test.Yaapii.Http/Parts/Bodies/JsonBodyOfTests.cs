@@ -36,10 +36,12 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     new JProperty("key", "value")
                 ).ToString(),
                 new JsonBody.Of(
-                    new Map.Of("body",
-                        new JObject(
-                            new JProperty("key", "value")
-                        ).ToString()
+                    new Map.Of(
+                        new Body(
+                            new JObject(
+                                new JProperty("key", "value")
+                            ).ToString()
+                        )
                     )
                 ).Value().ToString()
             );
@@ -54,11 +56,13 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     "another value"
                 ).ToString(),
                 new JsonBody.Of(
-                    new Map.Of("body",
-                        new JArray(
-                            "some value",
-                            "another value"
-                        ).ToString()
+                    new Map.Of(
+                        new Body(
+                            new JArray(
+                                "some value",
+                                "another value"
+                            ).ToString()
+                        )
                     )
                 ).Value().ToString()
             );
