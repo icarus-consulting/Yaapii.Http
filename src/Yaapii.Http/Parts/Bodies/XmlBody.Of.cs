@@ -22,8 +22,8 @@
 
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies

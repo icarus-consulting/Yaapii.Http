@@ -24,7 +24,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
 #pragma warning disable NoGetOrSet // No Statics
 #pragma warning disable CS1591

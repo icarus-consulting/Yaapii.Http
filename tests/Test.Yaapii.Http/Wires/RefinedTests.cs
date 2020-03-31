@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;

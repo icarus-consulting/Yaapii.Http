@@ -22,7 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.AtomsTemp.Lookup
 {

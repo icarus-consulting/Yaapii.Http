@@ -21,11 +21,11 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Scalar;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Scalar;
-using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 

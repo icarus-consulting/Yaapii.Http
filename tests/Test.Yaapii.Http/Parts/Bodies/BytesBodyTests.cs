@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Bytes;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -33,13 +33,15 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "dGhpcyBpcyBhIHRlc3Q=",
-                new Request(
-                    new BytesBody(
-                        new BytesOf(
-                            "this is a test"
+                new Body.Of(
+                    new Request(
+                        new BytesBody(
+                            new BytesOf(
+                                "this is a test"
+                            )
                         )
                     )
-                )["body"]
+                ).AsString()
             );
         }
     }
