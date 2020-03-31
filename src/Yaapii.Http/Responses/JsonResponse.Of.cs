@@ -20,22 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
+using Newtonsoft.Json.Linq;
 using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Parts.Bodies;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Responses
 {
-    public sealed class StatusTests
+    public sealed partial class JsonResponse
     {
-        [Fact]
-        public void WritesReason()
+        /// <summary>
+        /// A Response containing the given status, reason and a body from the given json.
+        /// </summary>
+        public sealed class Of : Map.Envelope
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
+            /// <summary>
+            /// A 200/OK Response containing the given json.
+            /// </summary>
+            public Of(JToken body, params IMapInput[] extraParts) : this(200, "OK", body, extraParts)
+            { }
+
+            /// <summary>
+            /// A Response containing the given status, reason and a body from the given json.
+            /// </summary>
+            public Of(int status, string reason, JToken body, params IMapInput[] extraParts) : base(() =>
+                new Response.Of(
+                    new Status(status),
+                    new Reason(reason),
+                    new JsonBody(body),
+                    new Parts.Joined(extraParts)
+                )
+            )
+            { }
         }
     }
 }

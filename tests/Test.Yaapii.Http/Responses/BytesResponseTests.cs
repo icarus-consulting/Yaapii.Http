@@ -21,20 +21,27 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.AtomsTemp.Bytes;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Parts.Bodies;
 
 namespace Yaapii.Http.Responses.Test
 {
-    public sealed class StatusTests
+    public sealed class BytesResponseTests
     {
         [Fact]
-        public void WritesReason()
+        public void HasBytes()
         {
+            var expected = new BytesOf("important data").AsBytes();
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                expected,
+                new BytesResponse(
+                    new FkWire(req =>
+                        new Response.Of(
+                            new BytesBody(expected)
+                        )
+                    )
+                ).AsBytes()
             );
         }
     }

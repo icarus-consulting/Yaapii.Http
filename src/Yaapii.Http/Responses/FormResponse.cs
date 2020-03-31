@@ -20,42 +20,42 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Bytes;
+using System.Collections.Generic;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Http.Parts.Bodies;
+using Yaapii.Http.Wires;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Responses
 {
     /// <summary>
-    /// Adds a body from <see cref="IBytes"/> to a request.
-    /// Bytes will be base 64 encoded.
+    /// Form data received as a response from the given wire.
     /// </summary>
-    public sealed partial class BytesBody : MapInput.Envelope
+    public sealed partial class FormResponse : Map.Envelope
     {
         /// <summary>
-        /// Adds a body from an array of bytes to a request.
-        /// Bytes will be base 64 encoded.
+        /// Form data received as a response from the given wire.
         /// </summary>
-        public BytesBody(byte[] bytes) : this(new BytesOf(bytes))
+        public FormResponse(IWire wire, IVerification verification) : this(new Verified(wire, verification))
         { }
 
         /// <summary>
-        /// Adds a body from the bytes of an <see cref="IInput"/> to a request.
-        /// Bytes will be base 64 encoded.
+        /// Form data received as a response from the given wire.
         /// </summary>
-        public BytesBody(IInput input) : this(new InputAsBytes(input))
+        public FormResponse(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
         { }
 
         /// <summary>
-        /// Adds a body from <see cref="IBytes"/> to a request.
-        /// Bytes will be base 64 encoded.
+        /// Form data received as a response from the given wire.
         /// </summary>
-        public BytesBody(IBytes bytes) : base(() =>
-            new Body(
-                new TextOf(
-                    new BytesBase64(bytes)
-                )
+        public FormResponse(IWire wire, IVerification verification, IDictionary<string, string> request) : this(new Verified(wire, verification), request)
+        { }
+
+        /// <summary>
+        /// Form data received as a response from the given wire.
+        /// </summary>
+        public FormResponse(IWire wire, IDictionary<string, string> request) : base(() =>
+            new FormParams.Of(
+                wire.Response(request)
             )
         )
         { }
