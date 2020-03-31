@@ -35,7 +35,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 "this is a test",
                 new TextOf(
                     new BytesBody.Of(
-                        new Map.Of("body", "dGhpcyBpcyBhIHRlc3Q=")
+                        new Map.Of(new Body("dGhpcyBpcyBhIHRlc3Q="))
                     )
                 ).AsString()
             );
