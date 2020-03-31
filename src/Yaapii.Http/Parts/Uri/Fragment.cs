@@ -20,6 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
@@ -34,14 +37,34 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Fragment(string fragment) : base(
+        public Fragment(string fragment) : this(new TextOf(fragment))
+        { }
+
+        /// <summary>
+        /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Fragment(IScalar<string> fragment) : this(new TextOf(fragment))
+        { }
+
+
+        /// <summary>
+        /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Fragment(Func<string> fragment) : this(new TextOf(fragment))
+        { }
+
+        /// <summary>
+        /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Fragment(IText fragment) : base(
             new Kvp.Of(KEY, () =>
             {
-                if (fragment.StartsWith("#"))
+                var result = fragment.AsString();
+                if (result.StartsWith("#"))
                 {
-                    fragment = fragment.Remove(0, 1);
+                    result = result.Remove(0, 1);
                 }
-                return fragment;
+                return result;
             })
         )
         { }
