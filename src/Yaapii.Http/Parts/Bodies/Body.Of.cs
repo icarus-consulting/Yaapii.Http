@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -35,7 +36,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// Gets the body of a request or response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY])
+            public Of(IDictionary<string, string> input) : base(() => new Base64Text(input[KEY]).AsString())
             { }
         }
     }

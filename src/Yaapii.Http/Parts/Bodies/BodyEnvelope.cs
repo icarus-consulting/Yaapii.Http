@@ -39,9 +39,7 @@ namespace Yaapii.Http.Parts.Bodies
         protected BodyEnvelope(string contentType, IText content) : base(() =>
             new Joined(
                 new ContentType(contentType),
-                new MapInput.Of(
-                    new Kvp.Of(KEY, () => content.AsString())
-                )
+                new Body(content)
             )
         )
         { }
