@@ -23,7 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Fail;
+using Yaapii.Atoms.Fail;
 
 namespace Yaapii.Http.AtomsTemp.Lookup
 {

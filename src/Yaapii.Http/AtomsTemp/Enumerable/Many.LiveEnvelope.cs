@@ -23,7 +23,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms;
 
 namespace Yaapii.Http.AtomsTemp.Enumerable
 {

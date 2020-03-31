@@ -1,5 +1,5 @@
 ﻿using System;
-using Yaapii.Http.AtomsTemp;
+using Yaapii.Atoms;
 
 namespace Yaapii.Http.Facets
 {

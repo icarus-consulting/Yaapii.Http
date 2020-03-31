@@ -22,13 +22,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using Yaapii.Http.AtomsTemp.List;
-using Yaapii.Http.AtomsTemp.Error;
-using Yaapii.Http.AtomsTemp.Func;
-using Yaapii.Http.AtomsTemp.Text;
-using Yaapii.Http.AtomsTemp.Fail;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Error;
+using Yaapii.Atoms.Fail;
+using Yaapii.Atoms.Func;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Enumerable;
 
 namespace Yaapii.Http.AtomsTemp.Enumerator

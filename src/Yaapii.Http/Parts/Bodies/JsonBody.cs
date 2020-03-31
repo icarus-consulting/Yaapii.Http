@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Newtonsoft.Json.Linq;
-using Yaapii.Http.AtomsTemp.Text;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Bodies
 {

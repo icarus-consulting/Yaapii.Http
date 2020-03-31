@@ -23,10 +23,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Yaapii.Atoms.Fail;
+using Yaapii.Atoms.List;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Fail;
-using Yaapii.Http.AtomsTemp.List;
-using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.AtomsTemp.Lookup
 {
