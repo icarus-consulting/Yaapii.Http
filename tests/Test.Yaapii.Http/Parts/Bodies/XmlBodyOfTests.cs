@@ -21,18 +21,20 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
     public sealed class XmlBodyOfTests
     {
+        [Fact]
         public void ReadsBody()
         {
             Assert.Equal(
                 "<importantData />",
                 new XmlBody.Of(
-                    new Map.Of("body", "<importantData />")
+                    new Map.Of("body", new TextBase64("<importantData />").AsString())
                 ).AsNode().ToString()
             );
         }

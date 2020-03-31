@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Xml;
 
@@ -28,20 +29,22 @@ namespace Yaapii.Http.Parts.Bodies.Test
 {
     public sealed class XmlBodyTests
     {
+        [Fact]
         public void WritesContentType()
         {
             Assert.Equal(
                 "application/xml",
                 new XmlBody(new XMLCursor("<irrelevant />")).Apply(
                     new Map.Of(new MapInput.Of())
-                )["header:Content-Type"]
+                )["header:0:Content-Type"]
             );
         }
         
+        [Fact]
         public void WritesBody()
         {
             Assert.Equal(
-                "<importantData />",
+                new TextBase64("<importantData />").AsString(),
                 new XmlBody(new XMLCursor("<importantData />")).Apply(
                     new Map.Of(new MapInput.Of())
                 )["body"]
