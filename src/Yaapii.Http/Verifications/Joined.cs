@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Scalar;
 
 namespace Yaapii.Http.Verifications
 {

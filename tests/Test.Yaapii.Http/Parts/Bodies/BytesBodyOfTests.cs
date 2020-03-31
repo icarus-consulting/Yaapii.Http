@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 "this is a test",
                 new TextOf(
                     new BytesBody.Of(
-                        new Map.Of("body", "dGhpcyBpcyBhIHRlc3Q=")
+                        new Map.Of(new Body("dGhpcyBpcyBhIHRlc3Q="))
                     )
                 ).AsString()
             );

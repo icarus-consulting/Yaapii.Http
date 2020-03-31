@@ -21,8 +21,8 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {

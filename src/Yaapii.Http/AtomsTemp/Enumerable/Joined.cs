@@ -21,7 +21,7 @@
 // SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Func;
+using Yaapii.Atoms.Func;
 
 #pragma warning disable NoGetOrSet // No Statics
 #pragma warning disable CS1591

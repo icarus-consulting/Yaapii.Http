@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -33,7 +34,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "| <-- stick figure body",
                 new Body.Of(
-                    new Map.Of("body", "| <-- stick figure body")
+                    new Map.Of(new Body("| <-- stick figure body"))
                 ).AsString()
             );
         }

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Scalar;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
 namespace Yaapii.Http.Facets
 {

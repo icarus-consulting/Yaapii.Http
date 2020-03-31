@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.AtomsTemp.Text;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 

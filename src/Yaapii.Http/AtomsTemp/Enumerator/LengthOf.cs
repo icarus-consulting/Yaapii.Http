@@ -24,6 +24,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Text;
+using Yaapii.Atoms;
 
 namespace Yaapii.Http.AtomsTemp.Enumerator
 {

@@ -32,9 +32,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "| <-- stick figure body",
-                new Body("| <-- stick figure body").Apply(
-                    new Map.Of(new MapInput.Of())
-                )["body"]
+                new Body.Of(
+                    new Body("| <-- stick figure body").Apply(
+                        new Map.Of(new MapInput.Of())
+                    )
+                ).AsString()
             );
         }
     }

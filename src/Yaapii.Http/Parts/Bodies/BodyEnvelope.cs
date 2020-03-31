@@ -20,7 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp;
+using Yaapii.Atoms;
 using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts.Headers;
 
@@ -39,9 +39,7 @@ namespace Yaapii.Http.Parts.Bodies
         protected BodyEnvelope(string contentType, IText content) : base(() =>
             new Joined(
                 new ContentType(contentType),
-                new MapInput.Of(
-                    new Kvp.Of(KEY, () => content.AsString())
-                )
+                new Body(content)
             )
         )
         { }
