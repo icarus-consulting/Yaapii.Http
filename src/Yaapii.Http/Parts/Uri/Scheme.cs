@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
@@ -34,7 +36,25 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Scheme(string scheme) : base(new Kvp.Of(KEY, scheme))
+        public Scheme(string scheme) : this(() => scheme)
+        { }
+
+        /// <summary>
+        /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Scheme(IText scheme) : this(() => scheme.AsString())
+        { }
+
+        /// <summary>
+        /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Scheme(IScalar<string> scheme) : this(() => scheme.Value())
+        { }
+
+        /// <summary>
+        /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Scheme(Func<string> scheme) : base(new Kvp.Of(KEY, scheme))
         { }
     }
 }

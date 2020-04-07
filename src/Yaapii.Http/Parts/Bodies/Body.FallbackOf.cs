@@ -20,52 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
+using Yaapii.Http.Facets;
 
-namespace Yaapii.Http.Parts.Uri
+namespace Yaapii.Http.Parts.Bodies
 {
-    /// <summary>
-    /// Adds the path of a <see cref="System.Uri"/> to a request.
-    /// </summary>
-    public sealed partial class Path : MapInput.Envelope
+    public sealed partial class Body
     {
-        private const string KEY = "path";
-
         /// <summary>
-        /// Adds the path of a <see cref="System.Uri"/> to a request.
+        /// The body of a request or response. Returns a given fallback if no body is present.
         /// </summary>
-        public Path(string path) : this(new TextOf(path))
-        { }
+        public sealed class FallbackOf : TextEnvelope
+        {
+            /// <summary>
+            /// The body of a request or response. Returns an empty string if no body is present.
+            /// </summary>
+            public FallbackOf(IDictionary<string, string> input) : this(input, "")
+            { }
 
-        /// <summary>
-        /// Adds the path of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public Path(IScalar<string> path) : this(new TextOf(path))
-        { }
-
-        /// <summary>
-        /// Adds the path of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public Path(Func<string> path) : this(new TextOf(path))
-        { }
-
-        /// <summary>
-        /// Adds the path of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public Path(IText path) : base(
-            new Kvp.Of(KEY, () =>
+            /// <summary>
+            /// The body of a request or response. Returns a given fallback if no body is present.
+            /// </summary>
+            public FallbackOf(IDictionary<string, string> input, string fallback) : base(() =>
             {
-                var result = path.AsString();
-                if (!result.StartsWith("/"))
+                var body = fallback;
+                if (new Body.Exists(input).Value())
                 {
-                    result = $"/{result}";
+                    body = new Body.Of(input).AsString();
                 }
-                return result;
+                return body;
             })
-        )
-        { }
+            { }
+        }
     }
 }

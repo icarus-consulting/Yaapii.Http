@@ -20,6 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
@@ -34,7 +37,25 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(int port) : base(new Kvp.Of(KEY, () => $"{port}"))
+        public Port(int port) : this(new ScalarOf<int>(port))
+        { }
+
+        /// <summary>
+        /// Adds the port of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Port(INumber port) : this(() => port.AsInt())
+        { }
+
+        /// <summary>
+        /// Adds the port of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Port(Func<int> port) : this(new Sticky<int>(port))
+        { }
+
+        /// <summary>
+        /// Adds the port of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Port(IScalar<int> port) : base(new Kvp.Of(KEY, () => $"{port.Value()}"))
         { }
     }
 }

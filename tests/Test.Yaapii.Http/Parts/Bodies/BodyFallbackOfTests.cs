@@ -20,41 +20,49 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Xunit;
+using Yaapii.Http.Requests;
 
-namespace Yaapii.Http.Parts.Uri
+namespace Yaapii.Http.Parts.Bodies.Test
 {
-    /// <summary>
-    /// Adds the user info part of a <see cref="System.Uri"/> to a request.
-    /// </summary>
-    public sealed partial class User : MapInput.Envelope
+    public sealed class BodyFallbackOfTests
     {
-        private const string KEY = "user";
+        [Fact]
+        public void HasBody()
+        {
+            var expected = "some body";
+            Assert.Equal(
+                expected,
+                new Body.FallbackOf(
+                    new Request(
+                        new Body(expected)
+                    )
+                ).AsString()
+            );
+        }
 
-        /// <summary>
-        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public User(string user) : this(() => user)
-        { }
+        [Fact]
+        public void EmptyByDefault()
+        {
+            Assert.Equal(
+                "",
+                new Body.FallbackOf(
+                    new Request()
+                ).AsString()
+            );
+        }
 
-        /// <summary>
-        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public User(IText user) : this(() => user.AsString())
-        { }
-
-        /// <summary>
-        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public User(IScalar<string> user) : this(() => user.Value())
-        { }
-
-        /// <summary>
-        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
-        /// </summary>
-        public User(Func<string> user) : base(new Kvp.Of(KEY, user))
-        { }
+        [Fact]
+        public void HasFallback()
+        {
+            var expected = "nothing";
+            Assert.Equal(
+                expected,
+                new Body.FallbackOf(
+                    new Request(),
+                    expected
+                ).AsString()
+            );
+        }
     }
 }
