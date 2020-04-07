@@ -21,7 +21,15 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Mock;
+using Yaapii.Http.Requests;
+using Yaapii.Http.Responses;
+using Yaapii.Http.Wires;
+using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -49,6 +57,42 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     )
                 ).AsString()
             );
+        }
+
+        [Fact]
+        public void TransmitsLongText()
+        {
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(req =>
+                        new Response.Of(
+                            new Status(200),
+                            new Reason("OK"),
+                            new TextBody(
+                                new TextOf(
+                                    new ResourceOf(
+                                        "Assets/lorem-ipsum.txt",
+                                        this.GetType().Assembly
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    3513,
+                    new TextBody.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients()
+                        ).Response(
+                            new Get($"http://localhost:{port}/")
+                        )
+                    ).AsString().Length
+                );
+            }
         }
     }
 }

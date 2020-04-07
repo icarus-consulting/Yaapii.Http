@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\lorem-ipsum.txt" />
     <None Remove="Assets\test.zip" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\lorem-ipsum.txt" />
     <EmbeddedResource Include="Assets\test.zip" />
   </ItemGroup>
 
