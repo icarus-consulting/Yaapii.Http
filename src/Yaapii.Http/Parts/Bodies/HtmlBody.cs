@@ -22,6 +22,7 @@
 
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
+using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -29,7 +30,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body to a request.
     /// Sets the content type header to text/html.
     /// </summary>
-    public sealed class HtmlBody : BodyEnvelope
+    public sealed class HtmlBody : PlainBodyEnvelope
     {
         /// <summary>
         /// Adds a body to a request.
@@ -43,8 +44,8 @@ namespace Yaapii.Http.Parts.Bodies
         /// Sets the content type header to text/html.
         /// </summary>
         public HtmlBody(IText body) : base(
-            "text/html",
-            body
+            body,
+            new ContentType("text/html")
         )
         { }
     }

@@ -21,6 +21,8 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -32,9 +34,13 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "| <-- stick figure body",
-                new Body.Of(
-                    new Body("| <-- stick figure body").Apply(
-                        new Map.Of(new MapInput.Of())
+                new Base64Text(
+                    new TextBody.Of(
+                        new Body(
+                            new InputOf("| <-- stick figure body")
+                        ).Apply(
+                            new Map.Of(new MapInput.Of())
+                        )
                     )
                 ).AsString()
             );

@@ -20,30 +20,36 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Atoms.IO;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
-namespace Yaapii.Http.Parts.Bodies.Test
+namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed class BytesBodyOfTests
+    /// <summary>
+    /// Envelope for adding a plain text body to a request.
+    /// </summary>
+    public abstract class PlainBodyEnvelope : MapInput.Envelope
     {
-        [Fact]
-        public void DecodesBase64()
-        {
-            Assert.Equal(
-                "this is a test",
-                new TextOf(
-                    new BytesBody.Of(
-                        new Map.Of(
-                            new Body(
-                                new InputOf("dGhpcyBpcyBhIHRlc3Q=")
-                            )
-                        )
-                    )
-                ).AsString()
-            );
-        }
+        private const string KEY = "body";
+
+        /// <summary>
+        /// Envelope for adding a plain text body to a request.
+        /// </summary>
+        public PlainBodyEnvelope(string content, params IMapInput[] extraParts) : this(new TextOf(content), extraParts)
+        { }
+
+        /// <summary>
+        /// Envelope for adding a plain text body to a request.
+        /// </summary>
+        protected PlainBodyEnvelope(IText content, params IMapInput[] extraParts) : base(() =>
+            new Parts.Joined(
+                new MapInput.Of(
+                    new Kvp.Of(KEY, () => content.AsString())
+                ),
+                new Parts.Joined(extraParts)
+            )
+        )
+        { }
     }
 }

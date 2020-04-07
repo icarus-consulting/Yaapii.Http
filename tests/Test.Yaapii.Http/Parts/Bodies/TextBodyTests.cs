@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "some body",
-                new Body.Of(
+                new TextBody.Of(
                     new TextBody("some body").Apply(
                         new Map.Of(new MapInput.Of())
                     )

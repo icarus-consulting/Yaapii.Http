@@ -20,30 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System;
+using System.IO;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
-namespace Yaapii.Http.Parts.Bodies.Test
+namespace Yaapii.Http.Facets
 {
-    public sealed class BytesBodyOfTests
+    /// <summary>
+    /// Envelope for an <see cref="IInput"/>.
+    /// </summary>
+    public abstract class InputEnvelope : IInput
     {
-        [Fact]
-        public void DecodesBase64()
+        private readonly IScalar<IInput> source;
+
+        /// <summary>
+        /// Envelope for an <see cref="IInput"/>.
+        /// </summary>
+        protected InputEnvelope(Func<IInput> source) : this(new Sticky<IInput>(source))
+        { }
+
+        /// <summary>
+        /// Envelope for an <see cref="IInput"/>.
+        /// </summary>
+        protected InputEnvelope(IScalar<IInput> source)
         {
-            Assert.Equal(
-                "this is a test",
-                new TextOf(
-                    new BytesBody.Of(
-                        new Map.Of(
-                            new Body(
-                                new InputOf("dGhpcyBpcyBhIHRlc3Q=")
-                            )
-                        )
-                    )
-                ).AsString()
-            );
+            this.source = source;
+        }
+
+        public Stream Stream()
+        {
+            return this.source.Value().Stream();
         }
     }
 }

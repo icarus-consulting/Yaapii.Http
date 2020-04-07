@@ -154,7 +154,11 @@ Other examples of this are:
 Some body classes allow the serialization/deserialization of certain data formats into/from text. These include:
 * ```XmlBody``` / ```XmlBody.Of``` uses ```IXML``` (see Yaapii.Xml),
 * ```JsonBody``` / ```JsonBody.Of``` uses ```JToken``` (see Newtonsoft.Json),
-* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
+* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp),
+* ```Body``` / ```Body.Of``` uses ```IInput``` (Yaapii.Http.AtomsTemp).
+
+**Note that all of these also apply base 64 encoding/decoding.**
+If that is not what you need, use TextBody.
 
 ## Sending Requests
 ### Setting up an AspNetCoreWire

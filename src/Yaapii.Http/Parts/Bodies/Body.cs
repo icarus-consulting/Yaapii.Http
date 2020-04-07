@@ -21,38 +21,20 @@
 //SOFTWARE.
 
 using Yaapii.Atoms;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies
 {
     /// <summary>
-    /// Adds a body to a request.
+    /// Adds a body to a request. The body will be base 64 encoded.
     /// </summary>
-    public sealed partial class Body : MapInput.Envelope
+    public sealed partial class Body : Base64BodyEnvelope
     {
         private const string KEY = "body";
 
         /// <summary>
-        /// Adds a body to a request.
+        /// Adds a body to a request. The body will be base 64 encoded.
         /// </summary>
-        public Body(IInput content) : this(new TextOf(content))
-        { }
-
-        /// <summary>
-        /// Adds a body to a request.
-        /// </summary>
-        public Body(string content) : this(new TextOf(content))
-        { }
-
-        /// <summary>
-        /// Adds a body to a request.
-        /// </summary>
-        public Body(IText content) : base(() =>
-            new MapInput.Of(
-                new Kvp.Of(KEY, () => new TextBase64(content).AsString())
-            )
-        )
+        public Body(IInput content) : base(content)
         { }
     }
 }

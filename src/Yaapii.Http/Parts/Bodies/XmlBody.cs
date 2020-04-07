@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
+using Yaapii.Http.Parts.Headers;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -28,16 +30,20 @@ namespace Yaapii.Http.Parts.Bodies
     /// <summary>
     /// Adds a body from an <see cref="IXML"/> to a request.
     /// Sets the content type header to application/xml.
+    /// The body will be base 64 encoded.
     /// </summary>
-    public sealed partial class XmlBody : BodyEnvelope
+    public sealed partial class XmlBody : Base64BodyEnvelope
     {
         /// <summary>
         /// Adds a body from an <see cref="IXML"/> to a request.
         /// Sets the content type header to application/xml.
+        /// The body will be base 64 encoded.
         /// </summary>
         public XmlBody(IXML body) : base(
-            "application/xml",
-            new TextOf(() => body.AsNode().ToString())
+            new InputOf(
+                new TextOf(() => body.AsNode().ToString())
+            ),
+            new ContentType("application/xml")
         )
         { }
     }

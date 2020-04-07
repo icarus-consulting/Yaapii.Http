@@ -21,23 +21,29 @@
 //SOFTWARE.
 
 using Newtonsoft.Json.Linq;
+using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
+using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
 {
     /// <summary>
     /// Adds a body from an <see cref="JToken"/> to a request.
     /// Sets the content type header to application/json.
+    /// The body will be base 64 encoded.
     /// </summary>
-    public sealed partial class JsonBody : BodyEnvelope
+    public sealed partial class JsonBody : Base64BodyEnvelope
     {
         /// <summary>
         /// Adds a body from an <see cref="JToken"/> to a request.
         /// Sets the content type header to application/json.
+        /// The body will be base 64 encoded.
         /// </summary>
         public JsonBody(JToken body) : base(
-            "application/json", 
-            new TextOf(() => body.ToString())
+            new InputOf(
+                new TextOf(() => body.ToString())
+            ),
+            new ContentType("application/json") 
         )
         { }
     }

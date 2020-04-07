@@ -45,7 +45,7 @@ namespace Yaapii.Http.Responses
                     new Status(status),
                     new Reason(reason),
                     new Headers(headers),
-                    new Body(body)
+                    new TextBody(body)
                 )
             )
             { }

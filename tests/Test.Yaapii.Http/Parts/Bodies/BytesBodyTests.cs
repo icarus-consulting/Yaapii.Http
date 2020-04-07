@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "dGhpcyBpcyBhIHRlc3Q=",
-                new Body.Of(
+                new TextBody.Of(
                     new Request(
                         new BytesBody(
                             new BytesOf(

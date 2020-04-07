@@ -22,6 +22,7 @@
 
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -46,13 +47,15 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new JObject(
                     new JProperty("key", "value")
                 ).ToString(),
-                new Body.Of(
-                    new JsonBody(
-                        new JObject(
-                            new JProperty("key", "value")
+                new TextOf(
+                    new Body.Of(
+                        new JsonBody(
+                            new JObject(
+                                new JProperty("key", "value")
+                            )
+                        ).Apply(
+                            new Map.Of(new MapInput.Of())
                         )
-                    ).Apply(
-                        new Map.Of(new MapInput.Of())
                     )
                 ).AsString()
             );
@@ -66,14 +69,16 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     "some value",
                     "another value"
                 ).ToString(),
-                new Body.Of(
-                    new JsonBody(
-                        new JArray(
-                            "some value",
-                            "another value"
+                new TextOf(
+                    new Body.Of(
+                        new JsonBody(
+                            new JArray(
+                                "some value",
+                                "another value"
+                            )
+                        ).Apply(
+                            new Map.Of(new MapInput.Of())
                         )
-                    ).Apply(
-                        new Map.Of(new MapInput.Of())
                     )
                 ).AsString()
             );

@@ -20,30 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
+using Yaapii.Http.Facets;
 
-namespace Yaapii.Http.Parts.Bodies.Test
+namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed class BytesBodyOfTests
+    public sealed partial class TextBody
     {
-        [Fact]
-        public void DecodesBase64()
+        /// <summary>
+        /// The body of a request or response. Returns a given fallback if no body is present.
+        /// </summary>
+        public sealed class FallbackOf : TextEnvelope
         {
-            Assert.Equal(
-                "this is a test",
-                new TextOf(
-                    new BytesBody.Of(
-                        new Map.Of(
-                            new Body(
-                                new InputOf("dGhpcyBpcyBhIHRlc3Q=")
-                            )
-                        )
-                    )
-                ).AsString()
-            );
+            /// <summary>
+            /// The body of a request or response. Returns an empty string if no body is present.
+            /// </summary>
+            public FallbackOf(IDictionary<string, string> input) : this(input, "")
+            { }
+
+            /// <summary>
+            /// The body of a request or response. Returns a given fallback if no body is present.
+            /// </summary>
+            public FallbackOf(IDictionary<string, string> input, string fallback) : base(() =>
+            {
+                var body = fallback;
+                if (new Body.Exists(input).Value())
+                {
+                    body = new TextBody.Of(input).AsString();
+                }
+                return body;
+            })
+            { }
         }
     }
 }

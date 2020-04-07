@@ -20,28 +20,25 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.Parts.Headers;
+using System.Collections.Generic;
+using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
 {
-    /// <summary>
-    /// Envelope for adding a body to a request.
-    /// </summary>
-    public abstract class BodyEnvelope : MapInput.Envelope
+    public sealed partial class TextBody
     {
-        private const string KEY = "body";
-
         /// <summary>
-        /// Envelope for adding a body to a request.
+        /// Gets the body of a request or response.
         /// </summary>
-        protected BodyEnvelope(string contentType, IText content) : base(() =>
-            new Joined(
-                new ContentType(contentType),
-                new Body(content)
-            )
-        )
-        { }
+        public sealed class Of : TextEnvelope
+        {
+            private const string KEY = "body";
+
+            /// <summary>
+            /// Gets the body of a request or response.
+            /// </summary>
+            public Of(IDictionary<string, string> input) : base(() => input[KEY])
+            { }
+        }
     }
 }

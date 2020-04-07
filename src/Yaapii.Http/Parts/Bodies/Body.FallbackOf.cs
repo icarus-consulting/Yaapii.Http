@@ -21,6 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms;
+using Yaapii.Atoms.IO;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -30,23 +32,23 @@ namespace Yaapii.Http.Parts.Bodies
         /// <summary>
         /// The body of a request or response. Returns a given fallback if no body is present.
         /// </summary>
-        public sealed class FallbackOf : TextEnvelope
+        public sealed class FallbackOf : InputEnvelope
         {
             /// <summary>
-            /// The body of a request or response. Returns an empty string if no body is present.
+            /// The body of a request or response. Returns a <see cref="DeadInput"/> if no body is present.
             /// </summary>
-            public FallbackOf(IDictionary<string, string> input) : this(input, "")
+            public FallbackOf(IDictionary<string, string> input) : this(input, new DeadInput())
             { }
 
             /// <summary>
             /// The body of a request or response. Returns a given fallback if no body is present.
             /// </summary>
-            public FallbackOf(IDictionary<string, string> input, string fallback) : base(() =>
+            public FallbackOf(IDictionary<string, string> input, IInput fallback) : base(() =>
             {
                 var body = fallback;
                 if (new Body.Exists(input).Value())
                 {
-                    body = new Body.Of(input).AsString();
+                    body = new Body.Of(input);
                 }
                 return body;
             })

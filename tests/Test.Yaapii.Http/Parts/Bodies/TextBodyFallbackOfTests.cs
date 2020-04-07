@@ -21,27 +21,46 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
-    public sealed class BytesBodyOfTests
+    public sealed class TextBodyFallbackOfTests
     {
         [Fact]
-        public void DecodesBase64()
+        public void HasBody()
+        {
+            var expected = "some body";
+            Assert.Equal(
+                expected,
+                new TextBody.FallbackOf(
+                    new Request(
+                        new TextBody(expected)
+                    )
+                ).AsString()
+            );
+        }
+
+        [Fact]
+        public void EmptyByDefault()
         {
             Assert.Equal(
-                "this is a test",
-                new TextOf(
-                    new BytesBody.Of(
-                        new Map.Of(
-                            new Body(
-                                new InputOf("dGhpcyBpcyBhIHRlc3Q=")
-                            )
-                        )
-                    )
+                "",
+                new TextBody.FallbackOf(
+                    new Request()
+                ).AsString()
+            );
+        }
+
+        [Fact]
+        public void HasFallback()
+        {
+            var expected = "nothing";
+            Assert.Equal(
+                expected,
+                new TextBody.FallbackOf(
+                    new Request(),
+                    expected
                 ).AsString()
             );
         }

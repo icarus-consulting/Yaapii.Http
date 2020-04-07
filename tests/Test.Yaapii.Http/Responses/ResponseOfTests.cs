@@ -80,7 +80,7 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.Equal(
                 "mostly hot water",
-                new Body.Of(
+                new TextBody.Of(
                     new Response.Of(
                         status: 418,
                         reason: "I'm a teapot",

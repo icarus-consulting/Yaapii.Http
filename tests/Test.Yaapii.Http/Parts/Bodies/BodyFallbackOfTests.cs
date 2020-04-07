@@ -21,6 +21,8 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -33,9 +35,13 @@ namespace Yaapii.Http.Parts.Bodies.Test
             var expected = "some body";
             Assert.Equal(
                 expected,
-                new Body.FallbackOf(
-                    new Request(
-                        new Body(expected)
+                new TextOf(
+                    new Body.FallbackOf(
+                        new Request(
+                            new Body(
+                                new InputOf(expected)
+                            )
+                        )
                     )
                 ).AsString()
             );
@@ -46,8 +52,10 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "",
-                new Body.FallbackOf(
-                    new Request()
+                new TextOf(
+                    new Body.FallbackOf(
+                        new Request()
+                    )
                 ).AsString()
             );
         }
@@ -58,9 +66,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
             var expected = "nothing";
             Assert.Equal(
                 expected,
-                new Body.FallbackOf(
-                    new Request(),
-                    expected
+                new TextOf(
+                    new Body.FallbackOf(
+                        new Request(),
+                        new InputOf(expected)
+                    )
                 ).AsString()
             );
         }

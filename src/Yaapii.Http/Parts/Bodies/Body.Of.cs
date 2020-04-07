@@ -21,7 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Atoms.Text;
+using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms.IO;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -30,13 +31,23 @@ namespace Yaapii.Http.Parts.Bodies
     {
         /// <summary>
         /// Gets the body of a request or response.
+        /// The body will be decoded from base 64.
         /// </summary>
-        public sealed class Of : TextEnvelope
+        public sealed class Of : InputEnvelope
         {
             /// <summary>
             /// Gets the body of a request or response.
+            /// The body will be decoded from base 64.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => new Base64Text(input[KEY]).AsString())
+            public Of(IDictionary<string, string> input) : base(() => 
+                new InputOf(
+                    new Base64Bytes(
+                        new BytesOf(
+                            input[KEY]
+                        )
+                    )
+                )
+            )
             { }
         }
     }

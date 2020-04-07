@@ -20,30 +20,42 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Atoms.IO;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
-namespace Yaapii.Http.Parts.Bodies.Test
+namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed class BytesBodyOfTests
+    /// <summary>
+    /// Envelope for adding a base 64 encoded body to a request.
+    /// </summary>
+    public abstract class Base64BodyEnvelope : MapInput.Envelope
     {
-        [Fact]
-        public void DecodesBase64()
-        {
-            Assert.Equal(
-                "this is a test",
-                new TextOf(
-                    new BytesBody.Of(
-                        new Map.Of(
-                            new Body(
-                                new InputOf("dGhpcyBpcyBhIHRlc3Q=")
-                            )
-                        )
+        private const string KEY = "body";
+
+        /// <summary>
+        /// Envelope for adding a base 64 encoded body to a request.
+        /// </summary>
+        public Base64BodyEnvelope(IInput content, params IMapInput[] extraParts) : this(new InputAsBytes(content), extraParts)
+        { }
+
+        /// <summary>
+        /// Envelope for adding a base 64 encoded body to a request.
+        /// </summary>
+        protected Base64BodyEnvelope(IBytes content, params IMapInput[] extraParts) : base(() =>
+            new Parts.Joined(
+                new MapInput.Of(
+                    new Kvp.Of(KEY, () =>
+                        new TextOf(
+                            new BytesBase64(content)
+                        ).AsString()
                     )
-                ).AsString()
-            );
-        }
+                ),
+                new Parts.Joined(extraParts)
+            )
+            
+        )
+        { }
     }
 }

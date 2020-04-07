@@ -239,7 +239,7 @@ namespace Yaapii.Http.Wires.Test
                 new HttpMock(port,
                     new FkWire(req =>
                     {
-                        body = new Body.Of(req).AsString();
+                        body = new TextBody.Of(req).AsString();
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -277,7 +277,7 @@ namespace Yaapii.Http.Wires.Test
             {
                 Assert.Equal(
                     "very important content",
-                    new Body.Of(
+                    new TextBody.Of(
                         new AspNetCoreWire(
                             new AspNetCoreClients(),
                             new TimeSpan(0, 1, 0)
@@ -342,7 +342,7 @@ namespace Yaapii.Http.Wires.Test
         {
             Assert.StartsWith(
                 "<!doctype html>",
-                new Body.Of(
+                new TextBody.Of(
                     new AspNetCoreWire(
                         new AspNetCoreClients(),
                         new TimeSpan(0, 1, 0)

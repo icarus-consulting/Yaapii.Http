@@ -33,8 +33,14 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "| <-- stick figure body",
-                new Body.Of(
-                    new Map.Of(new Body("| <-- stick figure body"))
+                new TextOf(
+                    new Body.Of(
+                        new Map.Of(
+                            new TextBody(
+                                new TextBase64("| <-- stick figure body")
+                            )
+                        )
+                    )
                 ).AsString()
             );
         }

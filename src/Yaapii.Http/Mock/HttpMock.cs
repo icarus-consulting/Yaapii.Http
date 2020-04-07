@@ -210,9 +210,7 @@ namespace Yaapii.Http.Mock
                 else if (new Body.Exists(wireResponse).Value())
                 {
                     using (var body =
-                        new InputOf(
-                            new Body.Of(wireResponse)
-                        ).Stream()
+                        new InputOf(new TextBody.Of(wireResponse)).Stream()
                     )
                     {
                         body.CopyTo(stream);
@@ -230,7 +228,7 @@ namespace Yaapii.Http.Mock
                     new Headers(request.Headers),
                     new Conditional(
                         () => request.HasEntityBody,
-                        new Body(
+                        new TextBody(
                             RequestBody(request)
                         )
                     )

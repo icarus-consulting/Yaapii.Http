@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
+using Yaapii.Atoms.Text;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -32,6 +33,7 @@ namespace Yaapii.Http.Parts.Bodies
     {
         /// <summary>
         /// Gets the body of a request or response as <see cref="IXML"/>.
+        /// The body will be decoded from base 64.
         /// </summary>
         public sealed class Of : IXML
         {
@@ -39,13 +41,16 @@ namespace Yaapii.Http.Parts.Bodies
 
             /// <summary>
             /// Gets the body of a request or response as <see cref="IXML"/>.
+            /// The body will be decoded from base 64.
             /// </summary>
             public Of(IDictionary<string, string> input)
             {
                 this.xml =
                     new Sticky<IXML>(() =>
                         new XMLCursor(
-                            input["body"]
+                            new TextOf(
+                                new Body.Of(input)
+                            )
                         )
                     );
             }

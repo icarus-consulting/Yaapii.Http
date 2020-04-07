@@ -119,7 +119,7 @@ namespace Yaapii.Http.Wires
                         new Headers(ResponseHeaders(aspnetResponse)),
                         new Conditional(
                             () => body.Length > 0,
-                            new Body(
+                            new TextBody(
                                 new TextOf(body)
                             )
                         )
@@ -161,10 +161,10 @@ namespace Yaapii.Http.Wires
             {
                 aspnetRequest.Headers.TryAddWithoutValidation(header.Key(), header.Value());
             }
-            var body = new BytesOf(Body(request)).AsBytes();
+            var body = Body(request);
             if(body.Length > 0)
             {
-                aspnetRequest.Content = new ByteArrayContent(body);
+                aspnetRequest.Content = new StringContent(body);
                 foreach (var header in headers)
                 {
                     aspnetRequest.Content.Headers.TryAddWithoutValidation(header.Key(), header.Value());
@@ -197,7 +197,7 @@ namespace Yaapii.Http.Wires
             }
             else if(new Body.Exists(request).Value())
             {
-                body = new Body.Of(request).AsString();
+                body = new TextBody.Of(request).AsString();
             }
             return body;
         }

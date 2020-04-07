@@ -22,6 +22,7 @@
 
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -30,15 +31,19 @@ namespace Yaapii.Http.Parts.Bodies
     {
         /// <summary>
         /// Gets the body of a request or response as <see cref="JToken"/>.
+        /// The body will be decoded from base 64.
         /// </summary>
         public sealed class Of : JsonEnvelope
         {
             /// <summary>
             /// Gets the body of a request or response as <see cref="JToken"/>.
+            /// The body will be decoded from base 64.
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() => 
                 JToken.Parse(
-                    new Body.Of(input).AsString()
+                    new TextOf(
+                        new Body.Of(input)
+                    ).AsString()
                 )
             )
             { }
