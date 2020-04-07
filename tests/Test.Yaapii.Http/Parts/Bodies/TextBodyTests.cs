@@ -84,14 +84,14 @@ namespace Yaapii.Http.Parts.Bodies.Test
             )
             {
                 Assert.Equal(
-                    3513,
+                    3499,
                     new TextBody.Of(
                         new AspNetCoreWire(
                             new AspNetCoreClients()
                         ).Response(
                             new Get($"http://localhost:{port}/")
                         )
-                    ).AsString().Length
+                    ).AsString().Replace("\r", "").Replace("\n", "").Length
                 );
             }
         }
