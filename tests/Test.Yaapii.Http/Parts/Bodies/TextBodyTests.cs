@@ -33,6 +33,7 @@ using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
+    [Collection("actual http tests")]
     public sealed class TextBodyTests
     {
         [Fact]
