@@ -49,5 +49,21 @@ namespace Yaapii.Http.Responses.Test
                 )
             );
         }
+
+        [Fact]
+        public void DoesNotBuildExceptionOnCorrectStatus()
+        {
+            var built = false;
+            new ExpectedStatus(200, res =>
+            {
+                built = true;
+                return new ArgumentException();
+            }).Verify(
+                new Map.Of(
+                    new Status(200)
+                )
+            );
+            Assert.False(built);
+        }
     }
 }
