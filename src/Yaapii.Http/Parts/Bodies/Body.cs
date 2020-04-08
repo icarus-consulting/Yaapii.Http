@@ -24,7 +24,6 @@ using Newtonsoft.Json.Linq;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.JSON;

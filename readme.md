@@ -260,6 +260,12 @@ var server = new Header.Of("Server") // implements IEnumerable<string>
 var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
 ```
 
+If you need the body in a format other than ```IInput```, there are special body classes, that do the conversion for you:
+* ```new TextBody.Of(response)``` does the same as ```new TextOf(new Body.Of(response))```
+* ```new XmlBody.Of(reponse)``` does the same as ```new XMLCursor(new Body.Of(response))```
+* ```new JsonBody.Of(reponse)``` does the same as ```new JSONOf(new Body.Of(response))```
+* ```new BytesBody.Of(reponse)``` does the same as ```new BytesOf(new Body.Of(response))```
+
 ### Response Verification
 The ```IVerification``` interface allows to check if a response meets certain criteria. There is also a wire decorator, that will run a given verification for each response coming from the wire:
 ```csharp
