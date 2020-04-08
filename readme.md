@@ -140,7 +140,7 @@ new Post(
 // is equivalent to
 new Post(
     new ContentType("application/json"),
-    new Body(new JObject().ToString(), "application/json")
+    new Body(new JObject().ToString())
 )
 ```
 ```csharp
@@ -149,8 +149,8 @@ new Post(
 )
 // is equivalent to
 new Post(
-    new ContentType("application/json"),
-    new Body(new XMLCursor("<root></root>").AsNode().ToString(), "application/xml")
+    new ContentType("application/xml"),
+    new Body(new XMLCursor("<root></root>").AsNode().ToString())
 )
 ```
 
