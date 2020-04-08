@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Newtonsoft.Json.Linq;
 using Xunit;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
@@ -36,12 +38,21 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextOf(
                     new Body.Of(
                         new Map.Of(
-                            new TextBody(
-                                new TextBase64("| <-- stick figure body")
-                            )
+                            new Body("| <-- stick figure body")
                         )
                     )
                 ).AsString()
+            );
+        }
+
+
+        [Fact]
+        public void ReturnsEmptyOnNoBody()
+        {
+            Assert.Empty(
+                new BytesOf(
+                    new Body.Of(new Map.Of("", ""))
+                ).AsBytes()
             );
         }
     }

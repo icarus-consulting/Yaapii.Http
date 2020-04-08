@@ -74,7 +74,7 @@ namespace Yaapii.Http.Fake
                 new Status(status),
                 new Reason(reason),
                 new Headers(headers),
-                new TextBody(body)
+                new Body(body)
             )
         )
         { }

@@ -23,6 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
@@ -119,9 +120,7 @@ namespace Yaapii.Http.Wires
                         new Headers(ResponseHeaders(aspnetResponse)),
                         new Conditional(
                             () => body.Length > 0,
-                            new TextBody(
-                                new TextOf(body)
-                            )
+                            new Body(body)
                         )
                     );
 
@@ -161,10 +160,10 @@ namespace Yaapii.Http.Wires
             {
                 aspnetRequest.Headers.TryAddWithoutValidation(header.Key(), header.Value());
             }
-            var body = Body(request);
+            var body = Body(request).AsBytes();
             if(body.Length > 0)
             {
-                aspnetRequest.Content = new StringContent(body);
+                aspnetRequest.Content = new ByteArrayContent(body);
                 foreach (var header in headers)
                 {
                     aspnetRequest.Content.Headers.TryAddWithoutValidation(header.Key(), header.Value());
@@ -181,23 +180,28 @@ namespace Yaapii.Http.Wires
                 ).GetAwaiter().GetResult();
         }
 
-        private string Body(IDictionary<string, string> request)
+        private IBytes Body(IDictionary<string, string> request)
         {
-            var body = "";
+            IBytes body = new EmptyBytes();
             var formParams = new FormParams.Of(request);
             if(formParams.Count > 0)
             {
                 body =
-                    new Yaapii.Atoms.Text.Joined("&",
-                        new Mapped<KeyValuePair<string, string>, string>(kvp =>
-                            $"{kvp.Key}={kvp.Value}",
-                            formParams
+                    new BytesOf(
+                        new Yaapii.Atoms.Text.Joined("&",
+                            new Mapped<KeyValuePair<string, string>, string>(kvp =>
+                                $"{kvp.Key}={kvp.Value}",
+                                formParams
+                            )
                         )
-                    ).AsString();
+                    );
             }
             else if(new Body.Exists(request).Value())
             {
-                body = new TextBody.Of(request).AsString();
+                body = 
+                    new BytesOf(
+                        new Body.Of(request)
+                    );
             }
             return body;
         }

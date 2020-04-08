@@ -52,9 +52,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "some body",
-                new TextBody.Of(
-                    new TextBody("some body").Apply(
-                        new Map.Of(new MapInput.Of())
+                new TextOf(
+                    new Body.Of(
+                        new TextBody("some body").Apply(
+                            new Map.Of(new MapInput.Of())
+                        )
                     )
                 ).AsString()
             );
@@ -85,11 +87,13 @@ namespace Yaapii.Http.Parts.Bodies.Test
             {
                 Assert.Equal(
                     3499,
-                    new TextBody.Of(
-                        new AspNetCoreWire(
-                            new AspNetCoreClients()
-                        ).Response(
-                            new Get($"http://localhost:{port}/")
+                    new TextOf(
+                        new Body.Of(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients()
+                            ).Response(
+                                new Get($"http://localhost:{port}/")
+                            )
                         )
                     ).AsString().Replace("\r", "").Replace("\n", "").Length
                 );

@@ -44,9 +44,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "<html />",
-                new TextBody.Of(
-                    new HtmlBody("<html />").Apply(
-                        new Map.Of(new MapInput.Of())
+                new TextOf(
+                    new Body.Of(
+                        new HtmlBody("<html />").Apply(
+                            new Map.Of(new MapInput.Of())
+                        )
                     )
                 ).AsString()
             );
