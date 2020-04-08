@@ -21,8 +21,11 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.IO;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -33,22 +36,48 @@ namespace Yaapii.Http.Parts.Bodies
         /// Gets the body of a request or response.
         /// The body will be decoded from base 64.
         /// </summary>
-        public sealed class Of : InputEnvelope
+        public sealed class Of : IInput
         {
+            private readonly IScalar<IInput> input;
+
             /// <summary>
             /// Gets the body of a request or response.
-            /// The body will be decoded from base 64.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => 
-                new InputOf(
-                    new Base64Bytes(
-                        new BytesOf(
-                            input[KEY]
-                        )
-                    )
+            public Of(IDictionary<string, string> input) : this(
+                new Sticky<IInput>(() =>
+                {
+                    IInput result = new DeadInput();
+                    if(input.ContainsKey(Body.KEY))
+                    {
+                        result =
+                            new InputOf(
+                                new Base64Bytes(
+                                    new BytesOf(
+                                        input[KEY]
+                                    )
+                                )
+                            );
+                    }
+                    return result;
+                }
+                    
                 )
             )
             { }
+
+            private Of(IScalar<IInput> input)
+            {
+                this.input = input;
+            }
+
+            /// <summary>
+            /// The body of a request or response
+            /// </summary>
+            /// <returns></returns>
+            public Stream Stream()
+            {
+                return this.input.Value().Stream();
+            }
         }
     }
 }

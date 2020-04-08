@@ -20,8 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
+using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -30,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body to a request.
     /// Sets the content type header to text/html.
     /// </summary>
-    public sealed class HtmlBody : PlainBodyEnvelope
+    public sealed class HtmlBody : MapInput.Envelope
     {
         /// <summary>
         /// Adds a body to a request.
@@ -43,10 +45,7 @@ namespace Yaapii.Http.Parts.Bodies
         /// Adds a body to a request.
         /// Sets the content type header to text/html.
         /// </summary>
-        public HtmlBody(IText body) : base(
-            body,
-            new ContentType("text/html")
-        )
+        public HtmlBody(IText body) : base(()=>new Body(body, "text/html"))
         { }
     }
 }
