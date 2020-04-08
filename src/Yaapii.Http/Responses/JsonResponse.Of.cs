@@ -23,6 +23,7 @@
 using Newtonsoft.Json.Linq;
 using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Parts.Bodies;
+using Yaapii.JSON;
 
 namespace Yaapii.Http.Responses
 {
@@ -40,13 +41,25 @@ namespace Yaapii.Http.Responses
             { }
 
             /// <summary>
+            /// A 200/OK Response containing the given json.
+            /// </summary>
+            public Of(IJSON body, params IMapInput[] extraParts) : this(200, "OK", body, extraParts)
+            { }
+
+            /// <summary>
             /// A Response containing the given status, reason and a body from the given json.
             /// </summary>
-            public Of(int status, string reason, JToken body, params IMapInput[] extraParts) : base(() =>
+            public Of(int status, string reason, JToken body, params IMapInput[] extraParts) : this(status, reason, new JSONOf(body), extraParts)
+            { }
+
+            /// <summary>
+            /// A Response containing the given status, reason and a body from the given json.
+            /// </summary>
+            public Of(int status, string reason, IJSON body, params IMapInput[] extraParts) : base(() =>
                 new Response.Of(
                     new Status(status),
                     new Reason(reason),
-                    new JsonBody(body),
+                    new Body(body),
                     new Parts.Joined(extraParts)
                 )
             )

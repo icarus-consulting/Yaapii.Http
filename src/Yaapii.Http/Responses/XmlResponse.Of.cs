@@ -46,7 +46,7 @@ namespace Yaapii.Http.Responses
                 new Response.Of(
                     new Status(status),
                     new Reason(reason),
-                    new XmlBody(body),
+                    new Body(body),
                     new Parts.Joined(extraParts)
                 )
             )

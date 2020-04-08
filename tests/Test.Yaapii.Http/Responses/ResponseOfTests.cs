@@ -80,12 +80,14 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.Equal(
                 "mostly hot water",
-                new Body.Of(
-                    new Response.Of(
-                        status: 418,
-                        reason: "I'm a teapot",
-                        headers: new Many.Of<IKvp>(),
-                        body: new TextOf("mostly hot water")
+                new TextOf(
+                    new Body.Of(
+                        new Response.Of(
+                            status: 418,
+                            reason: "I'm a teapot",
+                            headers: new Many.Of<IKvp>(),
+                            body: new TextOf("mostly hot water")
+                        )
                     )
                 ).AsString()
             );

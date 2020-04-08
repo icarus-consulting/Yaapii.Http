@@ -34,8 +34,10 @@ namespace Yaapii.Http.Responses.Test
             var expected = new XMLCursor("<root><importantXmlData /></root>");
             Assert.Equal(
                 expected.AsNode().ToString(),
-                new XmlBody.Of(
-                    new XmlResponse.Of(expected)
+                new XMLCursor(
+                    new Body.Of(
+                        new XmlResponse.Of(expected)
+                    )
                 ).AsNode().ToString()
             );
         }

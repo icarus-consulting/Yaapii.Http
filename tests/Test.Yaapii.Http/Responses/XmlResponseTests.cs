@@ -38,7 +38,7 @@ namespace Yaapii.Http.Responses.Test
                 new XmlResponse(
                     new FkWire(req =>
                         new Response.Of(
-                            new XmlBody(expected)
+                            new Body(expected)
                         )
                     )
                 ).AsNode().ToString()

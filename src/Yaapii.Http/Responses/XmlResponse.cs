@@ -63,8 +63,10 @@ namespace Yaapii.Http.Responses
         {
             this.xml =
                 new Sticky<IXML>(() =>
-                    new XmlBody.Of(
-                        wire.Response(request)
+                    new XMLCursor(
+                        new Body.Of(
+                            wire.Response(request)
+                        )
                     )
                 );
         }

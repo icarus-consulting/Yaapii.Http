@@ -41,10 +41,10 @@ namespace Yaapii.Http.Responses.Test
                 new JsonResponse(
                     new FkWire(req =>
                         new Response.Of(
-                            new JsonBody(expected)
+                            new Body(expected)
                         )
                     )
-                ).Value().ToString()
+                ).Token().ToString()
             );
         }
     }

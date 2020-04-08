@@ -20,25 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Newtonsoft.Json.Linq;
-using Yaapii.Atoms.Text;
+using System;
+using System.IO;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Facets
 {
     /// <summary>
-    /// Adds a body from an <see cref="JToken"/> to a request.
-    /// Sets the content type header to application/json.
+    /// Envelope for an <see cref="IInput"/>.
     /// </summary>
-    public sealed partial class JsonBody : BodyEnvelope
+    public abstract class InputEnvelope : IInput
     {
+        private readonly IScalar<IInput> source;
+
         /// <summary>
-        /// Adds a body from an <see cref="JToken"/> to a request.
-        /// Sets the content type header to application/json.
+        /// Envelope for an <see cref="IInput"/>.
         /// </summary>
-        public JsonBody(JToken body) : base(
-            "application/json", 
-            new TextOf(() => body.ToString())
-        )
+        protected InputEnvelope(Func<IInput> source) : this(new Sticky<IInput>(source))
         { }
+
+        /// <summary>
+        /// Envelope for an <see cref="IInput"/>.
+        /// </summary>
+        protected InputEnvelope(IScalar<IInput> source)
+        {
+            this.source = source;
+        }
+
+        public Stream Stream()
+        {
+            return this.source.Value().Stream();
+        }
     }
 }

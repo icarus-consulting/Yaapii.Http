@@ -51,11 +51,12 @@ namespace Yaapii.Http.Responses
         /// Verifies that a response has a specific status.
         /// </summary>
         public ExpectedStatus(int status, Func<IDictionary<string, string>, Exception> exception) : base(response =>
-            new FailWhen(
-                new Status.Of(response).AsInt() != status,
-                exception(response)
-            ).Go()
-        )
+        {
+            if (new Status.Of(response).AsInt() != status)
+            {
+                throw exception(response);
+            }
+        })
         { }
     }
 }

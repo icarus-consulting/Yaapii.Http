@@ -38,7 +38,7 @@ namespace Yaapii.Http.Responses.Test
                 new BytesResponse(
                     new FkWire(req =>
                         new Response.Of(
-                            new BytesBody(expected)
+                            new Body(expected)
                         )
                     )
                 ).AsBytes()

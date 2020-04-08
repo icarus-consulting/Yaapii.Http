@@ -25,6 +25,7 @@ using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
+using Yaapii.JSON;
 
 namespace Yaapii.Http.Responses
 {
@@ -55,9 +56,11 @@ namespace Yaapii.Http.Responses
         /// JSON data received as a response from the given wire.
         /// </summary>
         public JsonResponse(IWire wire, IDictionary<string, string> request) : base(() =>
-            new JsonBody.Of(
-                wire.Response(request)
-            ).Value()
+            new JSONOf(
+                new Body.Of(
+                    wire.Response(request)
+                )
+            )
         )
         { }
     }

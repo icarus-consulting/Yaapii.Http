@@ -23,6 +23,7 @@
 using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Http.Parts.Bodies;
+using Yaapii.JSON;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -37,9 +38,11 @@ namespace Yaapii.Http.Responses.Test
                 );
             Assert.Equal(
                 expected.ToString(),
-                new JsonBody.Of(
-                    new JsonResponse.Of(expected)
-                ).Value().ToString()
+                new JSONOf(
+                    new Body.Of(
+                        new JsonResponse.Of(expected)
+                    )
+                ).Token().ToString()
             );
         }
     }

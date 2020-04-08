@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
@@ -60,8 +61,10 @@ namespace Yaapii.Http.Responses
         /// Bytes will be decoded from base 64.
         /// </summary>
         public BytesResponse(IWire wire, IDictionary<string, string> request) : base(() =>
-            new BytesBody.Of(
-                wire.Response(request)
+            new BytesOf(
+                new Body.Of(
+                    wire.Response(request)
+                )
             ).AsBytes()
         )
         { }

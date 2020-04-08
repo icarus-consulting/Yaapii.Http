@@ -34,8 +34,10 @@ namespace Yaapii.Http.Responses.Test
             var expected = new BytesOf("important data").AsBytes();
             Assert.Equal(
                 expected,
-                new BytesBody.Of(
-                    new BytesResponse.Of(expected)
+                new BytesOf(
+                    new Body.Of(
+                        new BytesResponse.Of(expected)
+                    )
                 ).AsBytes()
             );
         }
