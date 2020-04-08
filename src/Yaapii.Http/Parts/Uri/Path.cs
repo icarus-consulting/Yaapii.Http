@@ -20,6 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
@@ -34,14 +37,33 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the path of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Path(string path) : base(
+        public Path(string path) : this(new TextOf(path))
+        { }
+
+        /// <summary>
+        /// Adds the path of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Path(IScalar<string> path) : this(new TextOf(path))
+        { }
+
+        /// <summary>
+        /// Adds the path of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Path(Func<string> path) : this(new TextOf(path))
+        { }
+
+        /// <summary>
+        /// Adds the path of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Path(IText path) : base(
             new Kvp.Of(KEY, () =>
             {
-                if (!path.StartsWith("/"))
+                var result = path.AsString();
+                if (!result.StartsWith("/"))
                 {
-                    path = $"/{path}";
+                    result = $"/{result}";
                 }
-                return path;
+                return result;
             })
         )
         { }

@@ -21,10 +21,19 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Mock;
+using Yaapii.Http.Requests;
+using Yaapii.Http.Responses;
+using Yaapii.Http.Wires;
+using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
+    [Collection("actual http tests")]
     public sealed class TextBodyTests
     {
         [Fact]
@@ -43,12 +52,52 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "some body",
-                new Body.Of(
-                    new TextBody("some body").Apply(
-                        new Map.Of(new MapInput.Of())
+                new TextOf(
+                    new Body.Of(
+                        new TextBody("some body").Apply(
+                            new Map.Of(new MapInput.Of())
+                        )
                     )
                 ).AsString()
             );
+        }
+
+        [Fact]
+        public void TransmitsLongText()
+        {
+            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(req =>
+                        new Response.Of(
+                            new Status(200),
+                            new Reason("OK"),
+                            new TextBody(
+                                new TextOf(
+                                    new ResourceOf(
+                                        "Assets/lorem-ipsum.txt",
+                                        this.GetType().Assembly
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    3499,
+                    new TextOf(
+                        new Body.Of(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients()
+                            ).Response(
+                                new Get($"http://localhost:{port}/")
+                            )
+                        )
+                    ).AsString().Replace("\r", "").Replace("\n", "").Length
+                );
+            }
         }
     }
 }

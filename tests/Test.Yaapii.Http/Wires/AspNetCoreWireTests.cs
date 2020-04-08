@@ -239,7 +239,10 @@ namespace Yaapii.Http.Wires.Test
                 new HttpMock(port,
                     new FkWire(req =>
                     {
-                        body = new Body.Of(req).AsString();
+                        body = 
+                            new TextOf(
+                                new Body.Of(req)
+                            ).AsString();
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -277,15 +280,17 @@ namespace Yaapii.Http.Wires.Test
             {
                 Assert.Equal(
                     "very important content",
-                    new Body.Of(
-                        new AspNetCoreWire(
-                            new AspNetCoreClients(),
-                            new TimeSpan(0, 1, 0)
-                        ).Response(
-                            new Get(
-                                new Scheme("http"),
-                                new Host("localhost"),
-                                new Port(server.Port)
+                    new TextOf(
+                        new Body.Of(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients(),
+                                new TimeSpan(0, 1, 0)
+                            ).Response(
+                                new Get(
+                                    new Scheme("http"),
+                                    new Host("localhost"),
+                                    new Port(server.Port)
+                                )
                             )
                         )
                     ).AsString()
@@ -342,13 +347,15 @@ namespace Yaapii.Http.Wires.Test
         {
             Assert.StartsWith(
                 "<!doctype html>",
-                new Body.Of(
-                    new AspNetCoreWire(
-                        new AspNetCoreClients(),
-                        new TimeSpan(0, 1, 0)
-                    ).Response(
-                        new Get(
-                            "https://example.com"
+                new TextOf(
+                    new Body.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                            new Get(
+                                "https://google.com"
+                            )
                         )
                     )
                 ).AsString()

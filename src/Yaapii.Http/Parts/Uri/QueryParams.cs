@@ -61,6 +61,36 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
+        public QueryParams(IEnumerable<string> pairSequence) : this(new Map.Of(pairSequence))
+        { }
+
+        /// <summary>
+        /// Adds query parameters to a request.
+        /// </summary>
+        public QueryParams(params IKvp[] queryParams) : this(new Map.Of(queryParams))
+        { }
+
+        /// <summary>
+        /// Adds query parameters to a request.
+        /// </summary>
+        public QueryParams(IEnumerable<IKvp> queryParams) : this(new Map.Of(queryParams))
+        { }
+
+        /// <summary>
+        /// Adds query parameters to a request.
+        /// </summary>
+        public QueryParams(params KeyValuePair<string, string>[] queryParams) : this(new Map.Of(queryParams))
+        { }
+
+        /// <summary>
+        /// Adds query parameters to a request.
+        /// </summary>
+        public QueryParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new Map.Of(queryParams))
+        { }
+
+        /// <summary>
+        /// Adds query parameters to a request.
+        /// </summary>
         public QueryParams(IDictionary<string, string> queryParams) : base(
             new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
                 new Kvp.Of($"{KEY_PREFIX}{origin.Key}", origin.Value),

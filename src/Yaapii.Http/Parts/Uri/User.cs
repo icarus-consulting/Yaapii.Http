@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Uri
@@ -34,7 +36,25 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(string user) : base(new Kvp.Of(KEY, user))
+        public User(string user) : this(() => user)
+        { }
+
+        /// <summary>
+        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public User(IText user) : this(() => user.AsString())
+        { }
+
+        /// <summary>
+        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public User(IScalar<string> user) : this(() => user.Value())
+        { }
+
+        /// <summary>
+        /// Adds the user info part of a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public User(Func<string> user) : base(new Kvp.Of(KEY, user))
         { }
     }
 }
