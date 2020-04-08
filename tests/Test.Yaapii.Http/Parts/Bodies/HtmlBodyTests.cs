@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -43,9 +44,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Equal(
                 "<html />",
-                new Body.Of(
-                    new HtmlBody("<html />").Apply(
-                        new Map.Of(new MapInput.Of())
+                new TextOf(
+                    new Body.Of(
+                        new HtmlBody("<html />").Apply(
+                            new Map.Of(new MapInput.Of())
+                        )
                     )
                 ).AsString()
             );
