@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
+using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp.Lookup;
 
@@ -35,9 +37,36 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds a query parameter to a request.
         /// </summary>
-        public QueryParam(string key, string value) : base(
+        public QueryParam(string key, string value) : this(
+            () => key,
+            () => value
+        )
+        { }
+
+        /// <summary>
+        /// Adds a query parameter to a request.
+        /// </summary>
+        public QueryParam(IText key, IText value) : this(
+            () => key.AsString(),
+            () => value.AsString()
+        )
+        { }
+
+        /// <summary>
+        /// Adds a query parameter to a request.
+        /// </summary>
+        public QueryParam(IScalar<string> key, IScalar<string> value) : this(
+            () => key.Value(),
+            () => value.Value()
+        )
+        { }
+
+        /// <summary>
+        /// Adds a query parameter to a request.
+        /// </summary>
+        public QueryParam(Func<string> key, Func<string> value) : base(
             new Kvp.Of(
-                new TextOf(() => $"{KEY_PREFIX}{key}"),
+                new TextOf(() => $"{KEY_PREFIX}{key()}"),
                 value
             )
         )

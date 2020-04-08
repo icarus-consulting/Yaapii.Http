@@ -133,29 +133,47 @@ new Post(
 )
 ```
 
-Some body classes also set a value for the 'Content-Type' header:
+Some body ctors also set a value for the 'Content-Type' header:
 ```csharp
 new Post(
-    new TextBody("insert request body here")
+    new Body(new JObject())
 )
 // is equivalent to
 new Post(
-    new ContentType("text/plain"),
-    new Body("insert request body here")
+    new Body(new JObject().ToString(), "application/json")
+)
+// or
+new Post(
+    new ContentType("application/json"),
+    new Body(new JObject().ToString())
+)
+```
+```csharp
+new Post(
+    new Body(new XMLCursor("<root></root>"))
+)
+// is equivalent to
+new Post(
+    new Body(new XMLCursor("<root></root>").AsNode().ToString(), "application/xml")
+)
+// or
+new Post(
+    new ContentType("application/xml"),
+    new Body(new XMLCursor("<root></root>").AsNode().ToString())
 )
 ```
 
-Other examples of this are:
+You can also use specific body classes :
+* ```TextBody``` will set the content type header to ```text/plain```,
 * ```HtmlBody``` will set the content type header to ```text/html```,
-* ```XmlBody``` will set the content type header to ```application/xml```,
-* ```JsonBody``` will set the content type header to ```application/json```,
 * ```FormParam``` or ```FormParams``` will set the content type header to ```application/x-www-form-urlencoded```.
 
 ### Serialization and Deserialization
-Some body classes allow the serialization/deserialization of certain data formats into/from text. These include:
-* ```XmlBody``` / ```XmlBody.Of``` uses ```IXML``` (see Yaapii.Xml),
-* ```JsonBody``` / ```JsonBody.Of``` uses ```JToken``` (see Newtonsoft.Json),
-* ```BytesBody``` / ```BytesBody.Of``` uses ```IBytes``` (Yaapii.Http.AtomsTemp). This allows the serialization/deserialization of any byte array into/from base 64 encoded text, so you can also transmit files this way.
+The body class allow the serialization of certain data formats into text. These include:
+* ```Body(IXML xml)``` uses ```IXML``` (see Yaapii.Xml),
+* ```Body(JToken json)``` uses ```JToken``` (see Newtonsoft.Json),
+* ```Body(IJSON json)``` uses ```IJSON``` (see Yaapii.JSON),
+* ```Body(IInput content)``` uses ```IInput``` (Yaapii.Atoms).
 
 ## Sending Requests
 ### Setting up an AspNetCoreWire
@@ -245,12 +263,10 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
+var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
 var contentType = new ContentType.Of(response) // implements IEnumerable<string>
 var server = new Header.Of("Server") // implements IEnumerable<string>
-var body = new Body.Of(response) // implements IText, see Yaapii.Http.AtomsTemp
-var json = new JsonBody.Of(response) // implements IJSON, see Yaapii.Json. Fails if the body can not be parsed as json.
-var xml = new XmlBody.Of(response) // implements IXML, see Yaapii.Xml. Fails if the body can not be parsed as xml.
+var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
 ```
 
 ### Response Verification

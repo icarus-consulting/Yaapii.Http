@@ -20,21 +20,37 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System;
+using System.IO;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
-namespace Yaapii.Http.Parts.Bodies.Test
+namespace Yaapii.Http.Facets
 {
-    public sealed class XmlBodyOfTests
+    /// <summary>
+    /// Envelope for an <see cref="IInput"/>.
+    /// </summary>
+    public abstract class InputEnvelope : IInput
     {
-        public void ReadsBody()
+        private readonly IScalar<IInput> source;
+
+        /// <summary>
+        /// Envelope for an <see cref="IInput"/>.
+        /// </summary>
+        protected InputEnvelope(Func<IInput> source) : this(new Sticky<IInput>(source))
+        { }
+
+        /// <summary>
+        /// Envelope for an <see cref="IInput"/>.
+        /// </summary>
+        protected InputEnvelope(IScalar<IInput> source)
         {
-            Assert.Equal(
-                "<importantData />",
-                new XmlBody.Of(
-                    new Map.Of("body", "<importantData />")
-                ).AsNode().ToString()
-            );
+            this.source = source;
+        }
+
+        public Stream Stream()
+        {
+            return this.source.Value().Stream();
         }
     }
 }

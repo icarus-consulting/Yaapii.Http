@@ -224,11 +224,7 @@ namespace Yaapii.Http.Mock
                 }
                 else if (new Body.Exists(wireResponse).Value())
                 {
-                    using (var body =
-                        new InputOf(
-                            new Body.Of(wireResponse)
-                        ).Stream()
-                    )
+                    using (var body = new Body.Of(wireResponse).Stream())
                     {
                         body.CopyTo(stream);
                     }

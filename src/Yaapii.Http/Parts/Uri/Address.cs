@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Http.AtomsTemp.Lookup;
@@ -41,6 +42,24 @@ namespace Yaapii.Http.Parts.Uri
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
         public Address(System.Uri uri) : this(new ScalarOf<System.Uri>(uri))
+        { }
+
+        /// <summary>
+        /// Adds a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Address(IText uri) : this(new Sticky<System.Uri>(new System.Uri(uri.AsString())))
+        { }
+
+        /// <summary>
+        /// Adds a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Address(IScalar<string> uri) : this(new Sticky<System.Uri>(new System.Uri(uri.Value())))
+        { }
+
+        /// <summary>
+        /// Adds a <see cref="System.Uri"/> to a request.
+        /// </summary>
+        public Address(Func<System.Uri> uri) : this(new Sticky<System.Uri>(uri))
         { }
 
         /// <summary>
