@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -39,13 +40,15 @@ namespace Yaapii.Http.Mock.Test
         {
             Assert.Equal(
                 expected,
-                new Body.Of(
-                    new MatchingWire(
-                        new Match("first", req => "first expected result"),
-                        new Match("second", req => "second expected result")
-                    ).Response(
-                        new Request(
-                            new Path(path)
+                new TextOf(
+                    new Body.Of(
+                        new MatchingWire(
+                            new Match("first", req => "first expected result"),
+                            new Match("second", req => "second expected result")
+                        ).Response(
+                            new Request(
+                                new Path(path)
+                            )
                         )
                     )
                 ).AsString()
@@ -59,20 +62,22 @@ namespace Yaapii.Http.Mock.Test
         {
             Assert.Equal(
                 expected,
-                new Body.Of(
-                    new MatchingWire(
-                        new Match("same/path",
-                            new Header("important header", "first"),
-                            req => "first expected result"
-                        ),
-                        new Match("same/path",
-                            new Header("important header", "second"),
-                            req => "second expected result"
-                        )
-                    ).Response(
-                        new Request(
-                            new Path("same/path"),
-                            new Header("important header", headerValue)
+                new TextOf(
+                    new Body.Of(
+                        new MatchingWire(
+                            new Match("same/path",
+                                new Header("important header", "first"),
+                                req => "first expected result"
+                            ),
+                            new Match("same/path",
+                                new Header("important header", "second"),
+                                req => "second expected result"
+                            )
+                        ).Response(
+                            new Request(
+                                new Path("same/path"),
+                                new Header("important header", headerValue)
+                            )
                         )
                     )
                 ).AsString()
@@ -86,27 +91,29 @@ namespace Yaapii.Http.Mock.Test
         {
             Assert.Equal(
                 expected,
-                new Body.Of(
-                    new MatchingWire(
-                        new Match("same/path", 
-                            new Parts.Joined(
+                new TextOf(
+                    new Body.Of(
+                        new MatchingWire(
+                            new Match("same/path", 
+                                new Parts.Joined(
+                                    new Body("important data"),
+                                    new QueryParam("someParam", "first")
+                                ), 
+                                req => "first expected result"
+                            ),
+                            new Match("same/path",
+                                new Parts.Joined(
+                                    new Body("important data"),
+                                    new QueryParam("someParam", "second")
+                                ), 
+                                req => "second expected result"
+                            )
+                        ).Response(
+                            new Request(
+                                new Path("same/path"),
                                 new Body("important data"),
-                                new QueryParam("someParam", "first")
-                            ), 
-                            req => "first expected result"
-                        ),
-                        new Match("same/path",
-                            new Parts.Joined(
-                                new Body("important data"),
-                                new QueryParam("someParam", "second")
-                            ), 
-                            req => "second expected result"
-                        )
-                    ).Response(
-                        new Request(
-                            new Path("same/path"),
-                            new Body("important data"),
-                            new QueryParam("someParam", QueryParamValue)
+                                new QueryParam("someParam", QueryParamValue)
+                            )
                         )
                     )
                 ).AsString()

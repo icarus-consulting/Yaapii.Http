@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Requests;
@@ -34,18 +35,20 @@ namespace Yaapii.Http.Mock.Templates.Test
         {
             Assert.Equal(
                 "correct response",
-                new Body.Of(
-                    new Joined(
-                        new Conditional(
-                            req => true,
-                            new FkWire("correct response")
-                        ),
-                        new Conditional(
-                            req => true,
-                            new FkWire("wrong response")
+                new TextOf(
+                    new Body.Of(
+                        new Joined(
+                            new Conditional(
+                                req => true,
+                                new FkWire("correct response")
+                            ),
+                            new Conditional(
+                                req => true,
+                                new FkWire("wrong response")
+                            )
+                        ).Response(
+                            new Request()
                         )
-                    ).Response(
-                        new Request()
                     )
                 ).AsString()
             );
