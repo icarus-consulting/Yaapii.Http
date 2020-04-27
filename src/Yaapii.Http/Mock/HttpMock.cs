@@ -32,7 +32,7 @@ using Yaapii.Atoms.Text;
 using Yaapii.Http.AtomsTemp;
 using Yaapii.Http.AtomsTemp.Enumerable;
 using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.Fake;
+using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -50,6 +50,32 @@ namespace Yaapii.Http.Mock
     {
         private readonly IScalar<MockServer> server;
         private readonly IWire wire;
+
+        /// <summary>
+        /// Hosts a local http server for unit testing.
+        /// Handles incoming requests using the first wire template that matches the request.
+        /// Always dispose this or the returned <see cref="MockServer"/> after use.
+        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
+        /// </summary>
+        public HttpMock(int port, string hostname, params ITemplate[] templates) : this(
+            port,
+            new MatchingWire(templates),
+            hostname
+        )
+        { }
+
+        /// <summary>
+        /// Hosts a local http server for unit testing.
+        /// Handles incoming requests using the first wire template that matches the request.
+        /// Always dispose this or the returned <see cref="MockServer"/> after use.
+        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
+        /// </summary>
+        public HttpMock(int port, params ITemplate[] templates) : this(
+            port,
+            new MatchingWire(templates),
+            "localhost"
+        )
+        { }
 
         /// <summary>
         /// Hosts a local http server for unit testing.
@@ -124,18 +150,7 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, IDictionary<string, IWire> wires, string hostName = "localhost") : this(
             port,
-            new FkWire(req =>
-            {
-                var path = new Path.Of(req).AsString();
-                foreach (var kvp in wires)
-                {
-                    if ($"/{kvp.Key.TrimStart('/')}" == path)
-                    {
-                        return kvp.Value.Response(req);
-                    }
-                }
-                return new Response.Of(404, $"Path not Found. No wire has been configured for '{path}'.");
-            }),
+            new MatchingWire(wires),
             hostName
         )
         { }
@@ -153,7 +168,7 @@ namespace Yaapii.Http.Mock
                 new Sticky<MockServer>(() =>
                     new MockServer(
                         port,
-                        "{}", 
+                        "{}", // match any path
                         (req, res, prm) => Respond(req, res),
                         hostName
                     )
@@ -224,7 +239,7 @@ namespace Yaapii.Http.Mock
                     new Method(request.HttpMethod.ToLower()),
                     new Address(request.Url),
                     new Headers(request.Headers),
-                    new Conditional(
+                    new Parts.Conditional(
                         () => request.HasEntityBody,
                         new Body(
                             RequestBody(request)

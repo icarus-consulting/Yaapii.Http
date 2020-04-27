@@ -20,56 +20,45 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
-using System.Collections.Generic;
 using Xunit;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
+using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Requests;
-using Yaapii.Http.Responses;
 
-namespace Yaapii.Http.Wires.Test
+namespace Yaapii.Http.Mock.Templates.Test
 {
-    public sealed class RetryTests
+    public sealed class ConditionalTests
     {
-        [Fact]
-        public void Retries()
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AppliesOnCondition(bool expected)
         {
-            var attempt = 0;
-            var attempts = 3;
-            new Retry(
-                attempts,
-                new FkWire(req =>
-                {
-                    attempt++;
-                    if(attempt < attempts)
-                    {
-                        throw new Exception();
-                    }
-                    else
-                    {
-                        return new Responses.Response.Of(200, "OK");
-                    }
-                })
-            ).Response(new Get());
-            Assert.Equal(attempts,  attempt);
+            Assert.Equal(
+                expected,
+                new Conditional(
+                    req => expected,
+                    new FkWire()
+                ).Applies(new Request())
+            );
         }
 
         [Fact]
-        public void ThrowsAfterLastAttempt()
+        public void HasResponse()
         {
-            var attempt = 0;
-            var attempts = 3;
-            Assert.Throws<ApplicationException>(() =>
-                new Retry(
-                    attempts,
-                    new FkWire(requestAction: req =>
-                    {
-                        attempt++;
-                        throw new Exception();
-                    })
-                ).Response(new Get("http://localhost"))
+            var expected = "expected response";
+            Assert.Equal(
+                expected,
+                new TextOf(
+                    new Body.Of(
+                        new Conditional(
+                            req => true,
+                            new FkWire(expected)
+                        ).Response(new Request())
+                    )
+                ).AsString()
             );
-            Assert.Equal(attempts, attempt);
         }
     }
 }
