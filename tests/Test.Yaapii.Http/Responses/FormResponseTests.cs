@@ -22,19 +22,30 @@
 
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Parts.Bodies;
 
 namespace Yaapii.Http.Responses.Test
 {
-    public sealed class StatusTests
+    public sealed class FormResponseTests
     {
         [Fact]
-        public void WritesReason()
+        public void HasFormParams()
         {
+            var expected =
+                new Map.Of(
+                    "key1", "value1",
+                    "key2", "value2"
+                );
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                expected,
+                new FormResponse(
+                    new FkWire(req =>
+                        new Response.Of(
+                            new FormParams(expected)
+                        )
+                    )
+                )
             );
         }
     }
