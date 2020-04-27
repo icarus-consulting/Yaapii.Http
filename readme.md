@@ -264,9 +264,11 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
-var contentType = new ContentType.Of(response) // implements IEnumerable<string>
-var server = new Header.Of("Server") // implements IEnumerable<string>
+var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
+var contentTypes = new ContentType.Of(response) // implements IEnumerable<string>
+var contentType = new ContentType.FirstOf(response) // implements IText, see Yaapii.Atoms
+var methods = new Header.Of("Allow") // implements IEnumerable<string>
+var method = new Header.FirstOf("Allow") // implements IText, see Yaapii.Atoms
 var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
 ```
 
