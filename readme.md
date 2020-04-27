@@ -254,7 +254,7 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
+var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
 var contentType = new ContentType.Of(response) // implements IEnumerable<string>
 var server = new Header.Of("Server") // implements IEnumerable<string>
 var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
@@ -299,7 +299,7 @@ new FkWire(req =>
 ### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
-It's an ```IScalar``` (see Yaapii.Http.AtomsTemp) returning a ```MockServer``` (see MockHttpServer). 
+It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
 Calling ```HttpMock.Value()``` for the first time will initialize the server.
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
 ```csharp
@@ -313,13 +313,13 @@ using( var server =
 }
 using( var server =
     new HttpMock(1337,
-        new Kvp.Of<IWire>(""
+        new KvpOf<IWire>(""
             new FkWire(200, "OK") // will handle http://localhost:1337/
         ),
-        new Kvp.Of<IWire>("bad/request"
+        new KvpOf<IWire>("bad/request"
             new FkWire(400, "Bad Request") // will handle http://localhost:1337/bad/request
         ),
-        new Kvp.Of<IWire>("coffee"
+        new KvpOf<IWire>("coffee"
             new FkWire(418, "I'm a teapot") // will handle http://localhost:1337/coffee
         )
     ).Value()

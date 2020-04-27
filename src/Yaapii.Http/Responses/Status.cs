@@ -20,21 +20,21 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses
 {
     /// <summary>
     /// Adds a status code to a response.
     /// </summary>
-    public sealed partial class Status : MapInput.Envelope
+    public sealed partial class Status : MapInputEnvelope
     {
         private const string KEY = "status";
 
         /// <summary>
         /// Adds a status code to a response.
         /// </summary>
-        public Status(int status) : base(new Kvp.Of(KEY, () => $"{status}"))
+        public Status(int status) : base(new KvpOf(KEY, () => $"{status}"))
         { }
     }
 }

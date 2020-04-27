@@ -44,7 +44,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// Gets the body of a request or response.
             /// </summary>
             public Of(IDictionary<string, string> input) : this(
-                new Sticky<IInput>(() =>
+                new ScalarOf<IInput>(() =>
                 {
                     IInput result = new DeadInput();
                     if(input.ContainsKey(Body.KEY))

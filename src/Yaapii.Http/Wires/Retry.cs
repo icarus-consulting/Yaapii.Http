@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -68,7 +68,7 @@ namespace Yaapii.Http.Wires
         /// </summary>
         public Retry(int attempts, Func<IDictionary<string, string>, Exception, Exception> exception, IWire origin) : base(request =>
         {
-            IDictionary<string, string> response = new Map.Of(new MapInput.Of());
+            IDictionary<string, string> response = new MapOf(new MapInputOf());
             for(int i = 1; i <= attempts; i++)
             {
                 try

@@ -1,5 +1,5 @@
 ﻿using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -11,7 +11,7 @@ namespace Yaapii.Http.Responses.Test
             Assert.Equal(
                 "200",
                 new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["status"]
             );
         }

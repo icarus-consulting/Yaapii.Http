@@ -23,7 +23,7 @@
 using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body to a request.
     /// Sets the content type header to text/html.
     /// </summary>
-    public sealed class HtmlBody : MapInput.Envelope
+    public sealed class HtmlBody : MapInputEnvelope
     {
         /// <summary>
         /// Adds a body to a request.

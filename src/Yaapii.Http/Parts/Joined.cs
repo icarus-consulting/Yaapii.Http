@@ -21,20 +21,20 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts
 {
     /// <summary>
     /// Several parts joined together.
     /// </summary>
-    public sealed class Joined : MapInput.Envelope
+    public sealed class Joined : MapInputEnvelope
     {
         /// <summary>
         /// Several parts joined together.
         /// </summary>
-        public Joined(params IMapInput[] parts) : this(new Many.Of<IMapInput>(parts))
+        public Joined(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
         { }
 
         /// <summary>

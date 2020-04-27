@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a form param to q request.
     /// Sets the content type header to application/x-www-form-urlencoded.
     /// </summary>
-    public sealed partial class FormParam : MapInput.Envelope
+    public sealed partial class FormParam : MapInputEnvelope
     {
         private const string KEY_PREFIX = "form:";
 
@@ -41,8 +41,8 @@ namespace Yaapii.Http.Parts.Bodies
         public FormParam(string key, string value) : base(() =>
             new Joined(
                 new ContentType("application/x-www-form-urlencoded"),
-                new MapInput.Of(
-                    new Kvp.Of(
+                new MapInputOf(
+                    new KvpOf(
                         new TextOf(() => $"{KEY_PREFIX}{key}"),
                         value
                     )

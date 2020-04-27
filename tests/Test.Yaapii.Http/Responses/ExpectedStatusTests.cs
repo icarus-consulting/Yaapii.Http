@@ -22,7 +22,7 @@
 
 using System;
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.Throws<ArgumentException>(() =>
                 new ExpectedStatus(200, new ArgumentException()).Verify(
-                    new Map.Of(
+                    new MapOf(
                         new Status(400)
                     )
                 )
@@ -44,7 +44,7 @@ namespace Yaapii.Http.Responses.Test
         public void AcceptsCorrectStatus()
         {
             new ExpectedStatus(200, new ArgumentException()).Verify(
-                new Map.Of(
+                new MapOf(
                     new Status(200)
                 )
             );
@@ -59,7 +59,7 @@ namespace Yaapii.Http.Responses.Test
                 built = true;
                 return new ArgumentException();
             }).Verify(
-                new Map.Of(
+                new MapOf(
                     new Status(200)
                 )
             );

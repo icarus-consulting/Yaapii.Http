@@ -21,20 +21,20 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Requests
 {
     /// <summary>
     /// A request with additional parts added to it.
     /// </summary>
-    public sealed class Refined : Map.Envelope
+    public sealed class Refined : MapEnvelope
     {
         /// <summary>
         /// A request with additional parts added to it.
         /// </summary>
-        public Refined(IDictionary<string, string> origin, params IMapInput[] additional) : this(origin, new Many.Of<IMapInput>(additional))
+        public Refined(IDictionary<string, string> origin, params IMapInput[] additional) : this(origin, new ManyOf<IMapInput>(additional))
         { }
 
         /// <summary>
@@ -43,7 +43,8 @@ namespace Yaapii.Http.Requests
         public Refined(IDictionary<string, string> origin, IEnumerable<IMapInput> additional) : base(() =>
             new Parts.Joined(additional).Apply(
                 origin
-            )
+            ),
+            live: false
         )
         { }
     }

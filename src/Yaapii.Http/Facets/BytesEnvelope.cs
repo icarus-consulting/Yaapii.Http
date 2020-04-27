@@ -14,7 +14,7 @@ namespace Yaapii.Http.Facets
         /// <summary>
         /// Envelope for something returning an array of bytes.
         /// </summary>
-        protected BytesEnvelope(Func<byte[]> bytes) : this(new Sticky<byte[]>(bytes))
+        protected BytesEnvelope(Func<byte[]> bytes) : this(new ScalarOf<byte[]>(bytes))
         { }
 
         /// <summary>

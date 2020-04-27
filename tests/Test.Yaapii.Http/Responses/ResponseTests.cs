@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Requests;
 
@@ -37,7 +37,7 @@ namespace Yaapii.Http.Responses.Test
                 new FkWire(req =>
                 {
                     requestSent = true;
-                    return new Map.Of(new MapInput.Of());
+                    return new MapOf(new MapInputOf());
                 }),
                 new Get()
             ).GetEnumerator();
@@ -53,7 +53,7 @@ namespace Yaapii.Http.Responses.Test
                     new FkWire(req =>
                     {
                         count++;
-                        return new Map.Of(new MapInput.Of());
+                        return new MapOf(new MapInputOf());
                     }),
                     new Get()
                 );

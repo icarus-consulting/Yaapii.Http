@@ -22,14 +22,14 @@
 
 using System;
 using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds the user info part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class User : MapInput.Envelope
+    public sealed partial class User : MapInputEnvelope
     {
         private const string KEY = "user";
 
@@ -54,7 +54,7 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(Func<string> user) : base(new Kvp.Of(KEY, user))
+        public User(Func<string> user) : base(new KvpOf(KEY, user))
         { }
     }
 }

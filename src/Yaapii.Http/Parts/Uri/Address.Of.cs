@@ -22,7 +22,7 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri

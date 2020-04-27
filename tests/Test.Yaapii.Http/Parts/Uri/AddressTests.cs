@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https",
                 new Scheme.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -46,7 +46,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "someUser",
                 new User.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -59,7 +59,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "somehost",
                 new Host.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -72,7 +72,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 1337,
                 new Port.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsInt()
@@ -85,7 +85,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "/this/is/a/path",
                 new Path.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -100,7 +100,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 expected,
                 new QueryParams.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 )[key]
@@ -113,7 +113,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "someFragment",
                 new Fragment.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.True(
                 new Reason.Exists(
-                    new Map.Of("reason", "because")
+                    new MapOf("reason", "because")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.False(
                 new Reason.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

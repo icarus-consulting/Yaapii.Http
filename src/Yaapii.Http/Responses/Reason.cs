@@ -22,14 +22,14 @@
 
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses
 {
     /// <summary>
     /// Adds a reason phrase to a response.
     /// </summary>
-    public sealed partial class Reason : MapInput.Envelope
+    public sealed partial class Reason : MapInputEnvelope
     {
         private const string KEY = "reason";
 
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// Adds a reason phrase to a response.
         /// </summary>
-        public Reason(IText reason) : base(new Kvp.Of(KEY, () => reason.AsString()))
+        public Reason(IText reason) : base(new KvpOf(KEY, () => reason.AsString()))
         { }
     }
 }

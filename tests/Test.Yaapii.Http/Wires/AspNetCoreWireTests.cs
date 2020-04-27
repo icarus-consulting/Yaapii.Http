@@ -25,9 +25,9 @@ using System.Collections.Generic;
 using Xunit;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Parts;
@@ -49,7 +49,7 @@ namespace Yaapii.Http.Wires.Test
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
                 new HttpMock(port,
-                    new Kvp.Of<IWire>("test/asdf",
+                    new KvpOf<IWire>("test/asdf",
                         new FkWire()
                     )
                 ).Value()
@@ -114,7 +114,7 @@ namespace Yaapii.Http.Wires.Test
         public void SendsMultipleHeaderValues(string expected)
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
-            IEnumerable<string> headers = new Many.Of<string>();
+            IEnumerable<string> headers = new ManyOf<string>();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
@@ -134,9 +134,9 @@ namespace Yaapii.Http.Wires.Test
                         new Host("localhost"),
                         new Port(server.Port),
                         new Headers(
-                            new Kvp.Of("Accept", "application/json"),
-                            new Kvp.Of("Accept", "application/xml"),
-                            new Kvp.Of("Accept", "text/plain")
+                            new KvpOf("Accept", "application/json"),
+                            new KvpOf("Accept", "application/xml"),
+                            new KvpOf("Accept", "text/plain")
                         )
                     )
                 );
@@ -157,8 +157,8 @@ namespace Yaapii.Http.Wires.Test
                     {
                         return 
                             new Response.Of(200, "OK",
-                                new Many.Of<IKvp>(
-                                    new Kvp.Of("Allow", "GET")
+                                new ManyOf<IKvp>(
+                                    new KvpOf("Allow", "GET")
                                 )
                             );
                     })
@@ -200,11 +200,11 @@ namespace Yaapii.Http.Wires.Test
                     {
                         return
                             new Response.Of(200, "OK",
-                                new Many.Of<IKvp>(
-                                    new Kvp.Of("Allow", "DELETE"),
-                                    new Kvp.Of("Allow", "GET"),
-                                    new Kvp.Of("Allow", "POST"),
-                                    new Kvp.Of("Allow", "PUT")
+                                new ManyOf<IKvp>(
+                                    new KvpOf("Allow", "DELETE"),
+                                    new KvpOf("Allow", "GET"),
+                                    new KvpOf("Allow", "POST"),
+                                    new KvpOf("Allow", "PUT")
                                 )
                             );
                     })

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 expected,
                 new FormParams.Of(
-                    new Map.Of(
+                    new MapOf(
                         "form:first key", "first value",
                         "form:second key", "second value",
                         "form:third key", "third value"

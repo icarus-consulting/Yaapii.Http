@@ -23,7 +23,7 @@
 using Xunit;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Requests;
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "text/plain",
                 new TextBody("irrelevant").Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["header:0:Content-Type"]
             );
         }
@@ -55,7 +55,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextOf(
                     new Body.Of(
                         new TextBody("some body").Apply(
-                            new Map.Of(new MapInput.Of())
+                            new MapOf(new MapInputOf())
                         )
                     )
                 ).AsString()

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -36,11 +36,11 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 expected,
                 new Headers(
-                    new Kvp.Of("first key", "first value"),
-                    new Kvp.Of("second key", "second value"),
-                    new Kvp.Of("third key", "third value")
+                    new KvpOf("first key", "first value"),
+                    new KvpOf("second key", "second value"),
+                    new KvpOf("third key", "third value")
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"header:{index}:{key}"]
             );
         }
@@ -54,11 +54,11 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 expected,
                 new Headers(
-                    new Kvp.Of("same key", "first value"),
-                    new Kvp.Of("same key", "second value"),
-                    new Kvp.Of("same key", "third value")
+                    new KvpOf("same key", "first value"),
+                    new KvpOf("same key", "second value"),
+                    new KvpOf("same key", "third value")
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"header:{index}:same key"]
             );
         }

@@ -23,14 +23,14 @@
 using System;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds a query parameter to a request.
     /// </summary>
-    public sealed partial class QueryParam : MapInput.Envelope
+    public sealed partial class QueryParam : MapInputEnvelope
     {
         private const string KEY_PREFIX = "query:";
 
@@ -65,7 +65,7 @@ namespace Yaapii.Http.Parts.Uri
         /// Adds a query parameter to a request.
         /// </summary>
         public QueryParam(Func<string> key, Func<string> value) : base(
-            new Kvp.Of(
+            new KvpOf(
                 new TextOf(() => $"{KEY_PREFIX}{key()}"),
                 value
             )

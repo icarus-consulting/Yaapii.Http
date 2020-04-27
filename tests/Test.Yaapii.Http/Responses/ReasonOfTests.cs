@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Responses.Test
             Assert.Equal(
                 "because",
                 new Reason.Of(
-                    new Map.Of("reason", "because")
+                    new MapOf("reason", "because")
                 ).AsString()
             );
         }

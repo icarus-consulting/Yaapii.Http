@@ -23,9 +23,9 @@
 using System;
 using System.Collections.Generic;
 using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Responses;
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Always returns status code 200 and no body or headers.
         /// </summary>
-        public FkWire() : this(200, "OK", new Map.Of(new MapInput.Of()))
+        public FkWire() : this(200, "OK", new MapOf(new MapInputOf()))
         { }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Always returns status code 200 and no headers.
         /// </summary>
-        public FkWire(IText body) : this(200, "OK", new Map.Of(new MapInput.Of()), body)
+        public FkWire(IText body) : this(200, "OK", new MapOf(new MapInputOf()), body)
         { }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Yaapii.Http.Fake
         /// Returns the specified status code, reason, headers and body.
         /// </summary>
         public FkWire(int status, string reason, IDictionary<string, string> headers, IText body) : this(
-            new Many.Of<IMapInput>(
+            new ManyOf<IMapInput>(
                 new Status(status),
                 new Reason(reason),
                 new Headers(headers),
@@ -84,7 +84,7 @@ namespace Yaapii.Http.Fake
         /// Returns the specified status code, reason and headers.
         /// </summary>
         public FkWire(int status, string reason, IDictionary<string, string> headers) : this(
-            new Many.Of<IMapInput>(
+            new ManyOf<IMapInput>(
                 new Status(status),
                 new Reason(reason),
                 new Headers(headers)
@@ -97,7 +97,7 @@ namespace Yaapii.Http.Fake
         /// Returns the specified status code and reason.
         /// </summary>
         public FkWire(int status, string reason) : this(
-            new Many.Of<IMapInput>(
+            new ManyOf<IMapInput>(
                 new Status(status),
                 new Reason(reason)
             )
@@ -108,14 +108,14 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response from the given parts.
         /// </summary>
-        public FkWire(IMapInput[] responseParts) : this(new Many.Of<IMapInput>(responseParts))
+        public FkWire(IMapInput[] responseParts) : this(new ManyOf<IMapInput>(responseParts))
         { }
 
         /// <summary>
         /// A fake wire to convert http requests into responses.
         /// Creates a response from the given parts.
         /// </summary>
-        public FkWire(IEnumerable<IMapInput> responseParts) : this(req => new Map.Of(responseParts))
+        public FkWire(IEnumerable<IMapInput> responseParts) : this(req => new MapOf(responseParts))
         { }
 
         /// <summary>

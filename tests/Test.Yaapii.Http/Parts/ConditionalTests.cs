@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Test
 {
@@ -33,11 +33,11 @@ namespace Yaapii.Http.Parts.Test
             Assert.Empty(
                 new Conditional(
                     () => false,
-                    new MapInput.Of(
-                        new Kvp.Of("not empty", "do not apply this input")
+                    new MapInputOf(
+                        new KvpOf("not empty", "do not apply this input")
                     )
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )
             );
         }
@@ -48,11 +48,11 @@ namespace Yaapii.Http.Parts.Test
             Assert.NotEmpty(
                 new Conditional(
                     () => true,
-                    new MapInput.Of(
-                        new Kvp.Of("some input", "apply this")
+                    new MapInputOf(
+                        new KvpOf("some input", "apply this")
                     )
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )
             );
         }

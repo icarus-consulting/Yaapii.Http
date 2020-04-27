@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Test
             Assert.Equal(
                 "post",
                 new Method.Of(
-                    new Map.Of("method", "post")
+                    new MapOf("method", "post")
                 ).AsString()
             );
         }

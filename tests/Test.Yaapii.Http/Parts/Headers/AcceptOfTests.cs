@@ -22,7 +22,7 @@
 
 using Xunit;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                 "application/json",
                 new FirstOf<string>(
                     new Accept.Of(
-                        new Map.Of("header:0:Accept", "application/json")
+                        new MapOf("header:0:Accept", "application/json")
                     )
                 ).Value()
             );

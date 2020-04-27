@@ -24,7 +24,7 @@ using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -37,7 +37,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 "| <-- stick figure body",
                 new TextOf(
                     new Body.Of(
-                        new Map.Of(
+                        new MapOf(
                             new Body("| <-- stick figure body")
                         )
                     )
@@ -51,7 +51,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Empty(
                 new BytesOf(
-                    new Body.Of(new Map.Of("", ""))
+                    new Body.Of(new MapOf("", ""))
                 ).AsBytes()
             );
         }

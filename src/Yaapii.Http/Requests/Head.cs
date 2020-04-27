@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -32,20 +32,20 @@ namespace Yaapii.Http.Requests
     /// <summary>
     /// A request with head method.
     /// </summary>
-    public sealed class Head : Map.Envelope
+    public sealed class Head : MapEnvelope
     {
         /// <summary>
         /// A request with head method.
         /// </summary>
-        public Head(params IMapInput[] parts) : this(new Many.Of<IMapInput>(parts))
+        public Head(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
         { }
 
         /// <summary>
         /// A request with head method.
         /// </summary>
         public Head(Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
-                new Many.Of<IMapInput>(parts),
+            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+                new ManyOf<IMapInput>(parts),
                 new Address(uri)
             )
         )
@@ -55,8 +55,8 @@ namespace Yaapii.Http.Requests
         /// A request with head method.
         /// </summary>
         public Head(string uri, params IMapInput[] parts) : this(
-            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
-                new Many.Of<IMapInput>(parts),
+            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+                new ManyOf<IMapInput>(parts),
                 new Address(uri)
             )
         )
@@ -66,12 +66,13 @@ namespace Yaapii.Http.Requests
         /// A request with head method.
         /// </summary>
         public Head(IEnumerable<IMapInput> parts) : base(() => 
-            new Map.Of(
-                new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
+            new MapOf(
+                new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
                     parts,
                     new Method("head")
                 )
-            )
+            ),
+            live: false
         )
         { }
     }

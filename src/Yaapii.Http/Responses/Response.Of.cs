@@ -22,9 +22,9 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 
@@ -35,13 +35,13 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A response from the given parts.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A response with the given status, reason, headers and body.
             /// </summary>
             public Of(int status, string reason, IEnumerable<IKvp> headers, IText body) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Headers(headers),
@@ -54,7 +54,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status, reason and headers.
             /// </summary>
             public Of(int status, string reason, IEnumerable<IKvp> headers) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Headers(headers)
@@ -66,7 +66,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status and reason.
             /// </summary>
             public Of(int status, string reason) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason)
                 )
@@ -76,13 +76,13 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// A response from the given parts.
             /// </summary>
-            public Of(params IMapInput[] responseParts) : this(new Many.Of<IMapInput>(responseParts))
+            public Of(params IMapInput[] responseParts) : this(new ManyOf<IMapInput>(responseParts))
             { }
 
             /// <summary>
             /// A response from the given parts.
             /// </summary>
-            public Of(IEnumerable<IMapInput> responseParts) : base(() => new Map.Of(responseParts))
+            public Of(IEnumerable<IMapInput> responseParts) : base(() => new MapOf(responseParts), live: false)
             { }
         }
     }

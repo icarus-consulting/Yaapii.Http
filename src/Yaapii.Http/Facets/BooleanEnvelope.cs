@@ -36,7 +36,7 @@ namespace Yaapii.Http.Facets
         /// <summary>
         /// Envelope for something returning a boolean value.
         /// </summary>
-        protected BooleanEnvelope(Func<bool> value) : this(new Sticky<bool>(value))
+        protected BooleanEnvelope(Func<bool> value) : this(new ScalarOf<bool>(value))
         { }
 
         /// <summary>

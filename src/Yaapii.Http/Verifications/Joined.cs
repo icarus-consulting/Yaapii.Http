@@ -22,7 +22,7 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Verifications
 {
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Verifications
         /// <summary>
         /// Several verifications joined as one.
         /// </summary>
-        public Joined(params IVerification[] verifications) : this(new Many.Of<IVerification>(verifications))
+        public Joined(params IVerification[] verifications) : this(new ManyOf<IVerification>(verifications))
         { }
 
         /// <summary>
