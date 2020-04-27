@@ -23,18 +23,18 @@
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers.Test
 {
-    public sealed class StatusTests
+    public sealed class BearerTokenAuthFirstOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReadsHeader()
         {
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                "this is a token",
+                new BearerTokenAuth.FirstOf(
+                    new Map.Of("header:0:Authorization", $"Bearer this is a token")
+                ).AsString()
             );
         }
     }

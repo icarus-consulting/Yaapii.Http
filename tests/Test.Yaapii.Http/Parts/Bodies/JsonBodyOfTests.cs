@@ -20,21 +20,28 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Newtonsoft.Json.Linq;
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Requests;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Bodies.Test
 {
-    public sealed class StatusTests
+    public sealed class JsonBodyOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReadsJson()
         {
+            var expected = 
+                new JObject(
+                    new JProperty("key", "value")
+                );
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                expected.ToString(),
+                new JsonBody.Of(
+                    new Request(
+                        new Body(expected)
+                    )
+                ).Token().ToString()
             );
         }
     }

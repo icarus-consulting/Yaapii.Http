@@ -23,18 +23,27 @@
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers.Test
 {
-    public sealed class StatusTests
+    public sealed class BearerTokenAuthExistsTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReturnsExists()
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
+            Assert.True(
+                new BearerTokenAuth.Exists(
+                    new Map.Of("header:0:Authorization", $"Bearer this is a token")
+                ).Value()
+            );
+        }
+
+        [Fact]
+        public void ReturnsDoesNotExist()
+        {
+            Assert.False(
+                new BearerTokenAuth.Exists(
                     new Map.Of(new MapInput.Of())
-                )["status"]
+                ).Value()
             );
         }
     }

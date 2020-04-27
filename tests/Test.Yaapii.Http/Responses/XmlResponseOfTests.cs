@@ -21,20 +21,24 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Parts.Bodies;
+using Yaapii.Xml;
 
 namespace Yaapii.Http.Responses.Test
 {
-    public sealed class StatusTests
+    public sealed class XmlResponseOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void HasXml()
         {
+            var expected = new XMLCursor("<root><importantXmlData /></root>");
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                expected.AsNode().ToString(),
+                new XMLCursor(
+                    new Body.Of(
+                        new XmlResponse.Of(expected)
+                    )
+                ).AsNode().ToString()
             );
         }
     }

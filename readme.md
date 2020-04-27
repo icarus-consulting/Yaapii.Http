@@ -1,5 +1,6 @@
 # Yaapii.Http
 
+[![EO principles respected here](https://www.elegantobjects.org/badge.svg)](http://www.elegantobjects.org)
 [![Build status](https://ci.appveyor.com/api/projects/status/m8xpbtmd873o4vu9/branch/master?svg=true)](https://ci.appveyor.com/project/icarus-consulting/yaapii-http/branch/master)
 
 Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.com/Vatavuk/verano-http).
@@ -18,6 +19,7 @@ Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.c
     * [Response Verification](#response-verification)
 4. [Unit Testing](#unit-testing)
     * [Fake Classes](#fake-classes)
+    * [Mocking different Paths](#mocking-different-paths)
     * [HttpMock](#httpmock)
 
 ## Creating Requests
@@ -139,6 +141,10 @@ new Post(
 )
 // is equivalent to
 new Post(
+    new Body(new JObject().ToString(), "application/json")
+)
+// or
+new Post(
     new ContentType("application/json"),
     new Body(new JObject().ToString())
 )
@@ -148,6 +154,10 @@ new Post(
     new Body(new XMLCursor("<root></root>"))
 )
 // is equivalent to
+new Post(
+    new Body(new XMLCursor("<root></root>").AsNode().ToString(), "application/xml")
+)
+// or
 new Post(
     new ContentType("application/xml"),
     new Body(new XMLCursor("<root></root>").AsNode().ToString())
@@ -254,11 +264,19 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
-var contentType = new ContentType.Of(response) // implements IEnumerable<string>
-var server = new Header.Of("Server") // implements IEnumerable<string>
+var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
+var contentTypes = new ContentType.Of(response) // implements IEnumerable<string>
+var contentType = new ContentType.FirstOf(response) // implements IText, see Yaapii.Atoms
+var methods = new Header.Of("Allow") // implements IEnumerable<string>
+var method = new Header.FirstOf("Allow") // implements IText, see Yaapii.Atoms
 var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
 ```
+
+If you need the body in a format other than ```IInput```, there are special body classes, that do the conversion for you:
+* ```new TextBody.Of(response)``` does the same as ```new TextOf(new Body.Of(response))```
+* ```new XmlBody.Of(reponse)``` does the same as ```new XMLCursor(new Body.Of(response))```
+* ```new JsonBody.Of(reponse)``` does the same as ```new JSONOf(new Body.Of(response))```
+* ```new BytesBody.Of(reponse)``` does the same as ```new BytesOf(new Body.Of(response))```
 
 ### Response Verification
 The ```IVerification``` interface allows to check if a response meets certain criteria. There is also a wire decorator, that will run a given verification for each response coming from the wire:
@@ -296,12 +314,42 @@ new FkWire(req =>
 )
 ```
 
+### Mocking different Paths
+
+```MatchingWire``` allows to mock the behavior of a real web server more closely by routing requests to different wires, depending on the content of the requests.
+This is done using wire templates (classes implementing ```ITemplate```), that encapsulate a check for certain criteria that requests have to meet,
+and a wire that should be used to respond to these requests. 
+```MatchingWire``` finds the first template that applies to a request and asks it for a response to that request.
+The simplest use for this is returning different responses for different paths:
+```csharp
+new MatchingWire( // implements IWire
+    new Match( // implements ITemplate
+        new Path("/regular-path"),
+        new FkWire(200, "OK")
+    ),
+    new Match(
+        "/regular-path",    // does the same as the first template, but is less verbose
+        new FkWire(200, "OK")
+    ),
+    new Match(
+        "/top-secret",
+        new FkWire(403, "Forbidden")
+    )
+)
+```
+Current ```ITemplate``` implementations are:
+* ```Match```, applies to a request, if the request matches all specified request parts, e.g. path, method, headers, query params, etc.
+* ```Conditional``` applies to a request, if a given function returns true for the request.
+
+See the ```HttpMock``` example code below for more examples of how to use these templates.
+
 ### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
-It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
+It's an ```IScalar``` (see Yaapii.Http.AtomsTemp) returning a ```MockServer``` (see MockHttpServer). 
 Calling ```HttpMock.Value()``` for the first time will initialize the server.
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
+Routing is done using the ```MatchingWire``` and templates described above.
 ```csharp
 using( var server =
     new HttpMock(1337,
@@ -313,14 +361,26 @@ using( var server =
 }
 using( var server =
     new HttpMock(1337,
-        new KvpOf<IWire>(""
+        new Match("", 
             new FkWire(200, "OK") // will handle http://localhost:1337/
         ),
-        new KvpOf<IWire>("bad/request"
+        new Match("bad/request",
             new FkWire(400, "Bad Request") // will handle http://localhost:1337/bad/request
         ),
-        new KvpOf<IWire>("coffee"
-            new FkWire(418, "I'm a teapot") // will handle http://localhost:1337/coffee
+        new Match("coffee",
+            new Method("brew"), // see RFC 2324, not supported by AspNetCoreWire
+            new FkWire(418, "I'm a teapot") // will handle http://localhost:1337/coffee, if the method is "BREW"
+        ),
+        new Match(
+            new Parts.Joined(
+                new Body("important data"),
+                new Method("put")
+            ),
+            new FkWire(200, "OK") // will handle PUT requests with the specified body, if they didn't match an earlier template
+        ),
+        new Conditional(
+            req => new LengthOf<string>(new BearerTokenAuth.Of(req)).Value() > 0,
+            new FkWire(200, "OK")  // will handle requests that have any bearer token authorization header, if they didn't match an earlier template
         )
     ).Value()
 )

@@ -22,19 +22,20 @@
 
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Text;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers.Test
 {
-    public sealed class StatusTests
+    public sealed class BasicAuthFirstOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReadsHeader()
         {
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                "user:password",
+                new BasicAuth.FirstOf(
+                    new Map.Of("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                ).AsString()
             );
         }
     }

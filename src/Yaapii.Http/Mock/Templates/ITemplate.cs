@@ -20,22 +20,23 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Mock.Templates
 {
-    public sealed class StatusTests
+    /// <summary>
+    /// A wire template for routing requests.
+    /// </summary>
+    public interface ITemplate
     {
-        [Fact]
-        public void WritesReason()
-        {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
-        }
+        /// <summary>
+        /// Checks if the template applies to the request.
+        /// </summary>
+        bool Applies(IDictionary<string, string> request);
+
+        /// <summary>
+        /// The response to a request.
+        /// </summary>
+        IDictionary<string, string> Response(IDictionary<string, string> request);
     }
 }

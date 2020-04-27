@@ -20,22 +20,29 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
+using Yaapii.Http.Facets;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Bodies
 {
-    public sealed class StatusTests
+    public sealed partial class TextBody
     {
-        [Fact]
-        public void WritesReason()
+        /// <summary>
+        /// The body of a request or response as <see cref="IText"/>
+        /// </summary>
+        public sealed class Of : TextEnvelope
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
+            /// <summary>
+            /// The body of a request or response as <see cref="IText"/>
+            /// </summary>
+            public Of(IDictionary<string, string> input) : base(
+                new TextOf(
+                    new Body.Of(input)
+                )
+            )
+            { }
         }
     }
 }

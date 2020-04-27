@@ -20,22 +20,28 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
+using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Http.Facets;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers
 {
-    public sealed class StatusTests
+    public sealed partial class Authorization
     {
-        [Fact]
-        public void WritesReason()
+        /// <summary>
+        /// Checks if any "Authorization" header field exists.
+        /// </summary>
+        public sealed class Exists : BooleanEnvelope
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
+            /// <summary>
+            /// Checks if any "Authorization" header field exists.
+            /// </summary>
+            public Exists(IDictionary<string, string> input) : base(() =>
+                new LengthOf(
+                    new Authorization.Of(input)
+                ).Value() > 0
+            )
+            { }
         }
     }
 }

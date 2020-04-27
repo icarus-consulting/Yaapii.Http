@@ -20,22 +20,28 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System.Collections.Generic;
+using Yaapii.Atoms.Scalar;
+using Yaapii.Http.Facets;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers
 {
-    public sealed class StatusTests
+    public sealed partial class ContentType
     {
-        [Fact]
-        public void WritesReason()
+        /// <summary>
+        /// First value of any "Content-Type" header field.
+        /// </summary>
+        public sealed class FirstOf : TextEnvelope
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
+            /// <summary>
+            /// First value of any "Content-Type" header field.
+            /// </summary>
+            public FirstOf(IDictionary<string, string> input) : base(() =>
+                new FirstOf<string>(
+                    new ContentType.Of(input)
+               ).Value()
+            )
+            { }
         }
     }
 }

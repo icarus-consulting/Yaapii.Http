@@ -21,20 +21,23 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Http.Requests;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Bodies.Test
 {
-    public sealed class StatusTests
+    public sealed class TextBodyOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReadsText()
         {
+            var expected = "this is a text";
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                expected,
+                new TextBody.Of(
+                    new Request(
+                        new Body(expected)
+                    )
+                ).AsString()
             );
         }
     }

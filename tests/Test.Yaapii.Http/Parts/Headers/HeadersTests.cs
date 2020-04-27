@@ -20,8 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using Xunit;
-using Yaapii.Atoms.Map;
+using Yaapii.Http.AtomsTemp.Lookup;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -36,11 +37,11 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 expected,
                 new Headers(
-                    new KvpOf("first key", "first value"),
-                    new KvpOf("second key", "second value"),
-                    new KvpOf("third key", "third value")
+                    "first key", "first value",
+                    "second key", "second value",
+                    "third key", "third value"
                 ).Apply(
-                    new MapOf(new MapInputOf())
+                    new Map.Of(new MapInput.Of())
                 )[$"header:{index}:{key}"]
             );
         }
@@ -54,12 +55,25 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 expected,
                 new Headers(
-                    new KvpOf("same key", "first value"),
-                    new KvpOf("same key", "second value"),
-                    new KvpOf("same key", "third value")
+                    "same key", "first value",
+                    "same key", "second value",
+                    "same key", "third value"
                 ).Apply(
-                    new MapOf(new MapInputOf())
+                    new Map.Of(new MapInput.Of())
                 )[$"header:{index}:same key"]
+            );
+        }
+
+        [Fact]
+        public void RejectsIncompletePairSequence()
+        {
+            Assert.Throws<ArgumentException>(() =>
+                new Headers(
+                    "key", "value",
+                    "anotherKey"
+                ).Apply(
+                    new Map.Of(new MapInput.Of())
+                ).GetEnumerator()
             );
         }
     }

@@ -20,22 +20,36 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using System;
+using System.Collections.Generic;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Mock.Templates
 {
-    public sealed class StatusTests
+    /// <summary>
+    /// A conditional wire template. Applies if a given condition is met.
+    /// </summary>
+    public sealed class Conditional : ITemplate
     {
-        [Fact]
-        public void WritesReason()
+        private readonly Func<IDictionary<string, string>, bool> condition;
+        private readonly IWire wire;
+
+        /// <summary>
+        /// A conditional wire template. Applies if a given condition is met.
+        /// </summary>
+        public Conditional(Func<IDictionary<string, string>, bool> condition, IWire wire)
         {
-            Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
-            );
+            this.condition = condition;
+            this.wire = wire;
+        }
+
+        public bool Applies(IDictionary<string, string> request)
+        {
+            return this.condition(request);
+        }
+
+        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        {
+            return this.wire.Response(request);
         }
     }
 }

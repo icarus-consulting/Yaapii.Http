@@ -23,18 +23,19 @@
 using Xunit;
 using Yaapii.Http.AtomsTemp.Lookup;
 
-namespace Yaapii.Http.Responses.Test
+namespace Yaapii.Http.Parts.Headers.Test
 {
-    public sealed class StatusTests
+    public sealed class HeaderFirstOfTests
     {
         [Fact]
-        public void WritesReason()
+        public void ReadsHeader()
         {
             Assert.Equal(
-                "200",
-                new Status(200).Apply(
-                    new Map.Of(new MapInput.Of())
-                )["status"]
+                "some value",
+                new Header.FirstOf(
+                    new Map.Of("header:0:some key", "some value"),
+                    "some key"
+                ).AsString()
             );
         }
     }
