@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.Facets;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// Gets the reason phrase of a response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY])
+            public Of(IDictionary<string, string> input) : base(() => input[KEY], live: false)
             { }
         }
     }

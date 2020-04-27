@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Bodies;
 
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Responses.Test
         public void HasFormParams()
         {
             var expected =
-                new Map.Of(
+                new MapOf(
                     "key1", "value1",
                     "key2", "value2"
                 );

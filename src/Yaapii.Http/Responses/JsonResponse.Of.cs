@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Newtonsoft.Json.Linq;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.JSON;
 
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and a body from the given json.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing the given json.
@@ -61,7 +61,8 @@ namespace Yaapii.Http.Responses
                     new Reason(reason),
                     new Body(body),
                     new Parts.Joined(extraParts)
-                )
+                ),
+                live: false
             )
             { }
         }

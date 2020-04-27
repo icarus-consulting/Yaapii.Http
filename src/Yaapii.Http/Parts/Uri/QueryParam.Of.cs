@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.Facets;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Parts.Uri
             /// <summary>
             /// Gets the value of the specified query parameter from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input, string key) : base(() => input[$"{KEY_PREFIX}{key}"])
+            public Of(IDictionary<string, string> input, string key) : base(() => input[$"{KEY_PREFIX}{key}"], live: false)
             { }
         }
     }

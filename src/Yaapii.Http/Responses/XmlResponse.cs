@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
 using Yaapii.Xml;
@@ -47,7 +47,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// XML data received as a response from the given wire.
         /// </summary>
-        public XmlResponse(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
+        public XmlResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
         { }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Yaapii.Http.Responses
         public XmlResponse(IWire wire, IDictionary<string, string> request)
         {
             this.xml =
-                new Sticky<IXML>(() =>
+                new ScalarOf<IXML>(() =>
                     new XMLCursor(
                         new Body.Of(
                             wire.Response(request)

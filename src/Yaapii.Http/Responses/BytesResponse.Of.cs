@@ -22,7 +22,7 @@
 
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 
 namespace Yaapii.Http.Responses
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and a body from the given bytes.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing a body from the given bytes.
@@ -61,7 +61,8 @@ namespace Yaapii.Http.Responses
                     new Reason(reason),
                     new Body(body),
                     new Parts.Joined(extraParts)
-                )
+                ),
+                live: false
             )
             { }
         }

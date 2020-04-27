@@ -24,7 +24,7 @@ using Newtonsoft.Json.Linq;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.JSON;
 using Yaapii.Xml;
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// <summary>
     /// Adds a body and its content type to a request. 
     /// </summary>
-    public sealed partial class Body : MapInput.Envelope
+    public sealed partial class Body : MapInputEnvelope
     {
         private const string KEY = "body";
 
@@ -134,8 +134,8 @@ namespace Yaapii.Http.Parts.Bodies
         /// Adds a body to a request. 
         /// </summary>
         public Body(IBytes content) : this(
-            new MapInput.Of(
-                new Kvp.Of(KEY, () =>
+            new MapInputOf(
+                new KvpOf(KEY, () =>
                     new TextOf(
                         new BytesBase64(content)
                     ).AsString()
@@ -148,8 +148,8 @@ namespace Yaapii.Http.Parts.Bodies
         /// Adds a body and its content type to a request. 
         /// </summary>
         public Body(IBytes content, string contentType) : this(
-            new MapInput.Of(
-                new Kvp.Of(KEY, () =>
+            new MapInputOf(
+                new KvpOf(KEY, () =>
                     new TextOf(
                         new BytesBase64(content)
                     ).AsString()

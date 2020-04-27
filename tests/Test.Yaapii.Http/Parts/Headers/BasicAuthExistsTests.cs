@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Headers.Test
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new BasicAuth.Exists(
-                    new Map.Of("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                    new MapOf("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
                 ).Value()
             );
         }
@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new BasicAuth.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

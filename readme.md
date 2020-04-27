@@ -176,6 +176,8 @@ The body class allow the serialization of certain data formats into text. These 
 * ```Body(IJSON json)``` uses ```IJSON``` (see Yaapii.JSON),
 * ```Body(IInput content)``` uses ```IInput``` (Yaapii.Atoms).
 
+For Deserialization, see [Extracting Data from a Response](#extracting-data-from-a-response)
+
 ## Sending Requests
 ### Setting up an AspNetCoreWire
 The ```AspNetCoreWire``` relies on a ```System.Net.Http.HttpClient``` to send http requests.
@@ -264,7 +266,7 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Http.AtomsTemp
+var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
 var contentTypes = new ContentType.Of(response) // implements IEnumerable<string>
 var contentType = new ContentType.FirstOf(response) // implements IText, see Yaapii.Atoms
 var methods = new Header.Of("Allow") // implements IEnumerable<string>
@@ -346,7 +348,7 @@ See the ```HttpMock``` example code below for more examples of how to use these 
 ### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
-It's an ```IScalar``` (see Yaapii.Http.AtomsTemp) returning a ```MockServer``` (see MockHttpServer). 
+It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
 Calling ```HttpMock.Value()``` for the first time will initialize the server.
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
 Routing is done using the ```MatchingWire``` and templates described above.

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Mock.Templates
 {
@@ -38,7 +38,7 @@ namespace Yaapii.Http.Mock.Templates
         /// Several templates joined together. 
         /// Matches if all given templates match. Returns response of the specified primary template.
         /// </summary>
-        public Joined(ITemplate primary, params ITemplate[] extraConditions): this(primary, new Many.Of<ITemplate>(extraConditions))
+        public Joined(ITemplate primary, params ITemplate[] extraConditions): this(primary, new ManyOf<ITemplate>(extraConditions))
         { }
 
         /// <summary>

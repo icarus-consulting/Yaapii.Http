@@ -22,7 +22,7 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Bytes;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
@@ -46,7 +46,7 @@ namespace Yaapii.Http.Responses
         /// Bytes received as a response from the given wire.
         /// Bytes will be decoded from base 64.
         /// </summary>
-        public BytesResponse(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
+        public BytesResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
         { }
 
         /// <summary>

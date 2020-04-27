@@ -23,7 +23,6 @@
 using System.Collections.Generic;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Xml;
-using Yaapii.XML;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -41,7 +40,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// The body of a request or response as <see cref="IXML"/>
             /// </summary>
             public Of(IDictionary<string, string> input) : base(
-                new Sticky<IXML>(() =>
+                new ScalarOf<IXML>(() =>
                     new XMLCursor(
                         new Body.Of(input)
                     )

@@ -20,7 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Xml;
 
@@ -31,7 +31,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and a body from the given xml.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing the given xml.
@@ -48,7 +48,8 @@ namespace Yaapii.Http.Responses
                     new Reason(reason),
                     new Body(body),
                     new Parts.Joined(extraParts)
-                )
+                ),
+                live: false
             )
             { }
         }

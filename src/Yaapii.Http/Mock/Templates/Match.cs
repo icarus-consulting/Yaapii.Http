@@ -22,8 +22,9 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 
@@ -119,7 +120,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified parts.
         /// </summary>
-        public Match(IMapInput template, IWire wire) : this(new Map.Of(template), wire)
+        public Match(IMapInput template, IWire wire) : this(new MapOf(template), wire)
         { }
 
         /// <summary>
@@ -154,11 +155,11 @@ namespace Yaapii.Http.Mock.Templates
             foreach(var templateHeader in templateHeaders)
             {
                 var matches =
-                    new Yaapii.Http.AtomsTemp.Enumerable.Filtered<IKvp>(kvp =>
+                    new Yaapii.Atoms.Enumerable.Filtered<IKvp>(kvp =>
                         kvp.Key() == templateHeader.Key() && kvp.Value() == templateHeader.Value(),
                         requestHeaders
                     );
-                if(new Yaapii.Http.AtomsTemp.Enumerable.LengthOf(matches).Value() == 0)
+                if(new Yaapii.Atoms.Enumerable.LengthOf(matches).Value() == 0)
                 {
                     applies = false;
                     break;
@@ -170,12 +171,12 @@ namespace Yaapii.Http.Mock.Templates
         private bool HasNonHeaderParts(IDictionary<string, string> request)
         {
             var templateParts =
-                new AtomsTemp.Enumerable.Filtered<KeyValuePair<string, string>>(kvp =>
+                new Filtered<KeyValuePair<string, string>>(kvp =>
                     !kvp.Key.StartsWith(HEADER_KEY_PREFIX),
                     this.template
                 );
             var requestParts =
-                new AtomsTemp.Enumerable.Filtered<KeyValuePair<string, string>>(kvp =>
+                new Filtered<KeyValuePair<string, string>>(kvp =>
                     !kvp.Key.StartsWith(HEADER_KEY_PREFIX),
                     request
                 );
@@ -183,11 +184,11 @@ namespace Yaapii.Http.Mock.Templates
             foreach(var templatePart in templateParts)
             {
                 var matches =
-                    new Yaapii.Http.AtomsTemp.Enumerable.Filtered<KeyValuePair<string, string>>(kvp =>
+                    new Filtered<KeyValuePair<string, string>>(kvp =>
                         kvp.Key == templatePart.Key && kvp.Value == templatePart.Value,
                         requestParts
                     );
-                if (new Yaapii.Http.AtomsTemp.Enumerable.LengthOf(matches).Value() == 0)
+                if (new LengthOf(matches).Value() == 0)
                 {
                     applies = false;
                     break;

@@ -26,12 +26,11 @@ using System.Collections.Generic;
 using System.Net;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
 using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
@@ -86,7 +85,7 @@ namespace Yaapii.Http.Mock
         public HttpMock(int port, string hostname, string path, IWire wire) : this(
             port,
             hostname,
-            new Kvp.Of<IWire>(path, wire)
+            new KvpOf<IWire>(path, wire)
         )
         { }
 
@@ -99,7 +98,7 @@ namespace Yaapii.Http.Mock
         public HttpMock(int port, string path, IWire wire) : this(
             port,
             "localhost",
-            new Kvp.Of<IWire>(path, wire)
+            new KvpOf<IWire>(path, wire)
         )
         { }
 
@@ -111,7 +110,7 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, params IKvp<IWire>[] pathWirePairs) : this(
             port, 
-            new Many.Of<IKvp<IWire>>(pathWirePairs),
+            new ManyOf<IKvp<IWire>>(pathWirePairs),
             "localhost"
         )
         { }
@@ -124,7 +123,7 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, string hostName, params IKvp<IWire>[] pathWirePairs) : this(
             port,
-            new Many.Of<IKvp<IWire>>(pathWirePairs),
+            new ManyOf<IKvp<IWire>>(pathWirePairs),
             hostName
         )
         { }
@@ -137,7 +136,7 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, IEnumerable<IKvp<IWire>> pathWirePairs, string hostName = "localhost") : this(
             port,
-            new Map.Of<IWire>(pathWirePairs),
+            new MapOf<IWire>(pathWirePairs),
             hostName
         )
         { }
@@ -165,7 +164,7 @@ namespace Yaapii.Http.Mock
         {
             this.wire = wire;
             this.server = 
-                new Sticky<MockServer>(() =>
+                new ScalarOf<MockServer>(() =>
                     new MockServer(
                         port,
                         "{}", // match any path

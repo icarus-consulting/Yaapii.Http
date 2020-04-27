@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
@@ -43,7 +43,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// JSON data received as a response from the given wire.
         /// </summary>
-        public JsonResponse(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
+        public JsonResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
         { }
 
         /// <summary>
