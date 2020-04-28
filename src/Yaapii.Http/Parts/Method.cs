@@ -20,21 +20,21 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts
 {
     /// <summary>
     /// Specifies the method for a request.
     /// </summary>
-    public sealed partial class Method : MapInput.Envelope
+    public sealed partial class Method : MapInputEnvelope
     {
         private const string KEY = "method";
 
         /// <summary>
         /// Specifies the method for a request.
         /// </summary>
-        public Method(string method) : base(new Kvp.Of(KEY, method))
+        public Method(string method) : base(new KvpOf(KEY, method))
         { }
     }
 }

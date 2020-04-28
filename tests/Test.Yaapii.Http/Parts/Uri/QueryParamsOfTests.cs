@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 expected,
                 new QueryParams.Of(
-                    new Map.Of(
+                    new MapOf(
                         "query:first key", "first value",
                         "query:second key", "second value",
                         "query:third key", "third value"

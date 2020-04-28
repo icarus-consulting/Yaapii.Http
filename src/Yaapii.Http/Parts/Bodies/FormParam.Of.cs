@@ -21,8 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
-using Yaapii.Http.Facets;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -36,7 +35,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// Gets a form param from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input, string key) : base(() => input[$"{KEY_PREFIX}{key}"])
+            public Of(IDictionary<string, string> input, string key) : base(() => input[$"{KEY_PREFIX}{key}"], live: false)
             { }
         }
     }

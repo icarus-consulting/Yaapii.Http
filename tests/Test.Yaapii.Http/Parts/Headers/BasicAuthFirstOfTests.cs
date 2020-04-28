@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Headers.Test
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 "user:password",
                 new BasicAuth.FirstOf(
-                    new Map.Of("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                    new MapOf("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
                 ).AsString()
             );
         }

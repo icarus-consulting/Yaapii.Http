@@ -24,7 +24,7 @@
 using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Sets the content type header to text/plain.
     /// Content type can be overwritten by adding another content type header part after this body.
     /// </summary>
-    public sealed partial class TextBody : MapInput.Envelope
+    public sealed partial class TextBody : MapInputEnvelope
     {
         /// <summary>
         /// Adds a body to a request.

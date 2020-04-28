@@ -23,14 +23,14 @@
 using System;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds the path of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Path : MapInput.Envelope
+    public sealed partial class Path : MapInputEnvelope
     {
         private const string KEY = "path";
 
@@ -56,7 +56,7 @@ namespace Yaapii.Http.Parts.Uri
         /// Adds the path of a <see cref="System.Uri"/> to a request.
         /// </summary>
         public Path(IText path) : base(
-            new Kvp.Of(KEY, () =>
+            new KvpOf(KEY, () =>
             {
                 var result = path.AsString();
                 if (!result.StartsWith("/"))

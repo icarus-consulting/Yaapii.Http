@@ -21,14 +21,14 @@
 //SOFTWARE.
 
 using System;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts
 {
     /// <summary>
     /// Only adds a part if a given condition applies.
     /// </summary>
-    public sealed class Conditional : MapInput.Envelope
+    public sealed class Conditional : MapInputEnvelope
     {
         /// <summary>
         /// Only adds a part if a given condition applies.

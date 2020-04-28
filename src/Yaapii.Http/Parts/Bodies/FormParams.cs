@@ -21,9 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds form params to a request.
     /// Sets the content type header to application/x-www-form-urlencoded.
     /// </summary>
-    public sealed partial class FormParams : MapInput.Envelope
+    public sealed partial class FormParams : MapInputEnvelope
     {
         private const string KEY_PREFIX = "form:";
 
@@ -40,42 +40,42 @@ namespace Yaapii.Http.Parts.Bodies
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params string[] pairSequence) : this(new Map.Of(pairSequence))
+        public FormParams(params string[] pairSequence) : this(new MapOf(pairSequence))
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<string> pairSequence) : this(new Map.Of(pairSequence))
+        public FormParams(IEnumerable<string> pairSequence) : this(new MapOf(pairSequence))
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params IKvp[] queryParams) : this(new Map.Of(queryParams))
+        public FormParams(params IKvp[] queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<IKvp> queryParams) : this(new Map.Of(queryParams))
+        public FormParams(IEnumerable<IKvp> queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params KeyValuePair<string, string>[] queryParams) : this(new Map.Of(queryParams))
+        public FormParams(params KeyValuePair<string, string>[] queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new Map.Of(queryParams))
+        public FormParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
@@ -85,9 +85,9 @@ namespace Yaapii.Http.Parts.Bodies
         public FormParams(IDictionary<string, string> formParams) : base(() =>
             new Joined(
                 new ContentType("application/x-www-form-urlencoded"),
-                new MapInput.Of(
+                new MapInputOf(
                     new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
-                        new Kvp.Of($"{KEY_PREFIX}{origin.Key}", origin.Value),
+                        new KvpOf($"{KEY_PREFIX}{origin.Key}", origin.Value),
                         formParams
                     )
                 )

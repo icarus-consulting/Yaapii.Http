@@ -21,15 +21,15 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Parts.Headers
 {
     /// <summary>
     /// Envelope for extracting header values from a request.
     /// </summary>
-    public abstract class HeaderOfEnvelope : Many.Envelope<string>
+    public abstract class HeaderOfEnvelope : ManyEnvelope<string>
     {
         /// <summary>
         /// Envelope for extracting header values from a request.
@@ -41,7 +41,8 @@ namespace Yaapii.Http.Parts.Headers
                     header.Key() == key,
                     new Headers.Of(input)
                 )
-            )
+            ),
+            live: false
         )
         { }
     }

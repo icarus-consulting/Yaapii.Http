@@ -29,7 +29,7 @@ using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Parts.Headers;
@@ -54,7 +54,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new BytesOf(
                     new Body.Of(
                         new Body(result).Apply(
-                            new Map.Of(new MapInput.Of())
+                            new MapOf(new MapInputOf())
                         )
                     )
                 ).AsBytes()
@@ -72,7 +72,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                         new Body(
                             new InputOf("| <-- stick figure body")
                         ).Apply(
-                            new Map.Of(new MapInput.Of())
+                            new MapOf(new MapInputOf())
                         )
                     )
                 ).AsString()
@@ -85,7 +85,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/json",
                 new Body(new JObject()).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["header:0:Content-Type"]
             );
         }
@@ -99,7 +99,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).ToString(),
                 new TextOf(
                     new Body.Of(
-                        new Map.Of(
+                        new MapOf(
                             new Body(
                                 new JObject(
                                     new JProperty("key", "value")
@@ -117,7 +117,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/xml",
                 new Body(new XMLCursor("<irrelevant />")).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["header:0:Content-Type"]
             );
         }
@@ -130,7 +130,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextOf(
                     new Body.Of(
                         new Body(new XMLCursor("<importantData />")).Apply(
-                            new Map.Of(new MapInput.Of())
+                            new MapOf(new MapInputOf())
                         )
                     )
                 ).AsString()

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/x-www-form-urlencoded",
                 new FormParams("irrelevant", "irrelevant").Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["header:0:Content-Type"]
             );
         }
@@ -51,7 +51,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     "second key", "second value",
                     "third key", "third value"
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"form:{key}"]
             );
         }

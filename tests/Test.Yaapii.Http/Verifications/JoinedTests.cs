@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Verifications.Test
 {
@@ -49,7 +49,7 @@ namespace Yaapii.Http.Verifications.Test
                     sum += 8;
                 })
             ).Verify(
-                new Map.Of(new MapInput.Of())
+                new MapOf(new MapInputOf())
             );
             Assert.Equal(15, sum);
         }

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.True(
                 new FormParam.Exists(
-                    new Map.Of("form:some key", "some value"),
+                    new MapOf("form:some key", "some value"),
                     "some key"
                 ).Value()
             );
@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.False(
                 new FormParam.Exists(
-                    new Map.Of("form:some key", "some value"),
+                    new MapOf("form:some key", "some value"),
                     "nonexistant param key"
                 ).Value()
             );

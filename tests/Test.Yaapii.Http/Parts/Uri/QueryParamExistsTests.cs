@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.True(
                 new QueryParam.Exists(
-                    new Map.Of("query:some key", "some value"),
+                    new MapOf("query:some key", "some value"),
                     "some key"
                 ).Value()
             );
@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.False(
                 new QueryParam.Exists(
-                    new Map.Of("query:some key", "some value"),
+                    new MapOf("query:some key", "some value"),
                     "some nonexistant key"
                 ).Value()
             );

@@ -21,14 +21,14 @@
 //SOFTWARE.
 
 using System;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers
 {
     /// <summary>
     /// Envelope for adding a header field to a request.
     /// </summary>
-    public abstract class HeaderEnvelope : MapInput.Envelope
+    public abstract class HeaderEnvelope : MapInputEnvelope
     {
         /// <summary>
         /// Envelope for adding a header field to a request.
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         protected HeaderEnvelope(Func<string> key, Func<string> value) : base(input =>
             new Headers(
-                new Kvp.Of(key(), value())
+                new KvpOf(key(), value())
             ).Apply(input)
         )
         { }

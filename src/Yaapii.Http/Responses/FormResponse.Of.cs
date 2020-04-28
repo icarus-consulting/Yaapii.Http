@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 
 namespace Yaapii.Http.Responses
@@ -31,18 +31,18 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and form data.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing the given form data.
             /// </summary>
-            public Of(params string[] pairSequence) : this(200, "OK", new Map.Of(pairSequence))
+            public Of(params string[] pairSequence) : this(200, "OK", new MapOf(pairSequence))
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and form data.
             /// </summary>
-            public Of(int status, string reason, params string[] pairSequence) : this(status, reason, new Map.Of(pairSequence))
+            public Of(int status, string reason, params string[] pairSequence) : this(status, reason, new MapOf(pairSequence))
             { }
 
             /// <summary>
@@ -60,7 +60,8 @@ namespace Yaapii.Http.Responses
                     new Reason(reason),
                     new FormParams(formParams),
                     new Parts.Joined(extraParts)
-                )
+                ),
+                live: false
             )
             { }
         }

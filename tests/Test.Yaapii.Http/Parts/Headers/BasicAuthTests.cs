@@ -22,7 +22,7 @@
 
 using Xunit;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 $"Basic {new TextBase64("user:password").AsString()}",
                 new BasicAuth("user", "password").Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )["header:0:Authorization"]
             );
         }

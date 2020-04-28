@@ -23,21 +23,21 @@
 using System;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds the port of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Port : MapInput.Envelope
+    public sealed partial class Port : MapInputEnvelope
     {
         private const string KEY = "port";
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(int port) : this(new ScalarOf<int>(port))
+        public Port(int port) : this(new Live<int>(port))
         { }
 
         /// <summary>
@@ -49,13 +49,13 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(Func<int> port) : this(new Sticky<int>(port))
+        public Port(Func<int> port) : this(new ScalarOf<int>(port))
         { }
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(IScalar<int> port) : base(new Kvp.Of(KEY, () => $"{port.Value()}"))
+        public Port(IScalar<int> port) : base(new KvpOf(KEY, () => $"{port.Value()}"))
         { }
     }
 }

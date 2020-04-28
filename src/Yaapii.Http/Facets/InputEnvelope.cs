@@ -37,7 +37,7 @@ namespace Yaapii.Http.Facets
         /// <summary>
         /// Envelope for an <see cref="IInput"/>.
         /// </summary>
-        protected InputEnvelope(Func<IInput> source) : this(new Sticky<IInput>(source))
+        protected InputEnvelope(Func<IInput> source) : this(new ScalarOf<IInput>(source))
         { }
 
         /// <summary>

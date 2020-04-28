@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new BearerTokenAuth.Exists(
-                    new Map.Of("header:0:Authorization", $"Bearer this is a token")
+                    new MapOf("header:0:Authorization", $"Bearer this is a token")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new BearerTokenAuth.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

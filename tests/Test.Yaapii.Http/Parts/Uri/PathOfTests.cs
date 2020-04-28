@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "/this/is/a/path",
                 new Path.Of(
-                    new Map.Of("path", "/this/is/a/path")
+                    new MapOf("path", "/this/is/a/path")
                 ).AsString()
             );
         }

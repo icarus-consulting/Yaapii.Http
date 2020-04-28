@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.Facets;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Parts
             /// <summary>
             /// Gets the method of a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY])
+            public Of(IDictionary<string, string> input) : base(() => input[KEY], live: false)
             { }
         }
     }

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.True(
                 new Port.Exists(
-                    new Map.Of("port", "1337")
+                    new MapOf("port", "1337")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.False(
                 new Port.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "qwertz",
                 new Fragment.Of(
-                    new Map.Of("fragment", "qwertz")
+                    new MapOf("fragment", "qwertz")
                 ).AsString()
             );
         }

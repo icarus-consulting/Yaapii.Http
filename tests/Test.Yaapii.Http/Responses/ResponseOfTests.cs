@@ -23,9 +23,9 @@
 using Xunit;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 
@@ -65,8 +65,8 @@ namespace Yaapii.Http.Responses.Test
                         new Response.Of(
                             418,
                             "I'm a teapot",
-                            new Many.Of<IKvp>(
-                                new Kvp.Of("some header key", "some value")
+                            new ManyOf<IKvp>(
+                                new KvpOf("some header key", "some value")
                             )
                         ),
                         "some header key"
@@ -85,7 +85,7 @@ namespace Yaapii.Http.Responses.Test
                         new Response.Of(
                             status: 418,
                             reason: "I'm a teapot",
-                            headers: new Many.Of<IKvp>(),
+                            headers: new ManyOf<IKvp>(),
                             body: new TextOf("mostly hot water")
                         )
                     )

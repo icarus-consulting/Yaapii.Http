@@ -23,7 +23,7 @@
 using Xunit;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                 "some value",
                 new FirstOf<string>(
                     new Header.Of(
-                        new Map.Of("header:0:some key", "some value"),
+                        new MapOf("header:0:some key", "some value"),
                         "some key"
                     )
                 ).Value()
@@ -53,7 +53,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                 expected,
                 new ItemAt<string>(
                     new Header.Of(
-                        new Map.Of(
+                        new MapOf(
                             "header:0:same key", "first value",
                             "header:1:same key", "second value",
                             "header:2:same key", "third value"

@@ -22,8 +22,8 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -32,20 +32,20 @@ namespace Yaapii.Http.Requests
     /// <summary>
     /// A request with trace method.
     /// </summary>
-    public sealed class Trace : Map.Envelope
+    public sealed class Trace : MapEnvelope
     {
         /// <summary>
         /// A request with trace method.
         /// </summary>
-        public Trace(params IMapInput[] parts) : this(new Many.Of<IMapInput>(parts))
+        public Trace(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
         { }
 
         /// <summary>
         /// A request with trace method.
         /// </summary>
         public Trace(Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
-                new Many.Of<IMapInput>(parts),
+            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+                new ManyOf<IMapInput>(parts),
                 new Address(uri)
             )
         )
@@ -55,8 +55,8 @@ namespace Yaapii.Http.Requests
         /// A request with trace method.
         /// </summary>
         public Trace(string uri, params IMapInput[] parts) : this(
-            new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
-                new Many.Of<IMapInput>(parts),
+            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+                new ManyOf<IMapInput>(parts),
                 new Address(uri)
             )
         )
@@ -66,12 +66,13 @@ namespace Yaapii.Http.Requests
         /// A request with trace method.
         /// </summary>
         public Trace(IEnumerable<IMapInput> parts) : base(() => 
-            new Map.Of(
-                new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
+            new MapOf(
+                new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
                     parts,
                     new Method("trace")
                 )
-            )
+            ),
+            live: false
         )
         { }
     }

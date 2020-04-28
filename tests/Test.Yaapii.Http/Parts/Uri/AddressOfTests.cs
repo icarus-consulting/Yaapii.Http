@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment",
                 new Address.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Scheme("https"),
                         new User("someUser"),
                         new Host("somehost"),
@@ -53,7 +53,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https://somehost/",
                 new Address.Of(
-                    new Map.Of(
+                    new MapOf(
                         new Scheme("https"),
                         new Host("somehost")
                     )

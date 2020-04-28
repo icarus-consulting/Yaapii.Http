@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Wires
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Wires
         /// <summary>
         /// A wire that adds extra parts to every request.
         /// </summary>
-        public Refined(IWire origin, params IMapInput[] requestParts) : this(origin, new Many.Of<IMapInput>(requestParts))
+        public Refined(IWire origin, params IMapInput[] requestParts) : this(origin, new ManyOf<IMapInput>(requestParts))
         { }
 
         /// <summary>

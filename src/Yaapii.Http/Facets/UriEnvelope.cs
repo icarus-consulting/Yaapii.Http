@@ -14,7 +14,7 @@ namespace Yaapii.Http.Facets
         /// <summary>
         /// Envelope for something returning a <see cref="Uri"/>.
         /// </summary>
-        protected UriEnvelope(Func<System.Uri> uri) : this(new Sticky<System.Uri>(uri))
+        protected UriEnvelope(Func<System.Uri> uri) : this(new ScalarOf<System.Uri>(uri))
         { }
 
         /// <summary>

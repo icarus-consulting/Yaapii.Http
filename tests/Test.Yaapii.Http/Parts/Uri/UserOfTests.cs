@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "yourNameHere",
                 new User.Of(
-                    new Map.Of("user", "yourNameHere")
+                    new MapOf("user", "yourNameHere")
                 ).AsString()
             );
         }

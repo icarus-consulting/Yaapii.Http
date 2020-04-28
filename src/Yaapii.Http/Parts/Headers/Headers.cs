@@ -24,9 +24,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -34,7 +34,7 @@ namespace Yaapii.Http.Parts.Headers
     /// Adds header fields to a request.
     /// The same key can be used multiple times to add multiple values to the same header field.
     /// </summary>
-    public sealed partial class Headers : MapInput.Envelope
+    public sealed partial class Headers : MapInputEnvelope
     {
         private const string KEY_PREFIX = "header:";
         private const string INDEX_SEPARATOR = ":";
@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Headers
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(params string[] pairSequence) : this(new Many.Of(pairSequence))
+        public Headers(params string[] pairSequence) : this(new ManyOf(pairSequence))
         { }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Yaapii.Http.Parts.Headers
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
         public Headers(IEnumerable<string> pairSequence) : this(
-            new Many.Of<IKvp>(() =>
+            new ManyOf<IKvp>(() =>
             {
                 var length = new Atoms.Enumerable.LengthOf(pairSequence).Value();
                 if (length % 2 != 0)
@@ -66,7 +66,7 @@ namespace Yaapii.Http.Parts.Headers
                 for(int i = 0; i < length; i += 2)
                 {
                     result.Add(
-                        new Kvp.Of(
+                        new KvpOf(
                             new ItemAt<string>(pairSequence, i).Value(),
                             new ItemAt<string>(pairSequence, i+1).Value()
                         )
@@ -81,14 +81,14 @@ namespace Yaapii.Http.Parts.Headers
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(params IKvp[] headers) : this(new Many.Of<IKvp>(headers))
+        public Headers(params IKvp[] headers) : this(new ManyOf<IKvp>(headers))
         { }
 
         /// <summary>
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(params KeyValuePair<string, string>[] headers) : this(new Many.Of<KeyValuePair<string, string>>(headers))
+        public Headers(params KeyValuePair<string, string>[] headers) : this(new ManyOf<KeyValuePair<string, string>>(headers))
         { }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Yaapii.Http.Parts.Headers
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
         public Headers(NameValueCollection headers) : this(
-            new Many.Of<IKvp>(() =>
+            new ManyOf<IKvp>(() =>
             {
                 var kvps = new List<IKvp>();
                 foreach(var key in headers.AllKeys)
@@ -104,7 +104,7 @@ namespace Yaapii.Http.Parts.Headers
                     foreach(var value in headers.GetValues(key))
                     {
                         kvps.Add(
-                            new Kvp.Of(key, value)
+                            new KvpOf(key, value)
                         );
                     }
                 }
@@ -119,7 +119,7 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         public Headers(IEnumerable<KeyValuePair<string, string>> headers) : this(
             new Atoms.Enumerable.Mapped<KeyValuePair<string, string>, IKvp>(kvp =>
-                new Kvp.Of(kvp.Key, kvp.Value),
+                new KvpOf(kvp.Key, kvp.Value),
                 headers
             )
         )
@@ -136,9 +136,9 @@ namespace Yaapii.Http.Parts.Headers
                     new Headers.Of(input)
                 ).Value();
             return
-                new MapInput.Of(
+                new MapInputOf(
                     new Atoms.Enumerable.Mapped<IKvp, IKvp>(kvp =>
-                        new Kvp.Of(
+                        new KvpOf(
                             $"{KEY_PREFIX}{index++}{INDEX_SEPARATOR}{kvp.Key()}", 
                             kvp.Value()
                         ),

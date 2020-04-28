@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Uri.Test
                     "second key", "second value",
                     "third key", "third value"
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"query:{key}"]
             );
         }

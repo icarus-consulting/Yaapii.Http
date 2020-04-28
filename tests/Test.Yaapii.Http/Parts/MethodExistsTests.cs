@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Test
         {
             Assert.True(
                 new Method.Exists(
-                    new Map.Of("method", "post")
+                    new MapOf("method", "post")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Test
         {
             Assert.False(
                 new Method.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

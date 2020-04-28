@@ -22,7 +22,7 @@
 
 using System;
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
@@ -75,21 +75,21 @@ namespace Yaapii.Http.Mock.Test
             var result = 0;
             using (var server =
                 new HttpMock(port,
-                    new Kvp.Of<IWire>("", 
+                    new KvpOf<IWire>("", 
                         new FkWire(req =>
                         {
                             result += 1;
                             return new Response.Of(200, "OK");
                         })
                     ),
-                    new Kvp.Of<IWire>("path",
+                    new KvpOf<IWire>("path",
                         new FkWire(req =>
                         {
                             result += 2;
                             return new Response.Of(200, "OK");
                         })
                     ),
-                    new Kvp.Of<IWire>("another/path",
+                    new KvpOf<IWire>("another/path",
                         new FkWire(req =>
                         {
                             result += 4;
@@ -150,7 +150,7 @@ namespace Yaapii.Http.Mock.Test
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
                 new HttpMock(port,
-                    new Kvp.Of<IWire>("path",
+                    new KvpOf<IWire>("path",
                         new FkWire()
                     )
                 ).Value()

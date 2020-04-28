@@ -21,9 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -32,15 +32,15 @@ namespace Yaapii.Http.Parts.Bodies
         /// <summary>
         /// Gets the form params from a request.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// Gets the form params from a request.
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
-                new Map.Of(
+                new MapOf(
                     new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
-                        new Kvp.Of(
+                        new KvpOf(
                             origin.Key.Remove(0, KEY_PREFIX.Length),
                             origin.Value
                         ),
@@ -49,7 +49,8 @@ namespace Yaapii.Http.Parts.Bodies
                             input
                         )
                     )
-                )
+                ),
+                live: false
             )
             { }
         }

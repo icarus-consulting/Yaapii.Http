@@ -1,5 +1,6 @@
 ﻿using System;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Facets
 {
@@ -38,7 +39,8 @@ namespace Yaapii.Http.Facets
         /// A less verbose alternative to <see cref="Atoms.Scalar.Ternary{In, Out}"/> for adding optional parts to formatted text.
         /// </summary>
         public OptionalText(Func<bool> condition, Func<string> consequence) : base(() =>
-            condition() ? consequence() : ""
+            condition() ? consequence() : "",
+            live: false
         )
         { }
     }
@@ -54,7 +56,8 @@ namespace Yaapii.Http.Facets
         /// A less verbose alternative to <see cref="Atoms.Scalar.Ternary{In, Out}"/> for adding optional parts to formatted text.
         /// </summary>
         public OptionalText(TIn dependency, Func<TIn, bool> condition, Func<TIn, string> consequence) : base(() =>
-            condition(dependency) ? consequence(dependency) : ""
+            condition(dependency) ? consequence(dependency) : "",
+            live: false
         )
         { }
     }

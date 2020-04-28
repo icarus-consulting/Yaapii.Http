@@ -22,7 +22,7 @@
 
 using System;
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "second key", "second value",
                     "third key", "third value"
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"header:{index}:{key}"]
             );
         }
@@ -59,7 +59,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "same key", "second value",
                     "same key", "third value"
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 )[$"header:{index}:same key"]
             );
         }
@@ -72,7 +72,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "key", "value",
                     "anotherKey"
                 ).Apply(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).GetEnumerator()
             );
         }

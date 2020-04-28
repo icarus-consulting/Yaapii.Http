@@ -19,13 +19,9 @@
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="MockHttpServer" Version="1.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Yaapii.Atoms" Version="0.29.0" />
-    <PackageReference Include="Yaapii.JSON" Version="12.1.0" />
-    <PackageReference Include="Yaapii.Xml" Version="0.16.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AtomsTemp\" />
+    <PackageReference Include="Yaapii.Atoms" Version="2.0.2" />
+    <PackageReference Include="Yaapii.JSON" Version="13.0.0" />
+    <PackageReference Include="Yaapii.Xml" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

@@ -27,8 +27,8 @@ using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -63,7 +63,7 @@ namespace Yaapii.Http.Wires
             this.clients = clients;
             this.timeout = timeout;
             this.methods = 
-                new Map.Of<HttpMethod>(
+                new MapOf<HttpMethod>(
                     new KeyValuePair<string, HttpMethod>("delete", HttpMethod.Delete),
                     new KeyValuePair<string, HttpMethod>("get", HttpMethod.Get),
                     new KeyValuePair<string, HttpMethod>("head", HttpMethod.Head),

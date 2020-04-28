@@ -22,14 +22,14 @@
 
 using System;
 using Yaapii.Atoms;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds the host part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Host : MapInput.Envelope
+    public sealed partial class Host : MapInputEnvelope
     {
         private const string KEY = "host";
 
@@ -54,7 +54,7 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds the host part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Host(Func<string> host) : base(new Kvp.Of(KEY, host))
+        public Host(Func<string> host) : base(new KvpOf(KEY, host))
         { }
     }
 }

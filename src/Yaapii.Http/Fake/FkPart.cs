@@ -22,14 +22,14 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Fake
 {
     /// <summary>
     /// A fake part to build a http request or response from.
     /// </summary>
-    public sealed class FkPart : MapInput.Envelope
+    public sealed class FkPart : MapInputEnvelope
     {
         /// <summary>
         /// A fake part to build a http request or response from.

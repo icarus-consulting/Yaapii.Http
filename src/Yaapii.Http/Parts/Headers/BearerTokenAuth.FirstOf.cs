@@ -22,7 +22,7 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.Facets;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -39,7 +39,8 @@ namespace Yaapii.Http.Parts.Headers
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
                     new BearerTokenAuth.Of(input)
-               ).Value()
+                ).Value(),
+                live: false
             )
             { }
         }

@@ -22,7 +22,7 @@
 
 using System;
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Verifications.Test
 {
@@ -35,7 +35,7 @@ namespace Yaapii.Http.Verifications.Test
                 new Verification(
                     dict => false,
                     dict => new ArgumentException()
-                ).Verify(new Map.Of(new MapInput.Of()))
+                ).Verify(new MapOf(new MapInputOf()))
             );
         }
     }

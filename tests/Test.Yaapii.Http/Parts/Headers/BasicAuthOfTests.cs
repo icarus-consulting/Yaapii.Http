@@ -23,7 +23,7 @@
 using Xunit;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Parts.Headers.Test
                 "user:password",
                 new FirstOf<string>(
                     new BasicAuth.Of(
-                        new Map.Of("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                        new MapOf("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
                     )
                 ).Value()
             );

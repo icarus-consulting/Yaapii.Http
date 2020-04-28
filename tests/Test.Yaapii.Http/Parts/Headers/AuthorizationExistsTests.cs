@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new Authorization.Exists(
-                    new Map.Of("header:0:Authorization", "Basic dXNlcjpwYXNzd29yZA==")
+                    new MapOf("header:0:Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new Authorization.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new ContentType.Exists(
-                    new Map.Of("header:0:Content-Type", $"application/json")
+                    new MapOf("header:0:Content-Type", $"application/json")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new ContentType.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

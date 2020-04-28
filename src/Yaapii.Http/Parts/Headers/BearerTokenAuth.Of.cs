@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Parts.Headers
         /// <summary>
         /// Extracts tokens from bearer token authorization headers.
         /// </summary>
-        public sealed class Of : Many.Envelope<string>
+        public sealed class Of : ManyEnvelope<string>
         {
             /// <summary>
             /// Extracts tokens from bearer token authorization headers.
@@ -42,7 +42,8 @@ namespace Yaapii.Http.Parts.Headers
                         auth.StartsWith(AUTH_PREFIX),
                         new Authorization.Of(input)
                     )
-                )
+                ),
+                live: false
             )
             { }
         }

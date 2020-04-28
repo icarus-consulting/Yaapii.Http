@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.True(
                 new Body.Exists(
-                    new Map.Of("body", "| <-- stick figure body")
+                    new MapOf("body", "| <-- stick figure body")
                 ).Value()
             );
         }
@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.False(
                 new Body.Exists(
-                    new Map.Of(new MapInput.Of())
+                    new MapOf(new MapInputOf())
                 ).Value()
             );
         }

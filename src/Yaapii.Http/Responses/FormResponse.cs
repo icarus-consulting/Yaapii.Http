@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
 
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// Form data received as a response from the given wire.
     /// </summary>
-    public sealed partial class FormResponse : Map.Envelope
+    public sealed partial class FormResponse : MapEnvelope
     {
         /// <summary>
         /// Form data received as a response from the given wire.
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// Form data received as a response from the given wire.
         /// </summary>
-        public FormResponse(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
+        public FormResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
         { }
 
         /// <summary>
@@ -56,7 +56,8 @@ namespace Yaapii.Http.Responses
         public FormResponse(IWire wire, IDictionary<string, string> request) : base(() =>
             new FormParams.Of(
                 wire.Response(request)
-            )
+            ),
+            live: false
         )
         { }
     }

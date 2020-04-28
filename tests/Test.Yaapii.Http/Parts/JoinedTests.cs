@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;
@@ -56,7 +56,7 @@ namespace Yaapii.Http.Parts.Test
                     return dict;
                 })
             ).Apply(
-                new Map.Of(new MapInput.Of())
+                new MapOf(new MapInputOf())
             ).GetEnumerator();
             Assert.Equal(15, sum);
         }

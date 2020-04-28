@@ -21,16 +21,16 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds query parameters to a request.
     /// </summary>
-    public sealed partial class QueryParams : MapInput.Envelope
+    public sealed partial class QueryParams : MapInputEnvelope
     {
         private const string KEY_PREFIX = "query:";
 
@@ -38,14 +38,14 @@ namespace Yaapii.Http.Parts.Uri
         /// Adds query parameters to a request.
         /// </summary>
         public QueryParams(string query) : this(
-            new Map.Of(() =>
+            new MapOf(() =>
             {
                 if (query.StartsWith("?"))
                 {
                     query = query.Remove(0, 1);
                 }
                 return
-                    new Map.Of(
+                    new MapOf(
                         query.Split(new char[] { '=', '&' })
                     );
             })
@@ -55,37 +55,37 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params string[] pairSequence) : this(new Map.Of(pairSequence))
+        public QueryParams(params string[] pairSequence) : this(new MapOf(pairSequence))
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<string> pairSequence) : this(new Map.Of(pairSequence))
+        public QueryParams(IEnumerable<string> pairSequence) : this(new MapOf(pairSequence))
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params IKvp[] queryParams) : this(new Map.Of(queryParams))
+        public QueryParams(params IKvp[] queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<IKvp> queryParams) : this(new Map.Of(queryParams))
+        public QueryParams(IEnumerable<IKvp> queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params KeyValuePair<string, string>[] queryParams) : this(new Map.Of(queryParams))
+        public QueryParams(params KeyValuePair<string, string>[] queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new Map.Of(queryParams))
+        public QueryParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new MapOf(queryParams))
         { }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Yaapii.Http.Parts.Uri
         /// </summary>
         public QueryParams(IDictionary<string, string> queryParams) : base(
             new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
-                new Kvp.Of($"{KEY_PREFIX}{origin.Key}", origin.Value),
+                new KvpOf($"{KEY_PREFIX}{origin.Key}", origin.Value),
                 queryParams
             )
         )

@@ -23,9 +23,9 @@
 using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A response from the given parts.
         /// </summary>
-        public sealed class Of : Map.Envelope
+        public sealed class Of : MapEnvelope
         {
             /// <summary>
             /// A response with status 200, reason "OK" and given headers and body.
@@ -60,7 +60,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status, reason, headers and body.
             /// </summary>
             public Of(int status, string reason, IEnumerable<IKvp> headers, IText body, params IMapInput[] extraParts) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Headers(headers),
@@ -92,7 +92,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status, reason and body.
             /// </summary>
             public Of(int status, string reason, IText body, params IMapInput[] extraParts) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Body(body),
@@ -111,7 +111,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status, reason and headers.
             /// </summary>
             public Of(int status, string reason, IEnumerable<IKvp> headers, params IMapInput[] extraParts) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Headers(headers),
@@ -124,7 +124,7 @@ namespace Yaapii.Http.Responses
             /// A response with the given status and reason.
             /// </summary>
             public Of(int status, string reason, params IMapInput[] extraParts) : this(
-                new Many.Of<IMapInput>(
+                new ManyOf<IMapInput>(
                     new Status(status),
                     new Reason(reason),
                     new Parts.Joined(extraParts)
@@ -137,12 +137,12 @@ namespace Yaapii.Http.Responses
             /// Has 200/OK by default, but those can be overwritten.
             /// </summary>
             public Of(params IMapInput[] responseParts) : this(
-                new Yaapii.Http.AtomsTemp.Enumerable.Joined<IMapInput>(
-                    new Many.Of<IMapInput>(
+                new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+                    new ManyOf<IMapInput>(
                         new Status(200),
                         new Reason("OK")
                     ),
-                    new Many.Of<IMapInput>(responseParts)
+                    new ManyOf<IMapInput>(responseParts)
                 )
             )
             { }
@@ -150,7 +150,7 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// A response from the given parts.
             /// </summary>
-            public Of(IEnumerable<IMapInput> responseParts) : base(() => new Map.Of(responseParts))
+            public Of(IEnumerable<IMapInput> responseParts) : base(() => new MapOf(responseParts), live: false)
             { }
         }
     }

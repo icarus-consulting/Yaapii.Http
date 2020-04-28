@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Enumerable;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Responses;
@@ -64,7 +64,7 @@ namespace Yaapii.Http.Mock
         /// A wire that routes requests to other wires, if the given template matches.
         /// Returns 404 if no given template matches the request.
         /// </summary>
-        public MatchingWire(params ITemplate[] templates) : this(new Many.Of<ITemplate>(templates))
+        public MatchingWire(params ITemplate[] templates) : this(new ManyOf<ITemplate>(templates))
         { }
 
         /// <summary>

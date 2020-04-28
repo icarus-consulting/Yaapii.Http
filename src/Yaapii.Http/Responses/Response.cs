@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms.Map;
 using Yaapii.Http.Wires;
 
 namespace Yaapii.Http.Responses
@@ -29,7 +29,7 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// Response from a wire.
     /// </summary>
-    public sealed partial class Response : Map.Envelope
+    public sealed partial class Response : MapEnvelope
     {
         /// <summary>
         /// Verified response from a wire.
@@ -40,7 +40,7 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// Response from a wire.
         /// </summary>
-        public Response(IWire wire) : this(wire, new Map.Of(new MapInput.Of()))
+        public Response(IWire wire) : this(wire, new MapOf(new MapInputOf()))
         { }
 
         /// <summary>
@@ -53,7 +53,8 @@ namespace Yaapii.Http.Responses
         /// Response from a wire.
         /// </summary>
         public Response(IWire wire, IDictionary<string, string> request) : base(() =>
-            wire.Response(request)
+            wire.Response(request),
+            live: false
         )
         { }
     }

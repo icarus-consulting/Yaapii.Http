@@ -17,7 +17,7 @@ namespace Yaapii.Http.Facets
         /// <summary>
         /// Envelope for something returning a json object.
         /// </summary>
-        protected JsonEnvelope(Func<IJSON> json) : this(new Sticky<IJSON>(json))
+        protected JsonEnvelope(Func<IJSON> json) : this(new ScalarOf<IJSON>(json))
         { }
 
         /// <summary>

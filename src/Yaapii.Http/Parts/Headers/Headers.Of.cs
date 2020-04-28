@@ -21,9 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Http.AtomsTemp;
-using Yaapii.Http.AtomsTemp.Enumerable;
-using Yaapii.Http.AtomsTemp.Lookup;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Enumerable;
+using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Headers
         /// Extracts header values from a request or response.
         /// The same key can occur multiple times, if a header field had multiple values.
         /// </summary>
-        public sealed class Of : Many.Envelope<IKvp>
+        public sealed class Of : ManyEnvelope<IKvp>
         {
             /// <summary>
             /// Extracts header values from a request or response.
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Parts.Headers
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
                 new Mapped<KeyValuePair<string, string>, IKvp>(kvp =>
-                    new Kvp.Of(
+                    new KvpOf(
                         kvp.Key
                             .Remove(0, KEY_PREFIX.Length)
                             .TrimStart('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
@@ -52,7 +52,8 @@ namespace Yaapii.Http.Parts.Headers
                         kvp.Key.StartsWith(KEY_PREFIX),
                         input
                     )
-                )
+                ),
+                live: false
             )
             { }
         }
