@@ -275,7 +275,7 @@ var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
 ```
 
 If you need the body in a format other than ```IInput```, there are special body classes, that do the conversion for you:
-* ```new TextBody.Of(response)``` does the same as ```new TextOf(new Body.Of(response))```
+* ```new TextBody.Of(response)``` does something similar to ```new TextOf(new Body.Of(response))```, but automatically selects the encoding based on the Content-Type header (default is UTF-8, if none is specified)
 * ```new XmlBody.Of(reponse)``` does the same as ```new XMLCursor(new Body.Of(response))```
 * ```new JsonBody.Of(reponse)``` does the same as ```new JSONOf(new Body.Of(response))```
 * ```new BytesBody.Of(reponse)``` does the same as ```new BytesOf(new Body.Of(response))```
