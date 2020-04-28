@@ -21,13 +21,21 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
+using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
 {
     public sealed partial class TextBody
     {
+        private const string KEY = "body";
+
         /// <summary>
         /// The body of a request or response as <see cref="IText"/>
         /// </summary>
@@ -36,10 +44,43 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// The body of a request or response as <see cref="IText"/>
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(
-                new TextOf(
-                    new Body.Of(input)
-                ),
+            public Of(IDictionary<string, string> input) : base(() =>
+                {
+                    var encoding = "utf-8";
+                    if(new ContentType.Exists(input).Value())
+                    {
+                        var captures =
+                            new Regex(
+                                "charset=(?<encoding>utf-7|utf-8|utf-16|utf-32|us-ascii)"
+                            ).Match(
+                                new Atoms.Text.Joined("; ",
+                                    new ContentType.Of(input),
+                                    true
+                                ).AsString().ToLower()
+                            ).Groups["encoding"].Captures;
+
+                        if(captures.Count > 0)
+                        {
+                            encoding = captures[0].Value;
+                        }
+                    }
+
+                    return
+                        new TextOf(
+                            new Base64Bytes(
+                                new BytesOf(
+                                    input[TextBody.KEY]
+                                )
+                            ),
+                            new MapOf<Encoding>(
+                                new KvpOf<Encoding>("utf-7", Encoding.UTF7),
+                                new KvpOf<Encoding>("utf-8", Encoding.UTF8),
+                                new KvpOf<Encoding>("utf-16", Encoding.Unicode),
+                                new KvpOf<Encoding>("utf-32", Encoding.UTF32),
+                                new KvpOf<Encoding>("us-ascii", Encoding.ASCII)
+                            )[encoding.ToLower()]
+                        ).AsString();
+                },
                 live: false
             )
             { }

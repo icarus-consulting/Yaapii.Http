@@ -20,7 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Text;
 using Xunit;
+using Yaapii.Atoms.IO;
+using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Parts.Bodies.Test
@@ -36,6 +39,26 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextBody.Of(
                     new Request(
                         new Body(expected)
+                    )
+                ).AsString()
+            );
+        }
+
+        [Fact]
+        public void ReadsNonUTF8Text()
+        {
+            var expected = "this is a test @ ³ € 𤽜 𝄞";
+            Assert.Equal(
+                expected,
+                new TextBody.Of(
+                    new Request(
+                        new Body(
+                            new InputOf(
+                                expected,
+                                Encoding.Unicode
+                            )
+                        ),
+                        new ContentType("text/plain; charset=utf-16")
                     )
                 ).AsString()
             );
