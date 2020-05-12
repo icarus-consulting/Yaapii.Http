@@ -38,15 +38,25 @@ namespace Yaapii.Http.Responses.Test
                     "key2", "value2"
                 );
             Assert.Equal(
-                expected,
+                expected["key1"],
                 new FormResponse(
                     new FkWire(req =>
                         new Response.Of(
                             new FormParams(expected)
                         )
                     )
-                )
+                )["key1"]
             );
+            Assert.Equal(
+                 expected["key2"],
+                 new FormResponse(
+                     new FkWire(req =>
+                         new Response.Of(
+                             new FormParams(expected)
+                         )
+                     )
+                 )["key2"]
+             );
         }
     }
 }

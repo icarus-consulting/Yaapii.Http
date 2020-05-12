@@ -35,6 +35,7 @@ using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Wires
 {
@@ -62,7 +63,7 @@ namespace Yaapii.Http.Wires
         {
             this.clients = clients;
             this.timeout = timeout;
-            this.methods = 
+            this.methods =
                 new MapOf<HttpMethod>(
                     new KeyValuePair<string, HttpMethod>("delete", HttpMethod.Delete),
                     new KeyValuePair<string, HttpMethod>("get", HttpMethod.Get),
@@ -104,7 +105,7 @@ namespace Yaapii.Http.Wires
             System.Net.ServicePointManager.FindServicePoint(
                 new Address.Of(request).Value()
             ).ConnectionLeaseTimeout = (int)this.timeout.TotalMilliseconds; // see  http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
-            
+
             using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
             using (var responseStream = responseContent.ReadAsStreamAsync().GetAwaiter().GetResult())
@@ -147,7 +148,7 @@ namespace Yaapii.Http.Wires
             }
             return headers;
         }
-        
+
         private HttpRequestMessage AspNetRequest(IDictionary<string, string> request)
         {
             var headers = new Headers.Of(request);
@@ -156,17 +157,17 @@ namespace Yaapii.Http.Wires
                     methods[new Method.Of(request).AsString()],
                     new Address.Of(request).Value()
                 );
-            foreach (var header in headers)
+            foreach (var head in headers)
             {
-                aspnetRequest.Headers.TryAddWithoutValidation(header.Key(), header.Value());
+                aspnetRequest.Headers.TryAddWithoutValidation(head.Key(), head.Value());
             }
             var body = Body(request).AsBytes();
-            if(body.Length > 0)
+            if (body.Length > 0)
             {
                 aspnetRequest.Content = new ByteArrayContent(body);
-                foreach (var header in headers)
+                foreach (var head in headers)
                 {
-                    aspnetRequest.Content.Headers.TryAddWithoutValidation(header.Key(), header.Value());
+                    aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
                 }
             }
             return aspnetRequest;
@@ -184,21 +185,21 @@ namespace Yaapii.Http.Wires
         {
             IBytes body = new EmptyBytes();
             var formParams = new FormParams.Of(request);
-            if(formParams.Count > 0)
+            if (formParams.Keys.Count > 0)
             {
                 body =
                     new BytesOf(
                         new Yaapii.Atoms.Text.Joined("&",
-                            new Mapped<KeyValuePair<string, string>, string>(kvp =>
-                                $"{kvp.Key}={kvp.Value}",
+                            new MappedDictionary<string>((key, value) =>
+                                $"{key}={value()}",
                                 formParams
                             )
                         )
                     );
             }
-            else if(new Body.Exists(request).Value())
+            else if (new Body.Exists(request).Value())
             {
-                body = 
+                body =
                     new BytesOf(
                         new Body.Of(request)
                     );

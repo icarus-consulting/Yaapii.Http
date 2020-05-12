@@ -59,8 +59,8 @@ namespace Yaapii.Http.Parts.Uri
                             dict => dict.Keys.Count > 0,
                             dict => "?" +
                                 new Yaapii.Atoms.Text.Joined("&",
-                                    new Mapped<KeyValuePair<string, string>, string>(kvp =>
-                                        $"{kvp.Key}={kvp.Value}",
+                                    new MappedDictionary<string>((key, value) =>
+                                        $"{key}={value()}",
                                         new QueryParams.Of(input)
                                     )
                                 ).AsString()
