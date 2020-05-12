@@ -37,10 +37,16 @@ namespace Yaapii.Http.Responses.Test
                     "key2", "value2"
                 );
             Assert.Equal(
-                expected,
+                expected["key1"],
                 new FormParams.Of(
                     new FormResponse.Of(expected)
-                )
+                )["key1"]
+            );
+            Assert.Equal(
+                expected["key2"],
+                new FormParams.Of(
+                    new FormResponse.Of(expected)
+                )["key2"]
             );
         }
     }

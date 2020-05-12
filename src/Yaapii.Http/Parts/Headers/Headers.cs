@@ -25,7 +25,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers
@@ -53,22 +52,22 @@ namespace Yaapii.Http.Parts.Headers
         public Headers(IEnumerable<string> pairSequence) : this(
             new ManyOf<IKvp>(() =>
             {
-                var length = new Atoms.Enumerable.LengthOf(pairSequence).Value();
+                var length = new LengthOf(pairSequence).Value();
                 if (length % 2 != 0)
                 {
-                    throw 
+                    throw
                         new ArgumentException(
                             "Can not create headers from pair sequence. " +
                             $"The number of given strings needs to be a multiple of two, but is {length}."
                         );
                 }
                 var result = new List<IKvp>();
-                for(int i = 0; i < length; i += 2)
+                for (int i = 0; i < length; i += 2)
                 {
                     result.Add(
                         new KvpOf(
                             new ItemAt<string>(pairSequence, i).Value(),
-                            new ItemAt<string>(pairSequence, i+1).Value()
+                            new ItemAt<string>(pairSequence, i + 1).Value()
                         )
                     );
                 }
@@ -99,9 +98,9 @@ namespace Yaapii.Http.Parts.Headers
             new ManyOf<IKvp>(() =>
             {
                 var kvps = new List<IKvp>();
-                foreach(var key in headers.AllKeys)
+                foreach (var key in headers.AllKeys)
                 {
-                    foreach(var value in headers.GetValues(key))
+                    foreach (var value in headers.GetValues(key))
                     {
                         kvps.Add(
                             new KvpOf(key, value)
@@ -139,7 +138,7 @@ namespace Yaapii.Http.Parts.Headers
                 new MapInputOf(
                     new Atoms.Enumerable.Mapped<IKvp, IKvp>(kvp =>
                         new KvpOf(
-                            $"{KEY_PREFIX}{index++}{INDEX_SEPARATOR}{kvp.Key()}", 
+                            $"{KEY_PREFIX}{index++}{INDEX_SEPARATOR}{kvp.Key()}",
                             kvp.Value()
                         ),
                         headers

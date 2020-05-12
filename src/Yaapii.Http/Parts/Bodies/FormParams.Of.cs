@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
+using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -39,13 +40,13 @@ namespace Yaapii.Http.Parts.Bodies
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
                 new MapOf(
-                    new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
+                    new MappedDictionary<IKvp>((key, value) =>
                         new KvpOf(
-                            origin.Key.Remove(0, KEY_PREFIX.Length),
-                            origin.Value
+                            key.Remove(0, KEY_PREFIX.Length),
+                            value
                         ),
-                        new Filtered<KeyValuePair<string, string>>(kvp =>
-                            kvp.Key.StartsWith(KEY_PREFIX),
+                        new FilteredDictionary((key, value) =>
+                            key.StartsWith(KEY_PREFIX),
                             input
                         )
                     )

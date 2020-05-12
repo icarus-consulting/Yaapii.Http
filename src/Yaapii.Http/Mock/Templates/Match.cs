@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
+using Yaapii.Http.Facets;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 
@@ -152,14 +153,14 @@ namespace Yaapii.Http.Mock.Templates
             var templateHeaders = new Headers.Of(this.template);
             var requestHeaders = new Headers.Of(request);
             var applies = true;
-            foreach(var templateHeader in templateHeaders)
+            foreach (var templateHeader in templateHeaders)
             {
                 var matches =
                     new Yaapii.Atoms.Enumerable.Filtered<IKvp>(kvp =>
                         kvp.Key() == templateHeader.Key() && kvp.Value() == templateHeader.Value(),
                         requestHeaders
                     );
-                if(new Yaapii.Atoms.Enumerable.LengthOf(matches).Value() == 0)
+                if (new Yaapii.Atoms.Enumerable.LengthOf(matches).Value() == 0)
                 {
                     applies = false;
                     break;
@@ -171,24 +172,26 @@ namespace Yaapii.Http.Mock.Templates
         private bool HasNonHeaderParts(IDictionary<string, string> request)
         {
             var templateParts =
-                new Filtered<KeyValuePair<string, string>>(kvp =>
-                    !kvp.Key.StartsWith(HEADER_KEY_PREFIX),
-                    this.template
+                new MapOf(
+                    new FilteredDictionary((key, value) =>
+                        !key.StartsWith(HEADER_KEY_PREFIX),
+                        this.template
+                    )
                 );
             var requestParts =
-                new Filtered<KeyValuePair<string, string>>(kvp =>
-                    !kvp.Key.StartsWith(HEADER_KEY_PREFIX),
+                new FilteredDictionary((key, value) =>
+                    !key.StartsWith(HEADER_KEY_PREFIX),
                     request
                 );
             var applies = true;
-            foreach(var templatePart in templateParts)
+            foreach (var templatePart in templateParts.Keys)
             {
                 var matches =
-                    new Filtered<KeyValuePair<string, string>>(kvp =>
-                        kvp.Key == templatePart.Key && kvp.Value == templatePart.Value,
+                    new FilteredDictionary((key, value) =>
+                        key == templatePart && value() == templateParts[templatePart],
                         requestParts
                     );
-                if (new LengthOf(matches).Value() == 0)
+                if (new LengthOf(matches.Keys).Value() == 0)
                 {
                     applies = false;
                     break;

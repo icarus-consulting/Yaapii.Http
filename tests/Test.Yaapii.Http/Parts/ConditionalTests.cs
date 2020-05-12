@@ -38,7 +38,7 @@ namespace Yaapii.Http.Parts.Test
                     )
                 ).Apply(
                     new MapOf(new MapInputOf())
-                )
+                ).Keys
             );
         }
 
@@ -53,7 +53,7 @@ namespace Yaapii.Http.Parts.Test
                     )
                 ).Apply(
                     new MapOf(new MapInputOf())
-                )
+                ).Keys
             );
         }
     }

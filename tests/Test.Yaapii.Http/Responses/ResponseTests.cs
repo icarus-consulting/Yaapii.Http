@@ -83,14 +83,14 @@ namespace Yaapii.Http.Responses.Test
         public void VerifiesResponse()
         {
             var verified = false;
-            new Response(
+            var keys = new Response(
                 new FkWire(200, "OK"),
                 new Verifications.Verification(res =>
                 {
                     verified = true;
                 }),
                 new Get()
-            ).GetEnumerator();
+            ).Keys;
             Assert.True(verified);
         }
     }
