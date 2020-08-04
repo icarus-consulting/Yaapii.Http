@@ -36,7 +36,7 @@ namespace Yaapii.Http.Mock.Test
     public sealed class HttpMockTests
     {
         [Fact]
-        public void ListensToAnyPath()
+        public async void ListensToAnyPath()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             var clients = new AspNetCoreClients();
@@ -51,13 +51,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -68,7 +68,7 @@ namespace Yaapii.Http.Mock.Test
         }
 
         [Fact]
-        public void RoutesToPath()
+        public async void RoutesToPath()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             var clients = new AspNetCoreClients();
@@ -99,13 +99,13 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}")
                 );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/path")
                 );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                await new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                     new Get($"http://localhost:{port}/another/path")
                 );
             }
@@ -116,7 +116,7 @@ namespace Yaapii.Http.Mock.Test
         }
 
         [Fact]
-        public void Returns200()
+        public async void Returns200()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -128,7 +128,7 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire(
+                        await new AspNetCoreWire(
                             new AspNetCoreClients(), 
                             new TimeSpan(0, 1, 0)
                         ).Response(
@@ -145,7 +145,7 @@ namespace Yaapii.Http.Mock.Test
         }
 
         [Fact]
-        public void Returns404()
+        public async void Returns404()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -156,22 +156,24 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var response =
+                    await new AspNetCoreWire(
+                                new AspNetCoreClients(),
+                                new TimeSpan(0, 1, 0)
+                            ).Response(
+                                new Get($"http://localhost:{port}/unknown/path")
+                            );
                 Assert.Equal(
                     404,
                     new Status.Of(
-                        new AspNetCoreWire(
-                            new AspNetCoreClients(),
-                            new TimeSpan(0, 1, 0)
-                        ).Response(
-                            new Get($"http://localhost:{port}/unknown/path")
-                        )
+                        response 
                     ).AsInt()
                 );
             }
         }
 
         [Fact]
-        public void ForwardsQueryParams()
+        public async void ForwardsQueryParams()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             var queryParam = "";
@@ -185,7 +187,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(
+                await new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(

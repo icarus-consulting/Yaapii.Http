@@ -138,7 +138,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         }
         
         [Fact]
-        public void TransmitsZipFile()
+        public async void TransmitsZipFile()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -164,11 +164,12 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     new TextOf(
                         new UnzippedFile(
                             new Body.Of(
-                                new AspNetCoreWire(
-                                    new AspNetCoreClients()
-                                ).Response(
-                                    new Get($"http://localhost:{port}/")
-                                )
+                                await 
+                                    new AspNetCoreWire(
+                                        new AspNetCoreClients()
+                                    ).Response(
+                                        new Get($"http://localhost:{port}/")
+                                    )
                             ),
                             "test.txt"
                         )
@@ -178,7 +179,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         }
 
         [Fact]
-        public void TransmitsRawZipFile()
+        public async void TransmitsRawZipFile()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             IInput result = new DeadInput();
@@ -197,7 +198,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 )
             )
             {
-                new AspNetCoreWire(
+                await new AspNetCoreWire(
                     new AspNetCoreClients()
                 ).Response(
                     new Post($"http://localhost:{port}/",

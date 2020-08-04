@@ -58,7 +58,7 @@ namespace Yaapii.Http.Responses
         public JsonResponse(IWire wire, IDictionary<string, string> request) : base(() =>
             new JSONOf(
                 new Body.Of(
-                    wire.Response(request)
+                    wire.Response(request).Result
                 )
             )
         )

@@ -31,24 +31,25 @@ namespace Yaapii.Http.Mock.Templates.Test
     public sealed class JoinedTests
     {
         [Fact]
-        public void ReturnsPrimaryTemplateResponse()
+        public async void ReturnsPrimaryTemplateResponse()
         {
             Assert.Equal(
                 "correct response",
                 new TextOf(
                     new Body.Of(
-                        new Joined(
-                            new Conditional(
-                                req => true,
-                                new FkWire("correct response")
-                            ),
-                            new Conditional(
-                                req => true,
-                                new FkWire("wrong response")
+                        await
+                            new Joined(
+                                new Conditional(
+                                    req => true,
+                                    new FkWire("correct response")
+                                ),
+                                new Conditional(
+                                    req => true,
+                                    new FkWire("wrong response")
+                                )
+                            ).Response(
+                                new Request()
                             )
-                        ).Response(
-                            new Request()
-                        )
                     )
                 ).AsString()
             );

@@ -36,13 +36,13 @@ namespace Yaapii.Http.Mock.Test
         [Theory]
         [InlineData("first", "first expected result")]
         [InlineData("second", "second expected result")]
-        public void RoutesToPath(string path, string expected)
+        public async void RoutesToPath(string path, string expected)
         {
             Assert.Equal(
                 expected,
                 new TextOf(
                     new Body.Of(
-                        new MatchingWire(
+                        await new MatchingWire(
                             new Match("first", req => "first expected result"),
                             new Match("second", req => "second expected result")
                         ).Response(
@@ -58,13 +58,13 @@ namespace Yaapii.Http.Mock.Test
         [Theory]
         [InlineData("first", "first expected result")]
         [InlineData("second", "second expected result")]
-        public void RoutesToHeader(string headerValue, string expected)
+        public async void RoutesToHeader(string headerValue, string expected)
         {
             Assert.Equal(
                 expected,
                 new TextOf(
                     new Body.Of(
-                        new MatchingWire(
+                        await new MatchingWire(
                             new Match("same/path",
                                 new Header("important header", "first"),
                                 req => "first expected result"
@@ -87,13 +87,13 @@ namespace Yaapii.Http.Mock.Test
         [Theory]
         [InlineData("first", "first expected result")]
         [InlineData("second", "second expected result")]
-        public void RoutesToJoinedRequestPart(string QueryParamValue, string expected)
+        public async void RoutesToJoinedRequestPart(string QueryParamValue, string expected)
         {
             Assert.Equal(
                 expected,
                 new TextOf(
                     new Body.Of(
-                        new MatchingWire(
+                        await new MatchingWire(
                             new Match("same/path", 
                                 new Parts.Joined(
                                     new Body("important data"),
@@ -121,12 +121,12 @@ namespace Yaapii.Http.Mock.Test
         }
 
         [Fact]
-        public void Returns404()
+        public async void Returns404()
         {
             Assert.Equal(
                 404,
                 new Status.Of(
-                    new MatchingWire(
+                    await new MatchingWire(
                         new Match("first", req => "irrelevant"),
                         new Match("second", req => "more irrelevant")
                     ).Response(

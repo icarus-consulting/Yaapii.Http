@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 
 namespace Yaapii.Http.Mock.Templates
@@ -65,7 +66,7 @@ namespace Yaapii.Http.Mock.Templates
             return applies;
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
             return this.primary.Response(request);
         }

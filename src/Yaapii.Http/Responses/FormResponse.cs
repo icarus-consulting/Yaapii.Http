@@ -55,7 +55,7 @@ namespace Yaapii.Http.Responses
         /// </summary>
         public FormResponse(IWire wire, IDictionary<string, string> request) : base(() =>
             new FormParams.Of(
-                wire.Response(request)
+                wire.Response(request).Result
             ),
             live: false
         )

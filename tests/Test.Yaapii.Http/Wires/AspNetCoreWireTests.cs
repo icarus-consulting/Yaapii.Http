@@ -44,7 +44,7 @@ namespace Yaapii.Http.Wires.Test
     public sealed class AspNetCoreWireTests
     {
         [Fact]
-        public void SendsRequest()
+        public async void SendsRequest()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -58,7 +58,7 @@ namespace Yaapii.Http.Wires.Test
                 Assert.Equal(
                     200,
                     new Status.Of(
-                        new AspNetCoreWire(
+                        await new AspNetCoreWire(
                             new AspNetCoreClients(),
                             new TimeSpan(0, 1, 0)
                         ).Response(
@@ -75,7 +75,7 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Fact]
-        public void SendsHeaders()
+        public async void SendsHeaders()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             var header = "";
@@ -89,7 +89,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(
+                await new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
@@ -111,7 +111,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("application/json")]
         [InlineData("application/xml")]
         [InlineData("text/plain")]
-        public void SendsMultipleHeaderValues(string expected)
+        public async void SendsMultipleHeaderValues(string expected)
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             IEnumerable<string> headers = new ManyOf<string>();
@@ -125,21 +125,22 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(
-                    new AspNetCoreClients(),
-                    new TimeSpan(0, 1, 0)
-                ).Response(
-                    new Get(
-                        new Scheme("http"),
-                        new Host("localhost"),
-                        new Port(server.Port),
-                        new Headers(
-                            new KvpOf("Accept", "application/json"),
-                            new KvpOf("Accept", "application/xml"),
-                            new KvpOf("Accept", "text/plain")
+                await 
+                    new AspNetCoreWire(
+                        new AspNetCoreClients(),
+                        new TimeSpan(0, 1, 0)
+                    ).Response(
+                        new Get(
+                            new Scheme("http"),
+                            new Host("localhost"),
+                            new Port(server.Port),
+                            new Headers(
+                                new KvpOf("Accept", "application/json"),
+                                new KvpOf("Accept", "application/xml"),
+                                new KvpOf("Accept", "text/plain")
+                            )
                         )
-                    )
-                );
+                    );
             }
             Assert.Contains(
                 expected,
@@ -148,7 +149,7 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Fact]
-        public void ReturnsHeaders()
+        public async void ReturnsHeaders()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -169,7 +170,7 @@ namespace Yaapii.Http.Wires.Test
                     "GET",
                     new FirstOf<string>(
                         new Header.Of(
-                            new AspNetCoreWire(
+                            await new AspNetCoreWire(
                                 new AspNetCoreClients(),
                                 new TimeSpan(0, 1, 0)
                             ).Response(
@@ -191,7 +192,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("GET")]
         [InlineData("POST")]
         [InlineData("PUT")]
-        public void ReturnsMultipleHeaderValues(string expected)
+        public async void ReturnsMultipleHeaderValues(string expected)
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -214,7 +215,7 @@ namespace Yaapii.Http.Wires.Test
                 Assert.Contains(
                     expected,
                     new Header.Of(
-                        new AspNetCoreWire(
+                        await new AspNetCoreWire(
                             new AspNetCoreClients(),
                             new TimeSpan(0, 1, 0)
                         ).Response(
@@ -231,7 +232,7 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Fact]
-        public void SendsBody()
+        public async void SendsBody()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             var body = "";
@@ -248,17 +249,18 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(
-                    new AspNetCoreClients(),
-                    new TimeSpan(0, 1, 0)
-                ).Response(
-                    new Get(
-                        new Scheme("http"),
-                        new Host("localhost"),
-                        new Port(server.Port),
-                        new TextBody("very important content")
-                    )
-                );
+                await
+                    new AspNetCoreWire(
+                        new AspNetCoreClients(),
+                        new TimeSpan(0, 1, 0)
+                    ).Response(
+                        new Get(
+                            new Scheme("http"),
+                            new Host("localhost"),
+                            new Port(server.Port),
+                            new TextBody("very important content")
+                        )
+                    );
             }
             Assert.Equal(
                 "very important content",
@@ -267,7 +269,7 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Fact]
-        public void ReturnsBody()
+        public async void ReturnsBody()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -282,7 +284,7 @@ namespace Yaapii.Http.Wires.Test
                     "very important content",
                     new TextOf(
                         new Body.Of(
-                            new AspNetCoreWire(
+                            await new AspNetCoreWire(
                                 new AspNetCoreClients(),
                                 new TimeSpan(0, 1, 0)
                             ).Response(
@@ -301,7 +303,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void RejectsMissingMethod()
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.ThrowsAsync<ArgumentException>(() =>
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -316,7 +318,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void RejectsUnknownMethod()
         {
-            Assert.Throws<ArgumentException>(() =>
+            Assert.ThrowsAsync<ArgumentException>(() =>
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -332,8 +334,8 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void RejectsMissingAddress()
         {
-            Assert.Throws<ArgumentException>(() =>
-                new AspNetCoreWire(
+            Assert.ThrowsAsync<ArgumentException>(() =>
+               new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
@@ -343,13 +345,13 @@ namespace Yaapii.Http.Wires.Test
         }
 
         [Fact]
-        public void GetsWebsite()
+        public async void GetsWebsite()
         {
             Assert.StartsWith(
                 "<!doctype html>",
                 new TextOf(
                     new Body.Of(
-                        new AspNetCoreWire(
+                        await new AspNetCoreWire(
                             new AspNetCoreClients(),
                             new TimeSpan(0, 1, 0)
                         ).Response(

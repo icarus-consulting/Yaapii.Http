@@ -23,19 +23,19 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Text;
+using Yaapii.Http.Facets;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires.AspNetCore;
-using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Wires
 {
@@ -98,7 +98,7 @@ namespace Yaapii.Http.Wires
                 );
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public async Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
             this.requestVerification.Verify(request);
 
@@ -106,9 +106,9 @@ namespace Yaapii.Http.Wires
                 new Address.Of(request).Value()
             ).ConnectionLeaseTimeout = (int)this.timeout.TotalMilliseconds; // see  http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
 
-            using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
+            using (var aspnetResponse = await AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
-            using (var responseStream = responseContent.ReadAsStreamAsync().GetAwaiter().GetResult())
+            using (var responseStream = await responseContent.ReadAsStreamAsync())
             {
                 var body =
                     new BytesOf(
@@ -173,12 +173,13 @@ namespace Yaapii.Http.Wires
             return aspnetRequest;
         }
 
-        private HttpResponseMessage AspNetResponse(HttpRequestMessage request)
+        private async Task<HttpResponseMessage> AspNetResponse(HttpRequestMessage request)
         {
-            return
-                this.clients.Client(this.timeout).SendAsync(
-                    request
-                ).GetAwaiter().GetResult();
+            return await this.clients.Client(this.timeout).SendAsync(request);
+            //return
+            //    this.clients.Client(this.timeout).SendAsync(
+            //        request
+            //    ).GetAwaiter().GetResult();
         }
 
         private IBytes Body(IDictionary<string, string> request)

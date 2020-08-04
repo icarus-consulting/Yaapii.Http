@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Yaapii.Http.Wires
 {
@@ -30,17 +31,17 @@ namespace Yaapii.Http.Wires
     /// </summary>
     public abstract class WireEnvelope : IWire
     {
-        private readonly Func<IDictionary<string, string>, IDictionary<string, string>> response;
+        private readonly Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response;
 
         /// <summary>
         /// Envelope for a <see cref="IWire"/>.
         /// </summary>
-        protected WireEnvelope(Func<IDictionary<string, string>, IDictionary<string, string>> response)
+        protected WireEnvelope(Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response)
         {
             this.response = response;
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
             return this.response(request);
         }

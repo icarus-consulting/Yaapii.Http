@@ -30,9 +30,10 @@ namespace Yaapii.Http.Wires.Test
     public sealed class VerifiedTests
     {
         [Fact]
-        public void VerifiesResponse()
+        public async  void VerifiesResponse()
         {
             var verified = false;
+            await
             new Verified(
                 new FkWire(200, "OK"),
                 new Verification(res =>

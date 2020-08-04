@@ -63,7 +63,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         }
 
         [Fact]
-        public void TransmitsLongText()
+        public async void TransmitsLongText()
         {
             var port = new AwaitedPort(new RandomPort().Value()).Value();
             using (var server =
@@ -89,11 +89,12 @@ namespace Yaapii.Http.Parts.Bodies.Test
                     3499,
                     new TextOf(
                         new Body.Of(
-                            new AspNetCoreWire(
-                                new AspNetCoreClients()
-                            ).Response(
-                                new Get($"http://localhost:{port}/")
-                            )
+                            await 
+                                new AspNetCoreWire(
+                                    new AspNetCoreClients()
+                                ).Response(
+                                    new Get($"http://localhost:{port}/")
+                                )
                         )
                     ).AsString().Replace("\r", "").Replace("\n", "").Length
                 );

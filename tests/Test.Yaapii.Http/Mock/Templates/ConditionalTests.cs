@@ -45,17 +45,18 @@ namespace Yaapii.Http.Mock.Templates.Test
         }
 
         [Fact]
-        public void HasResponse()
+        public async void HasResponse()
         {
             var expected = "expected response";
             Assert.Equal(
                 expected,
                 new TextOf(
                     new Body.Of(
-                        new Conditional(
-                            req => true,
-                            new FkWire(expected)
-                        ).Response(new Request())
+                        await 
+                            new Conditional(
+                                req => true,
+                                new FkWire(expected)
+                            ).Response(new Request())
                     )
                 ).AsString()
             );

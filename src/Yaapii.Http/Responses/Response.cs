@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Wires;
@@ -53,9 +54,11 @@ namespace Yaapii.Http.Responses
         /// Response from a wire.
         /// </summary>
         public Response(IWire wire, IDictionary<string, string> request) : base(() =>
-            wire.Response(request),
+            wire.Response(request).Result,
             live: false
         )
         { }
     }
+
+    
 }

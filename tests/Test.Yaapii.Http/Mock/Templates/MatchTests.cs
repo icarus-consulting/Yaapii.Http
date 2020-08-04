@@ -34,19 +34,20 @@ namespace Yaapii.Http.Mock.Templates.Test
     public sealed class MatchTests
     {
         [Fact]
-        public void HasResponse()
+        public async void HasResponse()
         {
             var expected = "expected response";
             Assert.Equal(
                 expected,
                 new TextOf(
                     new Body.Of(
-                        new Match(
-                            "path",
-                            new FkWire(expected)
-                        ).Response(
-                            new Request()
-                        )
+                        await
+                            new Match(
+                                "path",
+                                new FkWire(expected)
+                            ).Response(
+                                new Request()
+                            )
                     )
                 ).AsString()
             );

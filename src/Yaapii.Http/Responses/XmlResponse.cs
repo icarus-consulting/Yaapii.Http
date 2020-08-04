@@ -65,7 +65,7 @@ namespace Yaapii.Http.Responses
                 new ScalarOf<IXML>(() =>
                     new XMLCursor(
                         new Body.Of(
-                            wire.Response(request)
+                            wire.Response(request).Result
                         )
                     )
                 );

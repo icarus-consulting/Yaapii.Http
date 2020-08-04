@@ -21,6 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Net.Cache;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts.Uri;
@@ -76,13 +78,15 @@ namespace Yaapii.Http.Mock
             this.templates = templates;
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
-            IDictionary<string, string> response =
-                new Response.Of(
-                    404, 
-                    "No matching template found.", 
-                    "No matching template found."
+            var response = 
+                new Task<IDictionary<string, string>>(() =>
+                    new Response.Of(
+                        404, 
+                        "No matching template found.", 
+                        "No matching template found."
+                    )
                 );
             foreach(var template in this.templates)
             {
@@ -92,7 +96,18 @@ namespace Yaapii.Http.Mock
                     break;
                 }
             }
+
+            if(!Started(response) && response.Status == TaskStatus.Created)
+            {
+                response.Start();
+            }
+
             return response;
+        }
+
+        private bool Started(Task task)
+        {
+            return !task.IsCompleted && (task.Status == TaskStatus.Running || task.Status == TaskStatus.WaitingToRun || task.Status == TaskStatus.WaitingForActivation);
         }
     }
 }

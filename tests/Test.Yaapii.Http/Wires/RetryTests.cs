@@ -59,7 +59,7 @@ namespace Yaapii.Http.Wires.Test
         {
             var attempt = 0;
             var attempts = 3;
-            Assert.Throws<ApplicationException>(() =>
+            Assert.ThrowsAsync<ApplicationException>(() =>
                 new Retry(
                     attempts,
                     new FkWire(requestAction: req =>

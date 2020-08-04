@@ -63,7 +63,7 @@ namespace Yaapii.Http.Responses
         public BytesResponse(IWire wire, IDictionary<string, string> request) : base(() =>
             new BytesOf(
                 new Body.Of(
-                    wire.Response(request)
+                    wire.Response(request).Result
                 )
             ).AsBytes()
         )
