@@ -38,7 +38,7 @@ namespace Yaapii.Http.Wires
         {
             var response = Task.Run(() => origin.Response(request)).Result;
             verification.Verify(response);
-            return new Task<IDictionary<string, string>>(() => response);
+            return new TaskFactory().StartNew<IDictionary<string, string>>(() => response);
         })
         { }
     }
