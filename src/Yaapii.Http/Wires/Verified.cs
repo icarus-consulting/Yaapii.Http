@@ -20,6 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Threading.Tasks;
+
 namespace Yaapii.Http.Wires
 {
     /// <summary>
@@ -30,9 +32,9 @@ namespace Yaapii.Http.Wires
         /// <summary>
         /// A wire that verifies each response.
         /// </summary>
-        public Verified(IWire origin, IVerification verification) : base(async request =>
+        public Verified(IWire origin, IVerification verification) : base(request =>
         {
-            var response = await origin.Response(request);
+            var response = Task.Run(() => origin.Response(request)).Result;
             verification.Verify(response);
             return response;
         })
