@@ -143,7 +143,7 @@ namespace Yaapii.Http.Mock.Test
                                 new Port(server.Port),
                                 new Path("test/asdf")
                             )
-                        ).Result
+                        )
                     ).AsInt()
                 );
             }
@@ -169,7 +169,7 @@ namespace Yaapii.Http.Mock.Test
                             new TimeSpan(0, 1, 0)
                         ).Response(
                             new Get($"http://localhost:{port}/unknown/path")
-                        ).Result
+                        )
                     ).AsInt()
                 );
             }

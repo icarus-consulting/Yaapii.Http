@@ -178,7 +178,7 @@ namespace Yaapii.Http.Wires.Test
                                     new Host("localhost"),
                                     new Port(server.Port)
                                 )
-                            ).Result,
+                            ),
                             "Allow"
                         )
                     ).Value()
@@ -223,7 +223,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Host("localhost"),
                                 new Port(server.Port)
                             )
-                        ).Result,
+                        ),
                         "Allow"
                     )
                 );
@@ -291,7 +291,7 @@ namespace Yaapii.Http.Wires.Test
                                     new Host("localhost"),
                                     new Port(server.Port)
                                 )
-                            ).Result
+                            )
                         )
                     ).AsString()
                 );
@@ -321,17 +321,22 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void RejectsUnknownMethod()
         {
-            Assert.Throws<ArgumentException>(() =>
+            try
+            {
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
-                    new Requests.Request(
+                    new Request(
                         new Method("unknownMethod"),
                         new Address("http://localhost")
                     )
-                ).Result
-            );
+                ).Wait(30000);
+            }
+            catch (AggregateException agg)
+            {
+                Assert.True(agg.InnerException is ArgumentException);
+            }
         }
 
         [Fact]
@@ -366,7 +371,7 @@ namespace Yaapii.Http.Wires.Test
                             new Get(
                                 "https://google.com"
                             )
-                        ).Result
+                        )
                     )
                 ).AsString()
             );

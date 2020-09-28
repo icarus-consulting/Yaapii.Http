@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
@@ -34,12 +35,18 @@ namespace Yaapii.Http.Parts.Headers
         /// <summary>
         /// Envelope for extracting header values from a request.
         /// </summary>
-        protected HeaderOfEnvelope(IDictionary<string, string> input, string key) : base(() => 
+        protected HeaderOfEnvelope(IDictionary<string, string> input, string key) : this(() => input, key)
+        { }
+
+        /// <summary>
+        /// Envelope for extracting header values from a request.
+        /// </summary>
+        protected HeaderOfEnvelope(Func<IDictionary<string, string>> input, string key) : base(() => 
             new Mapped<IKvp, string>(matchingHeader =>
                 matchingHeader.Value(),
                 new Filtered<IKvp>(header =>
                     header.Key() == key,
-                    new Headers.Of(input)
+                    new Headers.Of(input())
                 )
             ),
             live: false

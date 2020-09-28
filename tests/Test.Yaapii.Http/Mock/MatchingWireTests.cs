@@ -49,7 +49,7 @@ namespace Yaapii.Http.Mock.Test
                             new Request(
                                 new Path(path)
                             )
-                        ).Result
+                        )
                     )
                 ).AsString()
             );
@@ -78,7 +78,7 @@ namespace Yaapii.Http.Mock.Test
                                 new Path("same/path"),
                                 new Header("important header", headerValue)
                             )
-                        ).Result
+                        )
                     )
                 ).AsString()
             );
@@ -114,7 +114,7 @@ namespace Yaapii.Http.Mock.Test
                                 new Body("important data"),
                                 new QueryParam("someParam", QueryParamValue)
                             )
-                        ).Result
+                        )
                     )
                 ).AsString()
             );
