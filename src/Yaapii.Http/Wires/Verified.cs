@@ -30,9 +30,9 @@ namespace Yaapii.Http.Wires
         /// <summary>
         /// A wire that verifies each response.
         /// </summary>
-        public Verified(IWire origin, IVerification verification) : base(request =>
+        public Verified(IWire origin, IVerification verification) : base(async request =>
         {
-            var response = origin.Response(request);
+            var response = await origin.Response(request);
             verification.Verify(response);
             return response;
         })

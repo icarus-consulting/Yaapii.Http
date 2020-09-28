@@ -24,6 +24,8 @@ using MockHttpServer;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Enumerable;
@@ -184,16 +186,15 @@ namespace Yaapii.Http.Mock
             return this.server.Value();
         }
 
-        private void Respond(HttpListenerRequest request, HttpListenerResponse response)
+        private async void Respond(HttpListenerRequest request, HttpListenerResponse response)
         {
-            var wireResponse =
-                new Response(
-                    this.wire,
-                    Request(request)
-                );
+            //var wireResponse = await this.wire.Response(Request(request));
+            var wireResponse = new Response(this.wire, Request(request));
+
+
             response.StatusCode = new Status.Of(wireResponse).AsInt();
             response.StatusDescription = new Reason.Of(wireResponse).AsString();
-            foreach(var header in new Headers.Of(wireResponse))
+            foreach (var header in new Headers.Of(wireResponse))
             {
                 response.Header(header.Key(), header.Value());
             }

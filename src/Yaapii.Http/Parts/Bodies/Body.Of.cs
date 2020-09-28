@@ -20,8 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
@@ -41,19 +43,34 @@ namespace Yaapii.Http.Parts.Bodies
             private readonly IScalar<IInput> input;
 
             /// <summary>
-            /// Gets the body of a request or response.
+            /// The body of a request or response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : this(
+            public Of(IDictionary<string, string> input) : this(() => input)
+            { }
+
+            /// <summary>
+            /// The body of a request or response.
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input) : this(() =>
+                input.Result
+            )
+            { }
+
+            /// <summary>
+            /// The body of a request or response.
+            /// </summary>
+            private Of(Func<IDictionary<string, string>> input) : this(
                 new ScalarOf<IInput>(() =>
                 {
                     IInput result = new DeadInput();
-                    if(input.ContainsKey(Body.KEY))
+                    var ipt = input();
+                    if(ipt.ContainsKey(Body.KEY))
                     {
                         result =
                             new InputOf(
                                 new Base64Bytes(
                                     new BytesOf(
-                                        input[KEY]
+                                        ipt[KEY]
                                     )
                                 )
                             );

@@ -25,14 +25,11 @@ using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
-using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Text;
 using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
-using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires;
@@ -208,7 +205,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                             )
                         )
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Equal(
                 "this is a test", // content of test.txt in Assets/test.zip

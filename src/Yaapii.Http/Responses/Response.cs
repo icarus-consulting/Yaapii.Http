@@ -53,7 +53,7 @@ namespace Yaapii.Http.Responses
         /// Response from a wire.
         /// </summary>
         public Response(IWire wire, IDictionary<string, string> request) : base(() =>
-            wire.Response(request),
+            wire.Response(request).Result,
             live: false
         )
         { }

@@ -20,9 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 
@@ -30,27 +31,46 @@ namespace Yaapii.Http.Parts.Bodies
 {
     public sealed partial class FormParams
     {
+
         /// <summary>
-        /// Gets the form params from a request.
+        /// Form params from a request.
         /// </summary>
         public sealed class Of : MapEnvelope
         {
             /// <summary>
+            /// Form params from a request.
+            /// </summary>
+            public Of(IDictionary<string, string> input) : this(() => input)
+            { }
+
+            /// <summary>
+            /// Form params from a request.
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input) : this(() =>
+                input.Result
+            )
+            { }
+
+            /// <summary>
             /// Gets the form params from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new MapOf(
-                    new MappedDictionary<IKvp>((key, value) =>
-                        new KvpOf(
-                            key.Remove(0, KEY_PREFIX.Length),
-                            value
-                        ),
-                        new FilteredDictionary((key, value) =>
-                            key.StartsWith(KEY_PREFIX),
-                            input
-                        )
-                    )
-                ),
+            private Of(Func<IDictionary<string, string>> input) : base(() =>
+                {
+                    var ipt = input();
+                    return
+                        new MapOf(
+                            new MappedDictionary<IKvp>((key, value) =>
+                                new KvpOf(
+                                    key.Remove(0, KEY_PREFIX.Length),
+                                    value
+                                ),
+                                new FilteredDictionary((key, value) =>
+                                    key.StartsWith(KEY_PREFIX),
+                                    ipt
+                                )
+                            )
+                        );
+                },
                 live: false
             )
             { }

@@ -139,7 +139,7 @@ namespace Yaapii.Http.Wires.Test
                             new KvpOf("Accept", "text/plain")
                         )
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Contains(
                 expected,
@@ -178,7 +178,7 @@ namespace Yaapii.Http.Wires.Test
                                     new Host("localhost"),
                                     new Port(server.Port)
                                 )
-                            ),
+                            ).Result,
                             "Allow"
                         )
                     ).Value()
@@ -223,7 +223,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Host("localhost"),
                                 new Port(server.Port)
                             )
-                        ),
+                        ).Result,
                         "Allow"
                     )
                 );
@@ -258,7 +258,7 @@ namespace Yaapii.Http.Wires.Test
                         new Port(server.Port),
                         new TextBody("very important content")
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Equal(
                 "very important content",
@@ -291,7 +291,7 @@ namespace Yaapii.Http.Wires.Test
                                     new Host("localhost"),
                                     new Port(server.Port)
                                 )
-                            )
+                            ).Result
                         )
                     ).AsString()
                 );
@@ -309,7 +309,7 @@ namespace Yaapii.Http.Wires.Test
                     new Requests.Request(
                         new Address("http://localhost")
                     )
-                )
+                ).Result
             );
         }
 
@@ -325,7 +325,7 @@ namespace Yaapii.Http.Wires.Test
                         new Method("unknownMethod"),
                         new Address("http://localhost")
                     )
-                )
+                ).Result
             );
         }
 
@@ -338,7 +338,7 @@ namespace Yaapii.Http.Wires.Test
                     new TimeSpan(0, 1, 0)
                 ).Response(
                     new Get()
-                )
+                ).Result
             );
         }
 
@@ -356,7 +356,7 @@ namespace Yaapii.Http.Wires.Test
                             new Get(
                                 "https://google.com"
                             )
-                        )
+                        ).Result
                     )
                 ).AsString()
             );

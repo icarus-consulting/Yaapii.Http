@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
@@ -138,7 +139,7 @@ namespace Yaapii.Http.Mock.Templates
             return HasTemplateHeaders(request) && HasNonHeaderParts(request);
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
             return this.wire.Response(request);
         }

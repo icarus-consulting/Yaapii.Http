@@ -34,14 +34,30 @@ namespace Yaapii.Http.Wires.AspNetCore
     public sealed class AspNetCoreClients : IAspHttpClients
     {
         private readonly IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
+        private readonly Func<TimeSpan, HttpClient> addClient;
 
         /// <summary>
         /// Only add one of these to your application to make sure clients will be reused whenever possible.
         /// This will return an existing client, if the same timeout has been used before.
         /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
         /// </summary>
-        public AspNetCoreClients()
+        public AspNetCoreClients() :this(timeout =>
+            new HttpClient()
+            {
+                Timeout = timeout
+            }
+        )
         { }
+
+        /// <summary>
+        /// Only add one of these to your application to make sure clients will be reused whenever possible.
+        /// This will return an existing client, if the same timeout has been used before.
+        /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
+        /// </summary>
+        public AspNetCoreClients(Func<TimeSpan, HttpClient> addClient)
+        {
+            this.addClient = addClient;
+        }
 
         public HttpClient Client(TimeSpan timeout)
         {
@@ -51,10 +67,7 @@ namespace Yaapii.Http.Wires.AspNetCore
                 {
                     clients.Add(
                         timeout.Ticks,
-                        new HttpClient()
-                        {
-                            Timeout = timeout
-                        }
+                        this.addClient(timeout)
                     );
                 }
             }
@@ -62,3 +75,7 @@ namespace Yaapii.Http.Wires.AspNetCore
         }
     }
 }
+//new HttpClient()
+//{
+//    Timeout = timeout
+//                        }

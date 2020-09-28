@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System;
+using System.Threading.Tasks;
 using Xunit;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
@@ -51,14 +52,16 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}")
-                );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}/path")
-                );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}/another/path")
+                Task.WaitAll(
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}")
+                    ),
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}/path")
+                    ),
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}/another/path")
+                    )
                 );
             }
             Assert.Equal(
@@ -75,7 +78,7 @@ namespace Yaapii.Http.Mock.Test
             var result = 0;
             using (var server =
                 new HttpMock(port,
-                    new KvpOf<IWire>("", 
+                    new KvpOf<IWire>("",
                         new FkWire(req =>
                         {
                             result += 1;
@@ -99,14 +102,16 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}")
-                );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}/path")
-                );
-                new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
-                    new Get($"http://localhost:{port}/another/path")
+                Task.WaitAll(
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}")
+                    ),
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}/path")
+                    ),
+                    new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
+                        new Get($"http://localhost:{port}/another/path")
+                    )
                 );
             }
             Assert.Equal(
@@ -129,7 +134,7 @@ namespace Yaapii.Http.Mock.Test
                     200,
                     new Status.Of(
                         new AspNetCoreWire(
-                            new AspNetCoreClients(), 
+                            new AspNetCoreClients(),
                             new TimeSpan(0, 1, 0)
                         ).Response(
                             new Get(
@@ -138,7 +143,7 @@ namespace Yaapii.Http.Mock.Test
                                 new Port(server.Port),
                                 new Path("test/asdf")
                             )
-                        )
+                        ).Result
                     ).AsInt()
                 );
             }
@@ -164,7 +169,7 @@ namespace Yaapii.Http.Mock.Test
                             new TimeSpan(0, 1, 0)
                         ).Response(
                             new Get($"http://localhost:{port}/unknown/path")
-                        )
+                        ).Result
                     ).AsInt()
                 );
             }
@@ -190,7 +195,7 @@ namespace Yaapii.Http.Mock.Test
                     new TimeSpan(0, 1, 0)
                 ).Response(
                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
-                );
+                ).Wait(30000);
             }
             Assert.Equal(
                 "importantValue",
