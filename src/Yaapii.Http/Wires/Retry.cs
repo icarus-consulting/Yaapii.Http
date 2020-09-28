@@ -74,7 +74,7 @@ namespace Yaapii.Http.Wires
             {
                 try
                 {
-                    response = origin.Response(request).Result;
+                    response = Task.Run(() => origin.Response(request)).Result;
                 }
                 catch (Exception ex)
                 {

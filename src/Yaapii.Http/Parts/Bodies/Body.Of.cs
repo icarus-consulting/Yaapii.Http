@@ -52,7 +52,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// The body of a request or response.
             /// </summary>
             public Of(Task<IDictionary<string, string>> input) : this(() =>
-                input.Result
+                Task.Run(() => input).Result
             )
             { }
 

@@ -47,7 +47,7 @@ namespace Yaapii.Http.Parts.Bodies
             /// Form params from a request.
             /// </summary>
             public Of(Task<IDictionary<string, string>> input) : this(() =>
-                input.Result
+                Task.Run(() => input).Result
             )
             { }
 

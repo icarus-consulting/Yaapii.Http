@@ -45,7 +45,7 @@ namespace Yaapii.Http.Responses
             /// The status code of a response.
             /// </summary>
             public Of(Task<IDictionary<string, string>> input) : this(() =>
-                input.Result
+                Task.Run(() => input).Result
             )
             { }
 

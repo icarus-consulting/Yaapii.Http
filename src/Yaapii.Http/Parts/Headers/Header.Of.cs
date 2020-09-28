@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Headers
             /// <summary>
             /// Gets the values of a header field from a request.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input, string key) : this(() => input.Result, key)
+            public Of(Task<IDictionary<string, string>> input, string key) : this(() => Task.Run(() => input).Result, key)
             { }
 
             /// <summary>
