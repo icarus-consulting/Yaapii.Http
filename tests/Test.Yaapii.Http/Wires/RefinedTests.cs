@@ -41,7 +41,10 @@ namespace Yaapii.Http.Wires.Test
                     return new Responses.Response.Of(200, "OK");
                 }),
                 new BearerTokenAuth("this is a token")
-            ).Response(new Get());
+            )
+            .Response(new Get())
+            .Wait(30000);
+
             Assert.Equal(
                 "this is a token",
                 token
