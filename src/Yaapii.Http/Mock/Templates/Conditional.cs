@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Yaapii.Http.Mock.Templates
 {
@@ -47,7 +48,7 @@ namespace Yaapii.Http.Mock.Templates
             return this.condition(request);
         }
 
-        public IDictionary<string, string> Response(IDictionary<string, string> request)
+        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
         {
             return this.wire.Response(request);
         }

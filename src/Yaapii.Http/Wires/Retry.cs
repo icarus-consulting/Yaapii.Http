@@ -26,6 +26,7 @@ using Yaapii.Atoms.Text;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
+using System.Threading.Tasks;
 
 namespace Yaapii.Http.Wires
 {
@@ -68,12 +69,12 @@ namespace Yaapii.Http.Wires
         /// </summary>
         public Retry(int attempts, Func<IDictionary<string, string>, Exception, Exception> exception, IWire origin) : base(request =>
         {
-            IDictionary<string, string> response = new MapOf(new MapInputOf());
+            IDictionary<string, string> response = new Dictionary<string, string>();
             for(int i = 1; i <= attempts; i++)
             {
                 try
                 {
-                    response = origin.Response(request);
+                    response = Task.Run(() => origin.Response(request)).Result;
                 }
                 catch (Exception ex)
                 {
@@ -83,7 +84,7 @@ namespace Yaapii.Http.Wires
                     }
                 }
             }
-            return response;
+            return Task.FromResult(response);
         })
         { }
     }

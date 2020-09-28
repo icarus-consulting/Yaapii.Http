@@ -39,7 +39,9 @@ namespace Yaapii.Http.Wires.Test
                 {
                     verified = true;
                 })
-            ).Response(new Get());
+            )
+            .Response(new Get())
+            .Wait(30000);
             Assert.True(verified);
         }
     }

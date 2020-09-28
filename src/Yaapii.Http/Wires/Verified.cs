@@ -20,6 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace Yaapii.Http.Wires
 {
     /// <summary>
@@ -32,9 +36,9 @@ namespace Yaapii.Http.Wires
         /// </summary>
         public Verified(IWire origin, IVerification verification) : base(request =>
         {
-            var response = origin.Response(request);
+            var response = Task.Run(() => origin.Response(request)).Result;
             verification.Verify(response);
-            return response;
+            return new TaskFactory().StartNew<IDictionary<string, string>>(() => response);
         })
         { }
     }

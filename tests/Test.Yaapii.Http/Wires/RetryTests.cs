@@ -67,7 +67,9 @@ namespace Yaapii.Http.Wires.Test
                         attempt++;
                         throw new Exception();
                     })
-                ).Response(new Get("http://localhost"))
+                )
+                .Response(new Get("http://localhost"))
+                .Wait(30000)
             );
             Assert.Equal(attempts, attempt);
         }

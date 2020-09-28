@@ -87,7 +87,7 @@ namespace Yaapii.Http.Parts.Headers
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(params KeyValuePair<string, string>[] headers) : this(new ManyOf<KeyValuePair<string, string>>(headers))
+        public Headers(params KeyValuePair<string, string>[] headers) : this(new MapOf(headers))
         { }
 
         /// <summary>
@@ -116,10 +116,10 @@ namespace Yaapii.Http.Parts.Headers
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(IEnumerable<KeyValuePair<string, string>> headers) : this(
-            new Atoms.Enumerable.Mapped<KeyValuePair<string, string>, IKvp>(kvp =>
-                new KvpOf(kvp.Key, kvp.Value),
-                headers
+        public Headers(IDictionary<string, string> headers) : this(
+            new Atoms.Enumerable.Mapped<string, IKvp>(key =>
+                new KvpOf(key, headers[key]),
+                headers.Keys
             )
         )
         { }

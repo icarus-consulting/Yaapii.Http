@@ -23,6 +23,7 @@
 using System;
 using System.Net.NetworkInformation;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Scalar;
 
 namespace Yaapii.Http.Mock
 {
@@ -31,7 +32,7 @@ namespace Yaapii.Http.Mock
     /// </summary>
     public sealed class AwaitedPort : IScalar<int>
     {
-        private readonly int port;
+        private readonly IScalar<int> port;
         private readonly TimeSpan timeout;
 
         /// <summary>
@@ -41,9 +42,21 @@ namespace Yaapii.Http.Mock
         { }
 
         /// <summary>
+        /// Port which is awaited for 30 seconds max to be freed.
+        /// </summary>
+        public AwaitedPort(int port, TimeSpan wait) : this(new ScalarOf<int>(port), wait)
+        { }
+
+        /// <summary>
+        /// Port which is awaited for 30 seconds max to be freed.
+        /// </summary>
+        public AwaitedPort(IScalar<int> port) : this(port, new TimeSpan(0, 30, 0))
+        { }
+
+        /// <summary>
         /// Port which is awaited for given max timespan to be freed.
         /// </summary>
-        public AwaitedPort(int port, TimeSpan wait)
+        public AwaitedPort(IScalar<int> port, TimeSpan wait)
         {
             this.port = port;
             this.timeout = wait;
@@ -58,9 +71,9 @@ namespace Yaapii.Http.Mock
             }
             if (!Available())
             {
-                throw new ApplicationException($"Cannot use port {port} because it has not been free for {this.timeout.TotalSeconds} seconds.");
+                throw new ApplicationException($"Cannot use port {this.port.Value()} because it has not been free for {this.timeout.TotalSeconds} seconds.");
             }
-            return port;
+            return this.port.Value();
         }
 
         private bool Available()
@@ -69,7 +82,7 @@ namespace Yaapii.Http.Mock
 
             foreach (var listener in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
             {
-                if (listener.Port == port)
+                if (listener.Port == port.Value())
                 {
                     isAvailable = false;
                     break;

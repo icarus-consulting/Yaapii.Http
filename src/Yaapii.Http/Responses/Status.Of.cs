@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Number;
 using Yaapii.Atoms.Text;
 
@@ -29,16 +31,30 @@ namespace Yaapii.Http.Responses
     public sealed partial class Status
     {
         /// <summary>
-        /// Gets the status code of a response.
+        /// The status code of a response.
         /// </summary>
         public sealed class Of : NumberEnvelope
         {
             /// <summary>
-            /// Gets the status code of a response.
+            /// The status code of a response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(
+            public Of(IDictionary<string, string> input) : this(() => input)
+            { }
+
+            /// <summary>
+            /// The status code of a response.
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input) : this(() =>
+                Task.Run(() => input).Result
+            )
+            { }
+
+            /// <summary>
+            /// The status code of a response.
+            /// </summary>
+            private Of(Func<IDictionary<string, string>> input) : base(
                 new IntOf(
-                    new TextOf(() => input[KEY])
+                    new TextOf(() => input()[KEY])
                 )
             )
             { }

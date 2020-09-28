@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -34,7 +36,19 @@ namespace Yaapii.Http.Parts.Headers
             /// <summary>
             /// Gets the values of a header field from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input, string key) : base(input, key)
+            public Of(IDictionary<string, string> input, string key) : this(() => input, key)
+            { }
+
+            /// <summary>
+            /// Gets the values of a header field from a request.
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input, string key) : this(() => Task.Run(() => input).Result, key)
+            { }
+
+            /// <summary>
+            /// Gets the values of a header field from a request.
+            /// </summary>
+            private Of(Func<IDictionary<string, string>> input, string key) : base(input, key)
             { }
         }
     }

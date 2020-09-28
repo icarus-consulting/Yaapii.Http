@@ -37,6 +37,7 @@ using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Http.Test;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -46,7 +47,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsRequest()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new KvpOf<IWire>("test/asdf",
@@ -77,7 +78,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsHeaders()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var header = "";
             using (var server =
                 new HttpMock(port,
@@ -99,7 +100,7 @@ namespace Yaapii.Http.Wires.Test
                         new Port(server.Port),
                         new Header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Equal(
                 "Basic dXNlcjpwYXNzd29yZA==",
@@ -113,7 +114,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("text/plain")]
         public void SendsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             IEnumerable<string> headers = new ManyOf<string>();
             using (var server =
                 new HttpMock(port,
@@ -139,7 +140,7 @@ namespace Yaapii.Http.Wires.Test
                             new KvpOf("Accept", "text/plain")
                         )
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Contains(
                 expected,
@@ -150,12 +151,12 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsHeaders()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
                     {
-                        return 
+                        return
                             new Response.Of(200, "OK",
                                 new ManyOf<IKvp>(
                                     new KvpOf("Allow", "GET")
@@ -193,7 +194,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("PUT")]
         public void ReturnsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
@@ -233,13 +234,13 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsBody()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var body = "";
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
                     {
-                        body = 
+                        body =
                             new TextOf(
                                 new Body.Of(req)
                             ).AsString();
@@ -258,7 +259,7 @@ namespace Yaapii.Http.Wires.Test
                         new Port(server.Port),
                         new TextBody("very important content")
                     )
-                );
+                ).Wait(30000);
             }
             Assert.Equal(
                 "very important content",
@@ -269,7 +270,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsBody()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(
@@ -301,45 +302,60 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void RejectsMissingMethod()
         {
-            Assert.Throws<ArgumentException>(() =>
+            try
+            {
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
-                    new Requests.Request(
+                    new Request(
                         new Address("http://localhost")
                     )
-                )
-            );
+                ).Wait(30000);
+            }
+            catch (AggregateException agg)
+            {
+                Assert.True(agg.InnerException is ArgumentException);
+            }
         }
 
         [Fact]
         public void RejectsUnknownMethod()
         {
-            Assert.Throws<ArgumentException>(() =>
+            try
+            {
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
-                    new Requests.Request(
+                    new Request(
                         new Method("unknownMethod"),
                         new Address("http://localhost")
                     )
-                )
-            );
+                ).Wait(30000);
+            }
+            catch (AggregateException agg)
+            {
+                Assert.True(agg.InnerException is ArgumentException);
+            }
         }
 
         [Fact]
         public void RejectsMissingAddress()
         {
-            Assert.Throws<ArgumentException>(() =>
+            try
+            {
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
                     new Get()
-                )
-            );
+                ).Wait();
+            }
+            catch (AggregateException agg)
+            {
+                Assert.True(agg.InnerException is ArgumentException);
+            }
         }
 
         [Fact]

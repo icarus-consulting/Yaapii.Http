@@ -29,6 +29,7 @@ using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Responses;
+using System.Threading.Tasks;
 
 namespace Yaapii.Http.Fake
 {
@@ -203,7 +204,7 @@ namespace Yaapii.Http.Fake
         public FkWire(Action<IDictionary<string, string>> requestAction) : this(req =>
         {
             requestAction(req);
-            return new Response.Of(200, "OK");
+            return new Task<IDictionary<string,string>>(() => new Response.Of(200, "OK"));
         })
         { }
 
@@ -220,7 +221,18 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response using the given function.
         /// </summary>
-        public FkWire(Func<IDictionary<string, string>, IDictionary<string, string>> response) : base(response)
+        public FkWire(Func<IDictionary<string, string>, IDictionary<string, string>> response) : this(req => new Task<IDictionary<string, string>>(() => response(req)))
+        { }
+
+        /// <summary>
+        /// A fake wire to convert http requests into responses.
+        /// Creates a response using the given function.
+        /// </summary>
+        public FkWire(Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response) : base((req) => {
+            var task = response(req);
+            task.Start();
+            return task;
+        })
         { }
     }
 }

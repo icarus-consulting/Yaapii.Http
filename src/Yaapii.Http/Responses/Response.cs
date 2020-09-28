@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Wires;
 
@@ -53,7 +54,7 @@ namespace Yaapii.Http.Responses
         /// Response from a wire.
         /// </summary>
         public Response(IWire wire, IDictionary<string, string> request) : base(() =>
-            wire.Response(request),
+            Task.Run(() => wire.Response(request)).Result,
             live: false
         )
         { }

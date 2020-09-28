@@ -30,6 +30,7 @@ using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Http.Test;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -65,7 +66,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         [Fact]
         public void TransmitsLongText()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
