@@ -28,6 +28,7 @@ using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
+using Yaapii.Http.Test;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
 
@@ -39,7 +40,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ListensToAnyPath()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var clients = new AspNetCoreClients();
             var requests = 0;
             using (var server =
@@ -73,7 +74,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void RoutesToPath()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var clients = new AspNetCoreClients();
             var result = 0;
             using (var server =
@@ -123,7 +124,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns200()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire()
@@ -152,7 +153,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns404()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new KvpOf<IWire>("path",
@@ -178,7 +179,7 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ForwardsQueryParams()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var queryParam = "";
             using (var server =
                 new HttpMock(port,

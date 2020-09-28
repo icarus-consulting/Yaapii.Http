@@ -32,6 +32,7 @@ using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
+using Yaapii.Http.Test;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
 using Yaapii.Xml;
@@ -133,11 +134,11 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).AsString()
             );
         }
-        
+
         [Fact]
         public void TransmitsZipFile()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
@@ -177,14 +178,14 @@ namespace Yaapii.Http.Parts.Bodies.Test
         [Fact]
         public void TransmitsRawZipFile()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             IInput result = new DeadInput();
             using (var server =
                 new MockServer(
                     port,
                     "{}",
-                    (req, res, prm) => 
-                        result = 
+                    (req, res, prm) =>
+                        result =
                             new InputOf(
                                 new BytesOf(
                                     new InputOf(req.InputStream)

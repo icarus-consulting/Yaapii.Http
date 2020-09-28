@@ -37,6 +37,7 @@ using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Http.Test;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -46,7 +47,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsRequest()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new KvpOf<IWire>("test/asdf",
@@ -77,7 +78,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsHeaders()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var header = "";
             using (var server =
                 new HttpMock(port,
@@ -113,7 +114,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("text/plain")]
         public void SendsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             IEnumerable<string> headers = new ManyOf<string>();
             using (var server =
                 new HttpMock(port,
@@ -150,7 +151,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsHeaders()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
@@ -193,7 +194,7 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("PUT")]
         public void ReturnsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(req =>
@@ -233,7 +234,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsBody()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             var body = "";
             using (var server =
                 new HttpMock(port,
@@ -269,7 +270,7 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsBody()
         {
-            var port = new AwaitedPort(new RandomPort().Value()).Value();
+            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
                 new HttpMock(port,
                     new FkWire(
