@@ -221,7 +221,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response using the given function.
         /// </summary>
-        public FkWire(Func<IDictionary<string, string>, IDictionary<string, string>> response) : this(req => new Task<IDictionary<string, string>>(() => response(req)))
+        public FkWire(Func<IDictionary<string, string>, IDictionary<string, string>> syncResponse) : this(req => new Task<IDictionary<string, string>>(() => syncResponse(req)))
         { }
 
         /// <summary>
