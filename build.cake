@@ -169,6 +169,7 @@ Task("UnitTests")
 ///////////////////////////////////////////////////////////////////////////////
 Task("NuGet")
     .IsDependentOn("Clean")
+    .IsDependentOn("Restore")
     .IsDependentOn("Version")
     .Does(() => 
     {
@@ -257,6 +258,7 @@ Task("GitHubRelease")
 Task("NuGetFeed")
     .WithCriteria(() => isAppVeyor && BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
     .IsDependentOn("NuGet")
+    .IsDependentOn("Credentials")
     .Does(() => 
     {
         Information(Figlet("NuGetFeed"));
@@ -295,7 +297,6 @@ Task("Default")
 .IsDependentOn("Build")
 .IsDependentOn("UnitTests")
 .IsDependentOn("NuGet")
-.IsDependentOn("Credentials")
 .IsDependentOn("GitHubRelease")
 .IsDependentOn("NuGetFeed");
 
