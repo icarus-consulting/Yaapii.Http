@@ -17,7 +17,7 @@ csharp_space_after_keywords_in_control_flow_statements = true
 [*.cake]
 indent_size = 4
 
-# Appveyor cofinguration
+# Appveyor configuration
 [*.yml]
 indent_size = 2
 
