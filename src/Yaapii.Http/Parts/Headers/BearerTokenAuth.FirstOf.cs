@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
@@ -38,7 +39,8 @@ namespace Yaapii.Http.Parts.Headers
             /// </summary>
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
-                    new BearerTokenAuth.Of(input)
+                    new BearerTokenAuth.Of(input),
+                    new InvalidOperationException($"Failed to extract first value of '{BearerTokenAuth.KEY}' header. No values found.")
                 ).Value(),
                 live: false
             )

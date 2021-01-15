@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Error;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts
@@ -35,7 +37,17 @@ namespace Yaapii.Http.Parts
             /// <summary>
             /// Gets the method of a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY], live: false)
+            public Of(IDictionary<string, string> input) : base(() =>
+            {
+                new FailWhen(
+                    input.ContainsKey(KEY),
+                    new InvalidOperationException($"Failed to extract {KEY} from request or response. No {KEY} found.")
+                ).Go();
+
+                return input[KEY];
+            },
+                live: false
+            )
             { }
         }
     }

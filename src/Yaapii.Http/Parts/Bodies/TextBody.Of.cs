@@ -20,13 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms.Error;
 using Yaapii.Atoms.Map;
-using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Parts.Headers;
 
@@ -46,6 +47,11 @@ namespace Yaapii.Http.Parts.Bodies
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
                 {
+                    new FailWhen(
+                        input.ContainsKey(TextBody.KEY),
+                        new InvalidOperationException("Failed to extract body as text. No body found.")
+                    ).Go();
+
                     var encoding = "utf-8";
                     if(new ContentType.Exists(input).Value())
                     {
