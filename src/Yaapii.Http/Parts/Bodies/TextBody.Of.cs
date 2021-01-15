@@ -48,7 +48,7 @@ namespace Yaapii.Http.Parts.Bodies
             public Of(IDictionary<string, string> input) : base(() =>
                 {
                     new FailWhen(
-                        input.ContainsKey(TextBody.KEY),
+                        !input.ContainsKey(TextBody.KEY),
                         new InvalidOperationException("Failed to extract body as text. No body found.")
                     ).Go();
 

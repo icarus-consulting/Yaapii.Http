@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Uri
             public Of(IDictionary<string, string> input, string key) : base(() =>
                 {
                     new FailWhen(
-                        input.ContainsKey($"{KEY_PREFIX}{key}"),
+                        !input.ContainsKey($"{KEY_PREFIX}{key}"),
                         new InvalidOperationException(
                             $"Failed to extract query param '{key}' from request or response. " +
                             $"No query param with key '{key}' found."

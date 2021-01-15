@@ -43,7 +43,7 @@ namespace Yaapii.Http.Parts.Uri
                 new ScalarOf<int>(() =>
                 {
                     new FailWhen(
-                        input.ContainsKey(KEY),
+                        !input.ContainsKey(KEY),
                         new InvalidOperationException($"Failed to extract {KEY} from request or response. No {KEY} found.")
                     ).Go();
 

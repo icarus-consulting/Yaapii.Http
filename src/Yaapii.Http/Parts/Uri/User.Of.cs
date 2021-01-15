@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Uri
             public Of(IDictionary<string, string> input) : base(() =>
             {
                 new FailWhen(
-                    input.ContainsKey(KEY),
+                    !input.ContainsKey(KEY),
                     new InvalidOperationException($"Failed to extract {KEY} from request or response. No {KEY} found.")
                 ).Go();
 

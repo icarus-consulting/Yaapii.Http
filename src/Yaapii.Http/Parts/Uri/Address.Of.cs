@@ -41,7 +41,7 @@ namespace Yaapii.Http.Parts.Uri
             public Of(IDictionary<string, string> input) : base(() =>
             {
                 new FailWhen(
-                    new Address.Exists(input).Value(),
+                    !new Address.Exists(input).Value(),
                     new InvalidOperationException("Failed to extract address from request or response. No host and/or scheme found.")
                 ).Go();
 

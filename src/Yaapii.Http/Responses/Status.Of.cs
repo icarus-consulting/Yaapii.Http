@@ -59,7 +59,7 @@ namespace Yaapii.Http.Responses
                 {
                     var inputValue = input();
                     new FailWhen(
-                        inputValue.ContainsKey(KEY),
+                        !inputValue.ContainsKey(KEY),
                         new InvalidOperationException($"Failed to extract {KEY} from response. No {KEY} found.")
                     ).Go();
 
