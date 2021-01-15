@@ -176,10 +176,6 @@ namespace Yaapii.Http.Wires
         private async Task<HttpResponseMessage> AspNetResponse(HttpRequestMessage request)
         {
             return await this.clients.Client(this.timeout).SendAsync(request);
-            //return
-            //    this.clients.Client(this.timeout).SendAsync(
-            //        request
-            //    ).GetAwaiter().GetResult();
         }
 
         private IBytes Body(IDictionary<string, string> request)

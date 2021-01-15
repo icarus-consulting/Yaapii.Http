@@ -75,7 +75,3 @@ namespace Yaapii.Http.Wires.AspNetCore
         }
     }
 }
-//new HttpClient()
-//{
-//    Timeout = timeout
-//                        }
