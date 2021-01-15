@@ -22,7 +22,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
+using Yaapii.Atoms;
+using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Wires.AspNetCore
 {
@@ -35,17 +38,15 @@ namespace Yaapii.Http.Wires.AspNetCore
     {
         private readonly IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
         private readonly Func<TimeSpan, HttpClient> addClient;
+        private readonly IAction setup;
 
         /// <summary>
         /// Only add one of these to your application to make sure clients will be reused whenever possible.
         /// This will return an existing client, if the same timeout has been used before.
         /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
         /// </summary>
-        public AspNetCoreClients() :this(timeout =>
-            new HttpClient()
-            {
-                Timeout = timeout
-            }
+        public AspNetCoreClients() : this(
+            SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls
         )
         { }
 
@@ -54,15 +55,34 @@ namespace Yaapii.Http.Wires.AspNetCore
         /// This will return an existing client, if the same timeout has been used before.
         /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
         /// </summary>
-        public AspNetCoreClients(Func<TimeSpan, HttpClient> addClient)
+        public AspNetCoreClients(SecurityProtocolType security) : this(timeout =>
+            new HttpClient()
+            {
+                Timeout = timeout
+            },
+            new Once(() =>
+            {
+                ServicePointManager.SecurityProtocol = security;
+            })
+        )
+        { }
+
+        /// <summary>
+        /// Only add one of these to your application to make sure clients will be reused whenever possible.
+        /// This will return an existing client, if the same timeout has been used before.
+        /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
+        /// </summary>
+        private AspNetCoreClients(Func<TimeSpan, HttpClient> addClient, IAction setup)
         {
             this.addClient = addClient;
+            this.setup = setup;
         }
 
         public HttpClient Client(TimeSpan timeout)
         {
             lock (clients)
             {
+                this.setup.Invoke();
                 if (!clients.Keys.Contains(timeout.Ticks))
                 {
                     clients.Add(
