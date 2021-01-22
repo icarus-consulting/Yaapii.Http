@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Atoms.Error;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
@@ -38,14 +38,15 @@ namespace Yaapii.Http.Parts.Uri
             /// Extracts the user info part of a <see cref="System.Uri"/> from a request.
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
-            {
-                new FailWhen(
-                    !input.ContainsKey(KEY),
-                    new InvalidOperationException($"Failed to extract {KEY} from request or response. No {KEY} found.")
-                ).Go();
-
-                return input[KEY];
-            },
+                {
+                    return
+                        new FallbackMap(
+                            input,
+                            key => throw new InvalidOperationException(
+                                $"Failed to extract {User.KEY} from request or response. No {User.KEY} found."
+                            )
+                        )[User.KEY];
+                },
                 live: false
             )
             { }

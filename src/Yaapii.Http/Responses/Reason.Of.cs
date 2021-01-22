@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Atoms.Error;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
@@ -39,12 +39,13 @@ namespace Yaapii.Http.Responses
             /// </summary>
             public Of(IDictionary<string, string> input) : base(() =>
                 {
-                    new FailWhen(
-                        !input.ContainsKey(KEY),
-                        new InvalidOperationException($"Failed to extract {KEY} from response. No {KEY} found.")
-                    ).Go();
-
-                    return input[KEY];
+                    return
+                        new FallbackMap(
+                            input,
+                            key => throw new InvalidOperationException(
+                                $"Failed to extract {Reason.KEY} from response. No {Reason.KEY} found."
+                            )
+                        )[Reason.KEY];
                 },
                 live: false
             )

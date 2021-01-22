@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yaapii.Atoms.Error;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
@@ -57,15 +57,14 @@ namespace Yaapii.Http.Responses
             private Of(Func<IDictionary<string, string>> input) : base(
                 new ScalarOf<int>(() =>
                 {
-                    var inputValue = input();
-                    new FailWhen(
-                        !inputValue.ContainsKey(KEY),
-                        new InvalidOperationException($"Failed to extract {KEY} from response. No {KEY} found.")
-                    ).Go();
-
                     return
                         new IntOf(
-                            new TextOf(() => inputValue[KEY])
+                            new FallbackMap(
+                                input(),
+                                key => throw new InvalidOperationException(
+                                    $"Failed to extract {Status.KEY} from response. No {Status.KEY} found."
+                                )
+                            )[Status.KEY]
                         ).Value();
                 })
             )

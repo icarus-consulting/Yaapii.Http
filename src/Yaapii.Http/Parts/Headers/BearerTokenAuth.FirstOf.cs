@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Headers
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
                     new BearerTokenAuth.Of(input),
-                    new InvalidOperationException($"Failed to extract first value of '{BearerTokenAuth.KEY}' header. No values found.")
+                    new InvalidOperationException($"Can not find '{BearerTokenAuth.KEY}' in headers.")
                 ).Value(),
                 live: false
             )

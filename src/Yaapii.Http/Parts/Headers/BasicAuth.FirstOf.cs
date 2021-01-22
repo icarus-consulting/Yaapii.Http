@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Headers
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
                     new BasicAuth.Of(input),
-                    new InvalidOperationException($"Failed to extract first value of '{BasicAuth.KEY}' header. No values found.")
+                    new InvalidOperationException($"Can not find '{BasicAuth.KEY}' in headers.")
                 ).Value(),
                 live: false
             )

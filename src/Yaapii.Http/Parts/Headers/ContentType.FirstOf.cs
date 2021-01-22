@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Headers
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
                     new ContentType.Of(input),
-                    new InvalidOperationException($"Failed to extract first value of '{ContentType.KEY}' header. No values found.")
+                    new InvalidOperationException($"Can not find '{ContentType.KEY}' in headers.")
                 ).Value(), 
                 live: false
             )

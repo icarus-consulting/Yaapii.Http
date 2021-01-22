@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ namespace Yaapii.Http.Parts.Headers
             public FirstOf(IDictionary<string, string> input) : base(() =>
                 new FirstOf<string>(
                     new Accept.Of(input),
-                    new InvalidOperationException($"Failed to extract first value of '{Accept.KEY}' header. No values found.")
+                    new InvalidOperationException($"Can not find '{Accept.KEY}' in headers.")
                 ).Value(),
                 live: false
             )

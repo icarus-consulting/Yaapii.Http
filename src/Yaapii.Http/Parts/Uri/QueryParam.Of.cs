@@ -22,7 +22,7 @@
 
 using System;
 using System.Collections.Generic;
-using Yaapii.Atoms.Error;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
@@ -39,15 +39,14 @@ namespace Yaapii.Http.Parts.Uri
             /// </summary>
             public Of(IDictionary<string, string> input, string key) : base(() =>
                 {
-                    new FailWhen(
-                        !input.ContainsKey($"{KEY_PREFIX}{key}"),
-                        new InvalidOperationException(
-                            $"Failed to extract query param '{key}' from request or response. " +
-                            $"No query param with key '{key}' found."
-                        )
-                    ).Go();
-
-                    return input[$"{KEY_PREFIX}{key}"];
+                    return
+                        new FallbackMap(
+                            input,
+                            k => throw new InvalidOperationException(
+                                $"Failed to extract query param '{key}' from request or response. " +
+                                $"No query param with key '{key}' found."
+                            )
+                        )[$"{KEY_PREFIX}{key}"];
                 },
                 live: false
             )
