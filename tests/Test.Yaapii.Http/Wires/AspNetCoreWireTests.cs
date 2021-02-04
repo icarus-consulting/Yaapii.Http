@@ -23,11 +23,11 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Text;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Scalar;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Parts;
@@ -36,8 +36,8 @@ using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
-using Yaapii.Http.Wires.AspNetCore;
 using Yaapii.Http.Test;
+using Yaapii.Http.Wires.AspNetCore;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -375,6 +375,41 @@ namespace Yaapii.Http.Wires.Test
                         )
                     )
                 ).AsString()
+            );
+        }
+
+        [Fact]
+        public void EncodesSpecialCharactersInFormBody()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            string body = "";
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(req =>
+                    {
+                        body = new TextBody.Of(req).AsString();
+                    })
+                ).Value()
+            )
+            {
+                new Verified(
+                    new AspNetCoreWire(
+                        new AspNetCoreClients(),
+                        new TimeSpan(0, 1, 0)
+                    ),
+                    new ExpectedStatus(200)
+                ).Response(
+                    new Get(
+                        new Scheme("http"),
+                        new Host("localhost"),
+                        new Port(server.Port),
+                        new FormParam("key-name", "test&+=xyz")
+                    )
+                );
+            }
+            Assert.Equal(
+                "key-name=test%26%2B%3Dxyz",
+                body
             );
         }
     }
