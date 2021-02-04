@@ -20,13 +20,13 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Map;
-using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Parts.Headers;
 
@@ -69,7 +69,10 @@ namespace Yaapii.Http.Parts.Bodies
                         new TextOf(
                             new Base64Bytes(
                                 new BytesOf(
-                                    input[TextBody.KEY]
+                                    new FallbackMap(
+                                        input,
+                                        key => throw new InvalidOperationException("Failed to extract body as text. No body found.")
+                                    )[TextBody.KEY]
                                 )
                             ),
                             new MapOf<Encoding>(

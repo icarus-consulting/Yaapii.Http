@@ -20,8 +20,11 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
@@ -37,9 +40,18 @@ namespace Yaapii.Http.Parts.Uri
             /// Extracts the port of a <see cref="System.Uri"/> from a request.
             /// </summary>
             public Of(IDictionary<string, string> input) : base(
-                new IntOf(
-                    new TextOf(() => input[KEY])
-                )
+                new ScalarOf<int>(() =>
+                {
+                    return
+                        new IntOf(
+                            new FallbackMap(
+                                input,
+                                key => throw new InvalidOperationException(
+                                    $"Failed to extract {Port.KEY} from request or response. No {Port.KEY} found."
+                                )
+                            )[Port.KEY]
+                        ).Value();
+                })
             )
             { }
         }

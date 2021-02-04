@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
@@ -35,7 +37,18 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// Gets the reason phrase of a response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY], live: false)
+            public Of(IDictionary<string, string> input) : base(() =>
+                {
+                    return
+                        new FallbackMap(
+                            input,
+                            key => throw new InvalidOperationException(
+                                $"Failed to extract {Reason.KEY} from response. No {Reason.KEY} found."
+                            )
+                        )[Reason.KEY];
+                },
+                live: false
+            )
             { }
         }
     }

@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
@@ -38,7 +39,8 @@ namespace Yaapii.Http.Parts.Headers
             /// </summary>
             public FirstOf(IDictionary<string, string> input, string key) : base(() =>
                 new FirstOf<string>(
-                    new Header.Of(input, key)
+                    new Header.Of(input, key),
+                    new InvalidOperationException($"Can not find '{key}' in headers.")
                 ).Value(), 
                 live: false
             )

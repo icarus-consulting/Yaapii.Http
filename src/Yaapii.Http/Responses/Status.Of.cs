@@ -23,7 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
@@ -53,9 +55,18 @@ namespace Yaapii.Http.Responses
             /// The status code of a response.
             /// </summary>
             private Of(Func<IDictionary<string, string>> input) : base(
-                new IntOf(
-                    new TextOf(() => input()[KEY])
-                )
+                new ScalarOf<int>(() =>
+                {
+                    return
+                        new IntOf(
+                            new FallbackMap(
+                                input(),
+                                key => throw new InvalidOperationException(
+                                    $"Failed to extract {Status.KEY} from response. No {Status.KEY} found."
+                                )
+                            )[Status.KEY]
+                        ).Value();
+                })
             )
             { }
         }
