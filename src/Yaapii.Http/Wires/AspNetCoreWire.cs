@@ -168,7 +168,13 @@ namespace Yaapii.Http.Wires
                 aspnetRequest.Content = content;
                 foreach (var head in headers)
                 {
-                    aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
+                    if (
+                        !aspnetRequest.Content.Headers.Contains(head.Key())
+                        || !new Contains<string>(aspnetRequest.Content.Headers.GetValues(head.Key()), head.Value()).Value()
+                    )
+                    {
+                        aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
+                    }
                 }
             }
             return aspnetRequest;

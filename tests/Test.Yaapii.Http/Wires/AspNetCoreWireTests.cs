@@ -20,6 +20,12 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -38,6 +44,7 @@ using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Test;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Web.Asp.Test;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -410,6 +417,132 @@ namespace Yaapii.Http.Wires.Test
             Assert.Equal(
                 "key-name=test%26%2B%3Dxyz",
                 body
+            );
+        }
+
+        [Fact]
+        public void FormBodyWorksWithKestrel()
+        {
+            var body = "";
+            var port = new AwaitedPort(new TestPort()).Value();
+            var host = WebHost.CreateDefaultBuilder();
+
+            host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.ConfigureServices(svc =>
+            {
+                svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
+                {
+                    body = new TextOf(req.Body).AsString();
+                });
+                svc.AddMvc().AddApplicationPart(
+                    typeof(HtAction).Assembly
+                ).AddControllersAsServices();
+            });
+            host.Configure(app =>
+            {
+                app.UseMvc();
+            });
+
+            using (var built = host.Build())
+            {
+                built.RunAsync();
+                try
+                {
+                    new Verified(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ),
+                        new ExpectedStatus(200)
+                    ).Response(
+                        new Post(
+                            new Scheme("http"),
+                            new Host("localhost"),
+                            new Port(port),
+                            new Path("action"),
+                            new FormParams(
+                                new MapOf(
+                                    "key-1-name", "this is a test",
+                                    "key-2-name", "test&+=xyz"
+                                )
+                            )
+                        )
+                    );
+                }
+                finally
+                {
+                    built.StopAsync();
+                }
+            }
+
+            Assert.Equal(
+                "key-1-name=this+is+a+test&key-2-name=test%26%2B%3Dxyz",
+                body
+            );
+        }
+
+        [Fact]
+        public void FormBodyDoesNotAddDuplicateHeaders()
+        {
+            var contentTypeHeaders = new List<string>();
+            var port = new AwaitedPort(new TestPort()).Value();
+            var host = WebHost.CreateDefaultBuilder();
+
+            host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.ConfigureServices(svc =>
+            {
+                svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
+                {
+                    foreach(var header in req.Headers["Content-Type"])
+                    {
+                        contentTypeHeaders.AddRange(
+                            header.Split(", ")
+                        );
+                    }
+                });
+                svc.AddMvc().AddApplicationPart(
+                    typeof(HtAction).Assembly
+                ).AddControllersAsServices();
+            });
+            host.Configure(app =>
+            {
+                app.UseMvc();
+            });
+
+            using (var built = host.Build())
+            {
+                built.RunAsync();
+                try
+                {
+                    new Verified(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ),
+                        new ExpectedStatus(200)
+                    ).Response(
+                        new Post(
+                            new Scheme("http"),
+                            new Host("localhost"),
+                            new Port(port),
+                            new Path("action"),
+                            new FormParams(
+                                new MapOf(
+                                    "key-1-name", "this is a test",
+                                    "key-2-name", "test&+=xyz"
+                                )
+                            )
+                        )
+                    );
+                }
+                finally
+                {
+                    built.StopAsync();
+                }
+            }
+
+            Assert.Single(
+                contentTypeHeaders
             );
         }
     }
