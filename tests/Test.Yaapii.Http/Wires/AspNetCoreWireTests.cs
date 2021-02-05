@@ -410,7 +410,8 @@ namespace Yaapii.Http.Wires.Test
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(server.Port),
-                        new FormParam("key-name", "test&+=xyz")
+                        new FormParam("key-name", "test&+=xyz"),
+                        new BearerTokenAuth("Bearer sdfnhiausihfnksajn")
                     )
                 );
             }
