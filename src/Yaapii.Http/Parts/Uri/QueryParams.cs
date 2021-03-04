@@ -45,8 +45,8 @@ namespace Yaapii.Http.Parts.Uri
                     query = query.Remove(0, 1);
                 }
                 return
-                    new MapOf(
-                        query.Split(new char[] { '=', '&' })
+                    new Yaapii.Atoms.Temp.Map.MapOf(
+                        query.Split(new char[] { '=', '&' }, System.StringSplitOptions.RemoveEmptyEntries)
                     );
             })
         )

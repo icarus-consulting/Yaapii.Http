@@ -23,14 +23,17 @@
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
+using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
 using Yaapii.Http.Test;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
+using Yaapii.Xml;
 
 namespace Yaapii.Http.Mock.Test
 {
@@ -203,5 +206,31 @@ namespace Yaapii.Http.Mock.Test
                 queryParam
             );
         }
+        [Fact]
+        public void DeliversXmlResponse()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(req =>
+                    {
+                        return new Response.Of(new Body(new XMLCursor(new InputOf("<test/>"))));
+                    })
+                ).Value()
+            )
+            {
+                var response = new AspNetCoreWire(
+                     new AspNetCoreClients(),
+                     new TimeSpan(0, 1, 0)
+                 ).Response(
+                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
+                 ).Result;
+
+                Assert.True(
+                    response.ContainsKey("body")
+                );
+            }
+        }
+
     }
 }
