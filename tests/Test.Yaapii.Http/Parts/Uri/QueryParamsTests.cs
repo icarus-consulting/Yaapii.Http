@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System.Collections.Generic;
 using Xunit;
 using Yaapii.Atoms.Map;
 
@@ -42,6 +43,18 @@ namespace Yaapii.Http.Parts.Uri.Test
                 ).Apply(
                     new MapOf(new MapInputOf())
                 )[$"query:{key}"]
+            );
+        }
+
+        [Fact]
+        public void WorksWithEmptyInput()
+        {
+            Assert.Empty(
+                new QueryParams(
+                    ""
+                ).Apply(
+                    new Dictionary<string, string>()
+                )
             );
         }
     }
