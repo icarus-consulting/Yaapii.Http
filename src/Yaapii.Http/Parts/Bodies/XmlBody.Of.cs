@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Scalar;
+using Yaapii.Http.Responses;
 using Yaapii.Xml;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -36,6 +38,12 @@ namespace Yaapii.Http.Parts.Bodies
         /// </summary>
         public sealed class Of : XMLEnvelope
         {
+            /// <summary>
+            /// The body of a request or response as <see cref="IXML"/>
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
+            { }
+
             /// <summary>
             /// The body of a request or response as <see cref="IXML"/>
             /// </summary>

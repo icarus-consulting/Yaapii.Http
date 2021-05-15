@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,8 +21,10 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Facets;
+using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -33,6 +35,12 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         public sealed class Exists : BooleanEnvelope
         {
+            /// <summary>
+            /// Checks if any  header field with the given key exists.
+            /// </summary>
+            public Exists(Task<IDictionary<string, string>> input, string key) : this(new Synced(input), key)
+            { }
+
             /// <summary>
             /// Checks if any  header field with the given key exists.
             /// </summary>

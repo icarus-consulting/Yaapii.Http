@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
@@ -34,6 +35,12 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         public sealed class FirstOf : TextEnvelope
         {
+            /// <summary>
+            /// First value of any header field with the given key.
+            /// </summary>
+            public FirstOf(Task<IDictionary<string, string>> input, string key) : this(new Responses.Synced(input), key)
+            { }
+
             /// <summary>
             /// First value of any header field with the given key.
             /// </summary>

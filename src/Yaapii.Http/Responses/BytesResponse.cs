@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
@@ -61,10 +60,8 @@ namespace Yaapii.Http.Responses
         /// Bytes will be decoded from base 64.
         /// </summary>
         public BytesResponse(IWire wire, IDictionary<string, string> request) : base(() =>
-            new BytesOf(
-                new Body.Of(
-                    wire.Response(request)
-                )
+            new BytesBody.Of(
+                wire.Response(request)
             ).AsBytes()
         )
         { }
