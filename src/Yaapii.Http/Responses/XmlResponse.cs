@@ -21,10 +21,8 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using System.Xml.Linq;
-using Yaapii.Atoms;
-using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
 using Yaapii.Xml;
@@ -34,10 +32,8 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// XML data received as a response from the given wire.
     /// </summary>
-    public sealed partial class XmlResponse : IXML
+    public sealed partial class XmlResponse : XMLEnvelope
     {
-        private readonly IScalar<IXML> xml;
-
         /// <summary>
         /// XML data received as a response from the given wire.
         /// </summary>
@@ -59,34 +55,14 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// XML data received as a response from the given wire.
         /// </summary>
-        public XmlResponse(IWire wire, IDictionary<string, string> request)
-        {
-            this.xml =
-                new ScalarOf<IXML>(() =>
-                    new XmlBody.Of(
-                        wire.Response(request)
-                    )
-                );
-        }
-
-        public XNode AsNode()
-        {
-            return this.xml.Value().AsNode();
-        }
-
-        public IList<IXML> Nodes(string query)
-        {
-            return this.xml.Value().Nodes(query);
-        }
-
-        public IList<string> Values(string query)
-        {
-            return this.xml.Value().Values(query);
-        }
-
-        public IXML WithNamespace(string prefix, object uri)
-        {
-            return this.xml.Value().WithNamespace(prefix, uri);
-        }
+        public XmlResponse(IWire wire, IDictionary<string, string> request) : base(
+            new ScalarOf<IXML>(() =>
+                new XmlBody.Of(
+                    wire.Response(request)
+                )
+            ),
+            live: false
+        )
+        { }
     }
 }
