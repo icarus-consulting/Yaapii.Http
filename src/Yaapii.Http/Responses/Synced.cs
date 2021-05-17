@@ -49,7 +49,7 @@ namespace Yaapii.Http.Responses
                     }
                     else
                     {
-                        throw ex;
+                        throw;
                     }
                 }
             },
