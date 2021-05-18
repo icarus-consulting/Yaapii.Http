@@ -29,6 +29,8 @@ namespace Yaapii.Http.Responses
 {
     /// <summary>
     /// The result of a response task.
+    /// In case an AggregateException with a single inner exception is thrown from the task,
+    /// this inner exception is thrown.
     /// </summary>
     public sealed class Synced : MapEnvelope
     {
