@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
-using Yaapii.JSON;
 
 namespace Yaapii.Http.Responses
 {
@@ -56,10 +55,8 @@ namespace Yaapii.Http.Responses
         /// JSON data received as a response from the given wire.
         /// </summary>
         public JsonResponse(IWire wire, IDictionary<string, string> request) : base(() =>
-            new JSONOf(
-                new Body.Of(
-                    wire.Response(request)
-                )
+            new JsonBody.Of(
+                wire.Response(request)
             )
         )
         { }

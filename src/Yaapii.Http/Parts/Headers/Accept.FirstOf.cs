@@ -22,6 +22,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
@@ -34,6 +35,12 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         public sealed class FirstOf : TextEnvelope
         {
+            /// <summary>
+            /// First value of any "Accept" header field.
+            /// </summary>
+            public FirstOf(Task<IDictionary<string, string>> response) : this(new Responses.Synced(response))
+            { }
+
             /// <summary>
             /// First value of any "Accept" header field.
             /// </summary>

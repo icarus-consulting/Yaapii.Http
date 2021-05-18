@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -32,6 +33,12 @@ namespace Yaapii.Http.Parts.Bodies
         /// </summary>
         public sealed class Exists : BooleanEnvelope
         {
+            /// <summary>
+            /// Checks if a form param exists in a request.
+            /// </summary>
+            public Exists(Task<IDictionary<string, string>> input, string key) : this(new Responses.Synced(input), key)
+            { }
+
             /// <summary>
             /// Checks if a form param exists in a request.
             /// </summary>

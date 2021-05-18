@@ -381,7 +381,7 @@ namespace Yaapii.Http.Wires.Test
                             )
                         )
                     )
-                ).AsString()
+                ).AsString().ToLower()
             );
         }
 

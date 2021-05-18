@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,12 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Scalar;
+using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -36,6 +38,13 @@ namespace Yaapii.Http.Parts.Headers
         /// </summary>
         public sealed class Of : ManyEnvelope<IKvp>
         {
+            /// <summary>
+            /// Extracts header values from a request or response.
+            /// The same key can occur multiple times, if a header field had multiple values.
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            { }
+
             /// <summary>
             /// Extracts header values from a request or response.
             /// The same key can occur multiple times, if a header field had multiple values.

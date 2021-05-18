@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Responses
@@ -32,6 +33,12 @@ namespace Yaapii.Http.Responses
         /// </summary>
         public sealed class Exists : BooleanEnvelope
         {
+            /// <summary>
+            /// Checks if a response has a reason phrase.
+            /// </summary>
+            public Exists(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            { }
+
             /// <summary>
             /// Checks if a response has a reason phrase.
             /// </summary>

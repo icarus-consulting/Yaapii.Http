@@ -20,39 +20,45 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yaapii.Http.Facets;
-using Yaapii.Http.Responses;
-using Yaapii.JSON;
+using Yaapii.Atoms.Map;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Responses
 {
     /// <summary>
-    /// To add a json body to a request, use new <see cref="Body"/>(<see cref="IJSON"/> json)
+    /// The result of a response task.
+    /// In case an AggregateException with a single inner exception is thrown from the task,
+    /// this inner exception is thrown.
     /// </summary>
-    public sealed class JsonBody
+    public sealed class Synced : MapEnvelope
     {
         /// <summary>
-        /// The body of a request or response as <see cref="IJSON"/>
+        /// The result of a response task. 
+        /// In case an AggregateException with a single inner exception is thrown from the task,
+        /// this inner exception is thrown.
         /// </summary>
-        public sealed class Of : JsonEnvelope
-        {
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
-
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new JSONOf(
-                    new Body.Of(input)
-                )
-            )
-            { }
-        }
+        public Synced(Task<IDictionary<string, string>> response) : base(() =>
+            {
+                try
+                {
+                    return response.Result;
+                }
+                catch (AggregateException ex)
+                {
+                    if (ex.InnerExceptions.Count == 1)
+                    {
+                        throw ex.InnerExceptions[0];
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            },
+            live:false
+        )
+        { }
     }
 }
