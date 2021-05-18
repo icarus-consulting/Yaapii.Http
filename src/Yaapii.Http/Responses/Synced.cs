@@ -33,7 +33,9 @@ namespace Yaapii.Http.Responses
     public sealed class Synced : MapEnvelope
     {
         /// <summary>
-        /// The result of a response task.
+        /// The result of a response task. 
+        /// In case an AggregateException with a single inner exception is thrown from the task,
+        /// this inner exception is thrown.
         /// </summary>
         public Synced(Task<IDictionary<string, string>> response) : base(() =>
             {
