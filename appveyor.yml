@@ -6,9 +6,9 @@ image: Visual Studio 2017
 configuration: Release
 environment:
   GITHUB_TOKEN:
-    secure: tvoyJ/iv8Y+9VaKvOFvxegvQFBNqPkhiwghS8lQDsrt7B/1MWU4e8uOHQzfTU580
+    secure: HHg9YTykqpuNJUKm2KvjMDtsC0rpZQFq28jPrVcu7IBkf9Q163NGkREb5Zpk3c8K
   NUGET_TOKEN:
-    secure: sTXLbAavfCgGBGbsp+v6mMu4Ib6/F5kvntCT5d6iQrFwkBU+J8KCA/1VD7AKYroC
+    secure: w28/k/Luk1xyw2Z8MIsnfAa+c5cDiMsQC0LdNSMu/vMiEQGFgoB+8L6PXVdTHbhm
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 # Automatically register private account and/or project AppVeyor NuGet feeds.
