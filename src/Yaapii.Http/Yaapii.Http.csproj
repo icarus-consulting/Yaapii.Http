@@ -1,10 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>4.0.0</VersionPrefix>
+    <VersionPrefix>4.0.6</VersionPrefix>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>ICARUS Consulting GmbH</Authors>
+    <Description>Object oriented http client.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2022 ICARUS Consulting GmbH</Copyright>
+    <PackageTags>yaapii, elegant objects, cactoos, oop, encapsulation, http</PackageTags>
+    <PackageProjectUrl>https://github.com/icarus-consulting/Yaapii.Http</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/icarus-consulting/Yaapii.Http.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/icarus-consulting/Yaapii.Http/releases</PackageReleaseNotes>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\LICENSE">
+      <PackagePath></PackagePath>
+      <Visible>false</Visible>
+    </Content>
+  </ItemGroup>
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\Yaapii.Http.xml</DocumentationFile>
     <OutputPath>bin\Debug</OutputPath>
