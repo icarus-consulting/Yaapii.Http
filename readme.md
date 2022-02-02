@@ -1,7 +1,14 @@
-# Yaapii.Http
-
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](http://www.elegantobjects.org)
 [![Build status](https://ci.appveyor.com/api/projects/status/m8xpbtmd873o4vu9/branch/master?svg=true)](https://ci.appveyor.com/project/icarus-consulting/yaapii-http/branch/master)
+
+## Repo Guidelines
+
+Mainly responsible for this repository is [DFU398](https://github.com/DFU398).
+Please request a review in every single PR from him. 
+
+He will try to review the PRs within **1 week** and merge applied PRs within **2 weeks** with a new release. Main review day is thursday.
+
+# Yaapii.Http
 
 Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.com/Vatavuk/verano-http).
 
