@@ -20,39 +20,45 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Yaapii.Http.Facets;
-using Yaapii.Http.Responses;
-using Yaapii.JSON;
+using System;
+using Yaapii.Atoms;
+using Yaapii.Atoms.Func;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Facets
 {
     /// <summary>
-    /// To add a json body to a request, use new <see cref="Body"/>(<see cref="IJSON"/> json)
+    /// An <see cref="IAction"/> that is only run once.
     /// </summary>
-    public sealed class JsonBody
+    public sealed class Once : IAction
     {
-        /// <summary>
-        /// The body of a request or response as <see cref="IJSON"/>
-        /// </summary>
-        public sealed class Of : JsonEnvelope
-        {
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
+        private readonly bool[] done;
+        private readonly IAction action;
 
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new JSONOf(
-                    new Body.Of(input)
-                )
-            )
-            { }
+        /// <summary>
+        /// An <see cref="IAction"/> that is only run once.
+        /// </summary>
+        public Once(Action action) : this(new ActionOf(action))
+        { }
+
+        /// <summary>
+        /// An <see cref="IAction"/> that is only run once.
+        /// </summary>
+        public Once(IAction action)
+        {
+            this.action = action;
+            this.done = new bool[1]{ false };
+        }
+
+        public void Invoke()
+        {
+            lock (this.done)
+            {
+                if(!this.done[0])
+                {
+                    this.done.SetValue(true, 0);
+                    this.action.Invoke();
+                }
+            }
         }
     }
 }

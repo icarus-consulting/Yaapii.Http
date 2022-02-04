@@ -20,39 +20,44 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yaapii.Http.Facets;
-using Yaapii.Http.Responses;
-using Yaapii.JSON;
+using Xunit;
+using Yaapii.Atoms.Map;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Responses.Test
 {
-    /// <summary>
-    /// To add a json body to a request, use new <see cref="Body"/>(<see cref="IJSON"/> json)
-    /// </summary>
-    public sealed class JsonBody
+    public sealed class SyncedTests
     {
-        /// <summary>
-        /// The body of a request or response as <see cref="IJSON"/>
-        /// </summary>
-        public sealed class Of : JsonEnvelope
+        [Fact]
+        public void ThrowsInnerException()
         {
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
+            Assert.Equal(
+                "this is a test",
+                Assert.Throws<InvalidOperationException>(() =>
+                    new Synced(
+                        Task.Run<IDictionary<string, string>>(
+                            (Func<IDictionary<string, string>>)(
+                                () => throw new InvalidOperationException("this is a test")
+                            )
+                        )
+                    ).GetEnumerator()
+                ).Message
+            );
+        }
 
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new JSONOf(
-                    new Body.Of(input)
-                )
-            )
-            { }
+        [Fact]
+        public void HasResult()
+        {
+            Assert.Equal(
+                "this is a test",
+                new Synced(
+                    Task.Run<IDictionary<string, string>>(() =>
+                        new MapOf("test", "this is a test")
+                    )
+                )["test"]
+            );
         }
     }
 }

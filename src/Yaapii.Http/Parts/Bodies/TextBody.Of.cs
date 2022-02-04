@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,14 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Map;
-using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Parts.Headers;
 
@@ -41,6 +42,12 @@ namespace Yaapii.Http.Parts.Bodies
         /// </summary>
         public sealed class Of : TextEnvelope
         {
+            /// <summary>
+            /// The body of a request or response as <see cref="IText"/>
+            /// </summary>
+            public Of(Task<IDictionary<string, string>> input) : this(new Responses.Synced(input))
+            { }
+
             /// <summary>
             /// The body of a request or response as <see cref="IText"/>
             /// </summary>
@@ -69,7 +76,10 @@ namespace Yaapii.Http.Parts.Bodies
                         new TextOf(
                             new Base64Bytes(
                                 new BytesOf(
-                                    input[TextBody.KEY]
+                                    new FallbackMap(
+                                        input,
+                                        key => throw new InvalidOperationException("Failed to extract body as text. No body found.")
+                                    )[TextBody.KEY]
                                 )
                             ),
                             new MapOf<Encoding>(

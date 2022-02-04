@@ -26,6 +26,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
@@ -161,13 +162,20 @@ namespace Yaapii.Http.Wires
             {
                 aspnetRequest.Headers.TryAddWithoutValidation(head.Key(), head.Value());
             }
-            var body = Body(request).AsBytes();
-            if (body.Length > 0)
+            var content = Content(request);
+            if (!IsEmpty(content))
             {
-                aspnetRequest.Content = new ByteArrayContent(body);
+                aspnetRequest.Content = content;
                 foreach (var head in headers)
                 {
-                    aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
+                    IEnumerable<string> tryValues = new List<string>();
+                    if (
+                        !aspnetRequest.Content.Headers.TryGetValues(head.Key(), out tryValues)
+                        || !new Contains<string>(tryValues, head.Value()).Value()
+                    )
+                    {
+                        aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
+                    }
                 }
             }
             return aspnetRequest;
@@ -176,36 +184,49 @@ namespace Yaapii.Http.Wires
         private async Task<HttpResponseMessage> AspNetResponse(HttpRequestMessage request)
         {
             return await this.clients.Client(this.timeout).SendAsync(request);
-            //return
-            //    this.clients.Client(this.timeout).SendAsync(
-            //        request
-            //    ).GetAwaiter().GetResult();
         }
 
-        private IBytes Body(IDictionary<string, string> request)
+        private HttpContent Content(IDictionary<string, string> request)
         {
-            IBytes body = new EmptyBytes();
-            var formParams = new FormParams.Of(request);
-            if (formParams.Keys.Count > 0)
+            HttpContent body = new ByteArrayContent(new EmptyBytes().AsBytes());
+            if (new FormParams.Of(request).Keys.Count > 0)
             {
-                body =
-                    new BytesOf(
-                        new Yaapii.Atoms.Text.Joined("&",
-                            new MappedDictionary<string>((key, value) =>
-                                $"{key}={value()}",
-                                formParams
-                            )
-                        )
-                    );
+                body = FormContent(request);
             }
             else if (new Body.Exists(request).Value())
             {
-                body =
-                    new BytesOf(
-                        new Body.Of(request)
-                    );
+                body = BytesContent(request);
             }
             return body;
+        }
+
+        private HttpContent FormContent(IDictionary<string, string> request)
+        {
+            var content = new FormParams.Of(request);
+            return
+                new FormUrlEncodedContent(
+                    new Mapped<string, KeyValuePair<string, string>>(key =>
+                        new KeyValuePair<string, string>(key, content[key]),
+                        content.Keys
+                    )
+                );
+        }
+
+        private HttpContent BytesContent(IDictionary<string, string> request)
+        {
+            return
+                new ByteArrayContent(
+                    new BytesBody.Of(request).AsBytes()
+                );
+        }
+
+        private bool IsEmpty(HttpContent content)
+        {
+            return
+                content.ReadAsByteArrayAsync()
+                .GetAwaiter()
+                .GetResult()
+                .Length == 0;
         }
     }
 }

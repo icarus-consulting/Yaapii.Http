@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Number;
+using Yaapii.Atoms.Scalar;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Responses
@@ -38,24 +40,25 @@ namespace Yaapii.Http.Responses
             /// <summary>
             /// The status code of a response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : this(() => input)
+            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
             { }
 
             /// <summary>
             /// The status code of a response.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(() =>
-                Task.Run(() => input).Result
-            )
-            { }
-
-            /// <summary>
-            /// The status code of a response.
-            /// </summary>
-            private Of(Func<IDictionary<string, string>> input) : base(
-                new IntOf(
-                    new TextOf(() => input()[KEY])
-                )
+            public Of(IDictionary<string, string> input) : base(
+                new ScalarOf<int>(() =>
+                {
+                    return
+                        new IntOf(
+                            new FallbackMap(
+                                input,
+                                key => throw new InvalidOperationException(
+                                    $"Failed to extract {Status.KEY} from response. No {Status.KEY} found."
+                                )
+                            )[Status.KEY]
+                        ).Value();
+                })
             )
             { }
         }

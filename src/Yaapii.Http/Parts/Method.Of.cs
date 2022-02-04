@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts
@@ -35,7 +37,18 @@ namespace Yaapii.Http.Parts
             /// <summary>
             /// Gets the method of a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() => input[KEY], live: false)
+            public Of(IDictionary<string, string> input) : base(() =>
+                {
+                    return
+                        new FallbackMap(
+                            input,
+                            key => throw new InvalidOperationException(
+                                $"Failed to extract {Method.KEY} from request or response. No {Method.KEY} found."
+                            )
+                        )[Method.KEY];
+                },
+                live: false
+            )
             { }
         }
     }

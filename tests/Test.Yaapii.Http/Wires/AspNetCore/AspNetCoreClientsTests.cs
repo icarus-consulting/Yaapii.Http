@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Xunit;
 
 namespace Yaapii.Http.Wires.AspNetCore.Test
@@ -40,6 +41,17 @@ namespace Yaapii.Http.Wires.AspNetCore.Test
             Assert.NotEqual(
                 first.BaseAddress,
                 second.BaseAddress
+            );
+        }
+
+        [Fact]
+        public void SetsDefaultSecurityTypes()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            new AspNetCoreClients().Client(new TimeSpan(0, 1, 0));
+            Assert.Equal(
+                ServicePointManager.SecurityProtocol,
+                SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12
             );
         }
     }

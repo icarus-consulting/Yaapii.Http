@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2021 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -28,7 +27,7 @@ using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.Facets;
+using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -45,32 +44,23 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// The body of a request or response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : this(() => input)
+            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
             { }
 
             /// <summary>
             /// The body of a request or response.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(() =>
-                Task.Run(() => input).Result
-            )
-            { }
-
-            /// <summary>
-            /// The body of a request or response.
-            /// </summary>
-            private Of(Func<IDictionary<string, string>> input) : this(
+            public Of(IDictionary<string, string> input) : this(
                 new ScalarOf<IInput>(() =>
                 {
                     IInput result = new DeadInput();
-                    var ipt = input();
-                    if(ipt.ContainsKey(Body.KEY))
+                    if(input.ContainsKey(Body.KEY))
                     {
                         result =
                             new InputOf(
                                 new Base64Bytes(
                                     new BytesOf(
-                                        ipt[KEY]
+                                        input[KEY]
                                     )
                                 )
                             );

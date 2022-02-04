@@ -20,39 +20,27 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Yaapii.Http.Facets;
-using Yaapii.Http.Responses;
-using Yaapii.JSON;
+using Xunit;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Http.Facets.Test
 {
-    /// <summary>
-    /// To add a json body to a request, use new <see cref="Body"/>(<see cref="IJSON"/> json)
-    /// </summary>
-    public sealed class JsonBody
+    public sealed class OnceTests
     {
-        /// <summary>
-        /// The body of a request or response as <see cref="IJSON"/>
-        /// </summary>
-        public sealed class Of : JsonEnvelope
+        [Fact]
+        public void RunsOnce()
         {
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
-
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new JSONOf(
-                    new Body.Of(input)
-                )
-            )
-            { }
+            var count = 0;
+            var action =
+                new Once(() =>
+                {
+                    count++;
+                });
+            action.Invoke();
+            action.Invoke();
+            Assert.Equal(
+                1,
+                count
+            );
         }
     }
 }

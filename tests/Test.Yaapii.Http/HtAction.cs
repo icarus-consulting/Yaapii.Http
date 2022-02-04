@@ -20,39 +20,35 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Yaapii.Http.Facets;
-using Yaapii.Http.Responses;
-using Yaapii.JSON;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
-namespace Yaapii.Http.Parts.Bodies
+namespace Yaapii.Web.Asp.Test
 {
     /// <summary>
-    /// To add a json body to a request, use new <see cref="Body"/>(<see cref="IJSON"/> json)
+    /// AspNetCore MVC controller that triggers a given action.
     /// </summary>
-    public sealed class JsonBody
+    [Route("action")]
+    public sealed class HtAction : Controller
     {
-        /// <summary>
-        /// The body of a request or response as <see cref="IJSON"/>
-        /// </summary>
-        public sealed class Of : JsonEnvelope
-        {
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
+        private readonly Action<HttpRequest> action;
 
-            /// <summary>
-            /// The body of a request or response as <see cref="IJSON"/>
-            /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
-                new JSONOf(
-                    new Body.Of(input)
-                )
-            )
-            { }
+        /// <summary>
+        /// AspNetCore MVC controller that triggers a given action.
+        /// </summary>
+        public HtAction(Action<HttpRequest> action)
+        {
+            this.action = action;
+        }
+
+        [HttpPost]
+        public IActionResult Run()
+        {
+            this.action.Invoke(
+                this.Request
+            );
+            return Ok();
         }
     }
 }

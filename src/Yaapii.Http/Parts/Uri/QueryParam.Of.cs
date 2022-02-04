@@ -20,7 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using System;
 using System.Collections.Generic;
+using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
@@ -35,7 +37,19 @@ namespace Yaapii.Http.Parts.Uri
             /// <summary>
             /// Gets the value of the specified query parameter from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input, string key) : base(() => input[$"{KEY_PREFIX}{key}"], live: false)
+            public Of(IDictionary<string, string> input, string key) : base(() =>
+                {
+                    return
+                        new FallbackMap(
+                            input,
+                            k => throw new InvalidOperationException(
+                                $"Failed to extract query param '{key}' from request or response. " +
+                                $"No query param with key '{key}' found."
+                            )
+                        )[$"{KEY_PREFIX}{key}"];
+                },
+                live: false
+            )
             { }
         }
     }
