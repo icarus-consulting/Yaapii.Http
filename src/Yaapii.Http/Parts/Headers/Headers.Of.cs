@@ -42,7 +42,7 @@ namespace Yaapii.Http.Parts.Headers
             /// Extracts header values from a request or response.
             /// The same key can occur multiple times, if a header field had multiple values.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            public Of(Task<IDictionary<string, string>> response) : this(new Responses.Synced(response))
             { }
 
             /// <summary>
