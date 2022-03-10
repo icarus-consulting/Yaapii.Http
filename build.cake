@@ -239,9 +239,16 @@ Task("GitHubRelease")
                 TargetCommitish   = "master"
             }
         );
-          
+
         var nugets = string.Join(",", GetFiles("./artifacts/*.nupkg").Select(f => f.FullPath) );
         Information($"Release files:{Environment.NewLine}  " + nugets.Replace(",", $"{Environment.NewLine}  "));
+
+        Information($"Token: {gitHubToken}");
+        Information($"Owner: {owner}");
+        Information($"Repository: {repository}");
+        Information($"Version: {version}");
+        Information($"Nugets: {nugets}");
+
         GitReleaseManagerAddAssets(
             gitHubToken,
             owner,
