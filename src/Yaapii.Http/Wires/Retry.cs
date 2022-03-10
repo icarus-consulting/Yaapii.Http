@@ -27,6 +27,7 @@ using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 using System.Threading.Tasks;
+using Nito.AsyncEx;
 
 namespace Yaapii.Http.Wires
 {
@@ -74,7 +75,7 @@ namespace Yaapii.Http.Wires
             {
                 try
                 {
-                    response = Task.Run(() => origin.Response(request)).Result;
+                    response = AsyncContext.Run(() => origin.Response(request));
                 }
                 catch (Exception ex)
                 {
