@@ -244,6 +244,7 @@ Task("GitHubRelease")
         Information($"Release files:{Environment.NewLine}  " + nugets.Replace(",", $"{Environment.NewLine}  "));
 
         Information($"!!!Skipping github Release!!!");
+        return;
 
         GitReleaseManagerAddAssets(
             gitHubToken,
