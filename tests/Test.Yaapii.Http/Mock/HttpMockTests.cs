@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Nito.AsyncEx;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -219,12 +220,15 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
-                var response = new AspNetCoreWire(
-                     new AspNetCoreClients(),
-                     new TimeSpan(0, 1, 0)
-                 ).Response(
-                     new Get($"http://localhost:{port}?importantQueryParam=importantValue")
-                 ).Result;
+                var response =
+                    AsyncContext.Run(() =>
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                             new Get($"http://localhost:{port}?importantQueryParam=importantValue")
+                        )
+                    );
 
                 Assert.True(
                     response.ContainsKey("body")
