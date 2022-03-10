@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace Yaapii.Http.Responses
             {
                 try
                 {
-                    return response.Result;
+                    return AsyncContext.Run(() => response);
                 }
                 catch (AggregateException ex)
                 {
