@@ -20,6 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -30,7 +31,6 @@ using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
-using Yaapii.Http.Facets;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
@@ -107,7 +107,7 @@ namespace Yaapii.Http.Wires
                 new Address.Of(request).Value()
             ).ConnectionLeaseTimeout = (int)this.timeout.TotalMilliseconds; // see  http://byterot.blogspot.com/2016/07/singleton-httpclient-dns.html
 
-            using (var aspnetResponse = await AspNetResponse(AspNetRequest(request)))
+            using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
             using (var responseStream = await responseContent.ReadAsStreamAsync())
             {
@@ -181,9 +181,9 @@ namespace Yaapii.Http.Wires
             return aspnetRequest;
         }
 
-        private async Task<HttpResponseMessage> AspNetResponse(HttpRequestMessage request)
+        private HttpResponseMessage AspNetResponse(HttpRequestMessage request)
         {
-            return await this.clients.Client(this.timeout).SendAsync(request);
+            return AsyncContext.Run(() => this.clients.Client(this.timeout).SendAsync(request));
         }
 
         private HttpContent Content(IDictionary<string, string> request)
