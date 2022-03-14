@@ -22,6 +22,7 @@
 
 using Nito.AsyncEx;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace Yaapii.Http.Wires
@@ -36,7 +37,13 @@ namespace Yaapii.Http.Wires
         /// </summary>
         public Verified(IWire origin, IVerification verification) : base(request =>
         {
-            var response = AsyncContext.Run(() => origin.Response(request));
+            var response =
+                RuntimeInformation.OSDescription == "Browser"
+                ?
+                origin.Response(request).Result
+                :
+                AsyncContext.Run(() => origin.Response(request));
+
             verification.Verify(response);
             return new TaskFactory().StartNew<IDictionary<string, string>>(() => response);
         })

@@ -28,6 +28,7 @@ using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 using System.Threading.Tasks;
 using Nito.AsyncEx;
+using System.Runtime.InteropServices;
 
 namespace Yaapii.Http.Wires
 {
@@ -75,7 +76,12 @@ namespace Yaapii.Http.Wires
             {
                 try
                 {
-                    response = AsyncContext.Run(() => origin.Response(request));
+                    response =
+                        RuntimeInformation.OSDescription == "Browser"
+                        ?
+                        origin.Response(request).Result
+                        :
+                        AsyncContext.Run(() => origin.Response(request));
                 }
                 catch (Exception ex)
                 {
