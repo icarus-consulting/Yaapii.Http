@@ -24,6 +24,7 @@ using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
@@ -183,7 +184,13 @@ namespace Yaapii.Http.Wires
 
         private HttpResponseMessage AspNetResponse(HttpRequestMessage request)
         {
-            return AsyncContext.Run(() => this.clients.Client(this.timeout).SendAsync(request));
+            var response = this.clients.Client(this.timeout).SendAsync(request);
+            return
+                RuntimeInformation.OSDescription == "Browser"
+                ?
+                response.Result
+                :
+                AsyncContext.Run(() => response);
         }
 
         private HttpContent Content(IDictionary<string, string> request)

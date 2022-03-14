@@ -23,6 +23,8 @@
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Yaapii.Atoms.Map;
 
@@ -44,7 +46,8 @@ namespace Yaapii.Http.Responses
             {
                 try
                 {
-                    return AsyncContext.Run(() => response);
+                    return 
+                        RuntimeInformation.OSDescription == "Browser" ? response.Result : AsyncContext.Run(() => response);
                 }
                 catch (AggregateException ex)
                 {
