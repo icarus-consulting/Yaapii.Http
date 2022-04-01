@@ -1,0 +1,21 @@
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/"
+    open-pull-requests-limit: 30
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "build(icarus-nuget):"
+    registries:
+      - icarus-appveyor
+
+registries:
+  icarus-appveyor:
+    type: nuget-feed
+    url: https://ci.appveyor.com/nuget/icarus
+    username: nuget@icarus-consult.de
+    password: ${{secrets.NUGET_ICARUS_APPVEYOR_PASSWORD}}
