@@ -9,7 +9,7 @@ var configuration           = "Release";
 ///////////////////////////////////////////////////////////////////////////////
 var buildArtifacts          = Directory("./artifacts");
 var deployment              = Directory("./artifacts/deployment");
-var version                 = "3.0.2";
+var version                 = "4.1.5";
 
 ///////////////////////////////////////////////////////////////////////////////
 // MODULES

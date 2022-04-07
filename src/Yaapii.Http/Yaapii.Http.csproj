@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>4.0.6</VersionPrefix>
+    <VersionPrefix>4.1.5</VersionPrefix>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>ICARUS Consulting GmbH</Authors>
     <Description>Object oriented http client.</Description>
