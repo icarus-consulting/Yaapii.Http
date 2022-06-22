@@ -36,7 +36,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="MockHttpServer" Version="1.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="Yaapii.Atoms" Version="2.6.0" />
     <PackageReference Include="Yaapii.JSON" Version="13.0.0" />
