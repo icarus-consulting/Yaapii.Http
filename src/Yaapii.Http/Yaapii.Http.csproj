@@ -14,6 +14,8 @@
     <RepositoryUrl>https://github.com/icarus-consulting/Yaapii.Http.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>https://github.com/icarus-consulting/Yaapii.Http/releases</PackageReleaseNotes>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\sgKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
