@@ -24,7 +24,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -494,7 +493,7 @@ namespace Yaapii.Http.Wires.Test
             {
                 svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
                 {
-                    foreach(var header in req.Headers["Content-Type"])
+                    foreach (var header in req.Headers["Content-Type"])
                     {
                         contentTypeHeaders.AddRange(
                             header.Split(", ")
