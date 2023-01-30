@@ -428,6 +428,7 @@ namespace Yaapii.Http.Wires.Test
             var host = WebHost.CreateDefaultBuilder();
 
             host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.UseKestrel((opt) => opt.AllowSynchronousIO = true);
             host.ConfigureServices(svc =>
             {
                 svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
@@ -440,7 +441,7 @@ namespace Yaapii.Http.Wires.Test
             });
             host.Configure(app =>
             {
-                app.UseMvc();
+                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
             });
 
             using (var built = host.Build())
@@ -506,7 +507,7 @@ namespace Yaapii.Http.Wires.Test
             });
             host.Configure(app =>
             {
-                app.UseMvc();
+                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
             });
 
             using (var built = host.Build())
