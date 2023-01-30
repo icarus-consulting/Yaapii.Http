@@ -24,7 +24,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -429,6 +428,7 @@ namespace Yaapii.Http.Wires.Test
             var host = WebHost.CreateDefaultBuilder();
 
             host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.UseKestrel((opt) => opt.AllowSynchronousIO = true);
             host.ConfigureServices(svc =>
             {
                 svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
@@ -441,7 +441,7 @@ namespace Yaapii.Http.Wires.Test
             });
             host.Configure(app =>
             {
-                app.UseMvc();
+                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
             });
 
             using (var built = host.Build())
@@ -494,7 +494,7 @@ namespace Yaapii.Http.Wires.Test
             {
                 svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
                 {
-                    foreach(var header in req.Headers["Content-Type"])
+                    foreach (var header in req.Headers["Content-Type"])
                     {
                         contentTypeHeaders.AddRange(
                             header.Split(", ")
@@ -507,7 +507,7 @@ namespace Yaapii.Http.Wires.Test
             });
             host.Configure(app =>
             {
-                app.UseMvc();
+                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
             });
 
             using (var built = host.Build())
