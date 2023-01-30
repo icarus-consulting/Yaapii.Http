@@ -217,46 +217,6 @@ Task("Credentials")
     });
 
 ///////////////////////////////////////////////////////////////////////////////
-// GitHub Release
-///////////////////////////////////////////////////////////////////////////////
-Task("GitHubRelease")
-    .WithCriteria(() => isAppVeyor && BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
-    .IsDependentOn("Version")
-    .IsDependentOn("NuGet")
-    .IsDependentOn("Credentials")
-    .Does(() => 
-    {
-        Information(Figlet("GitHub Release"));
-    
-        GitReleaseManagerCreate(
-            gitHubToken,
-            owner,
-            repository, 
-            new GitReleaseManagerCreateSettings {
-                Milestone         = version,
-                Name              = version,
-                Prerelease        = false,
-                TargetCommitish   = "master"
-            }
-        );
-
-        var nugets = string.Join(",", GetFiles("./artifacts/*.nupkg").Select(f => f.FullPath) );
-        Information($"Release files:{Environment.NewLine}  " + nugets.Replace(",", $"{Environment.NewLine}  "));
-
-        Information($"!!!Skipping github Release!!!");
-        return;
-
-        GitReleaseManagerAddAssets(
-            gitHubToken,
-            owner,
-            repository,
-            version,
-            nugets
-        );
-        GitReleaseManagerPublish(gitHubToken, owner, repository, version);
-    });
-
-///////////////////////////////////////////////////////////////////////////////
 // NuGetFeed
 ///////////////////////////////////////////////////////////////////////////////
 Task("NuGetFeed")
@@ -301,7 +261,6 @@ Task("Default")
 .IsDependentOn("Build")
 .IsDependentOn("UnitTests")
 .IsDependentOn("NuGet")
-.IsDependentOn("GitHubRelease")
 .IsDependentOn("NuGetFeed");
 
 RunTarget(target);
