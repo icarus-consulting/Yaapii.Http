@@ -260,7 +260,6 @@ Task("Default")
 .IsDependentOn("Build")
 .IsDependentOn("UnitTests")
 .IsDependentOn("NuGet")
-.IsDependentOn("GitHubRelease")
 .IsDependentOn("NuGetFeed");
 
 RunTarget(target);
