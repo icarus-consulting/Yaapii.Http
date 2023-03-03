@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Xml;
 
@@ -31,25 +30,29 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and a body from the given xml.
         /// </summary>
-        public sealed class Of : MapEnvelope
+        public sealed class Of : MessageEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing the given xml.
             /// </summary>
-            public Of(IXML body, params IMapInput[] extraParts) : this(200, "OK", body, extraParts)
+            public Of(IXML body, params IMessageInput[] extraParts) : this(
+                200,
+                "OK",
+                body,
+                extraParts
+            )
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and a body from the given xml.
             /// </summary>
-            public Of(int status, string reason, IXML body, params IMapInput[] extraParts) : base(() =>
+            public Of(int status, string reason, IXML body, params IMessageInput[] extraParts) : base(
                 new Response.Of(
                     new Status(status),
                     new Reason(reason),
                     new Body(body),
                     new Parts.Joined(extraParts)
-                ),
-                live: false
+                )
             )
             { }
         }

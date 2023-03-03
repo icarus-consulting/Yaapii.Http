@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,25 +22,26 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts
 {
     /// <summary>
     /// Several parts joined together.
     /// </summary>
-    public sealed class Joined : MapInputEnvelope
+    public sealed class Joined : MessageInputEnvelope
     {
         /// <summary>
         /// Several parts joined together.
         /// </summary>
-        public Joined(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
+        public Joined(params IMessageInput[] parts) : this(
+            new ManyOf<IMessageInput>(parts)
+        )
         { }
 
         /// <summary>
         /// Several parts joined together.
         /// </summary>
-        public Joined(IEnumerable<IMapInput> parts) : base(input =>
+        public Joined(IEnumerable<IMessageInput> parts) : base(input =>
         {
             foreach (var part in parts)
             {

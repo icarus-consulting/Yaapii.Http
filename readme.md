@@ -236,7 +236,7 @@ var response =
         ),
         new Get("https://example.com")
     );
-response.GetEnumerator();
+response.Head(); // or: response.Body();
 ```
 
 Alternatively, you can ask a wire directly for a response:
@@ -273,12 +273,12 @@ var response =
         ),
         new Get("https://example.com")
     );
-var status = new Status.Of(response) // implements INumber, see Yaapii.Atoms
-var contentTypes = new ContentType.Of(response) // implements IEnumerable<string>
-var contentType = new ContentType.FirstOf(response) // implements IText, see Yaapii.Atoms
-var methods = new Header.Of("Allow") // implements IEnumerable<string>
-var method = new Header.FirstOf("Allow") // implements IText, see Yaapii.Atoms
-var body = new Body.Of(response) // implements IInput, see Yaapii.Atoms
+var status = new Status.Of(response); // implements INumber, see Yaapii.Atoms
+var contentTypes = new ContentType.Of(response); // implements IEnumerable<string>
+var contentType = new ContentType.FirstOf(response); // implements IText, see Yaapii.Atoms
+var methods = new Header.Of("Allow"); // implements IEnumerable<string>
+var method = new Header.FirstOf("Allow"); // implements IText, see Yaapii.Atoms
+var body = new Body.Of(response); // implements IInput, see Yaapii.Atoms
 ```
 
 If you need the body in a format other than ```IInput```, there are special body classes, that do the conversion for you:
@@ -401,7 +401,7 @@ using( var server =
 **Always dispose the ```HttpMock``` or the ```MockServer``` it returned!**
 
 No need to dispose both, disposing ```HttpMock``` will just dispose the ```MockServer``` returned by ```HttpMock.Value()```.
-This means calling ```HttpMock.Dispose()``` will do the same thing as calling ```HttpMock.Value().Dispose```.
+This means calling ```HttpMock.Dispose()``` will do the same thing as calling ```HttpMock.Value().Dispose()```.
 If not disposed, it will keep running in the background, listening for requests, keeping the port occupied.
 The easiest way to do this is to put either ```new HttpMock``` or ```HttpMock.Value()``` in a using block as follows:
 ```csharp

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ using Xunit;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
@@ -52,7 +51,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new BytesOf(
                     new Body.Of(
                         new Body(result).Apply(
-                            new MapOf(new MapInputOf())
+                            new SimpleMessage()
                         )
                     )
                 ).AsBytes()
@@ -70,7 +69,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                         new Body(
                             new InputOf("| <-- stick figure body")
                         ).Apply(
-                            new MapOf(new MapInputOf())
+                            new SimpleMessage()
                         )
                     )
                 ).AsString()
@@ -83,8 +82,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/json",
                 new Body(new JObject()).Apply(
-                    new MapOf(new MapInputOf())
-                )["header:0:Content-Type"]
+                    new SimpleMessage()
+                ).Head()["header:0:Content-Type"]
             );
         }
 
@@ -97,7 +96,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).ToString(),
                 new TextOf(
                     new Body.Of(
-                        new MapOf(
+                        new SimpleMessage(
                             new Body(
                                 new JObject(
                                     new JProperty("key", "value")
@@ -115,8 +114,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/xml",
                 new Body(new XMLCursor("<irrelevant />")).Apply(
-                    new MapOf(new MapInputOf())
-                )["header:0:Content-Type"]
+                    new SimpleMessage()
+                ).Head()["header:0:Content-Type"]
             );
         }
 
@@ -128,7 +127,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextOf(
                     new Body.Of(
                         new Body(new XMLCursor("<importantData />")).Apply(
-                            new MapOf(new MapInputOf())
+                            new SimpleMessage()
                         )
                     )
                 ).AsString()

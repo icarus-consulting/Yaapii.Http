@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 
 using System;
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses.Test
 {
@@ -33,7 +32,7 @@ namespace Yaapii.Http.Responses.Test
         {
             Assert.Throws<ArgumentException>(() =>
                 new ExpectedStatus(200, new ArgumentException()).Verify(
-                    new MapOf(
+                    new SimpleMessage(
                         new Status(400)
                     )
                 )
@@ -44,7 +43,7 @@ namespace Yaapii.Http.Responses.Test
         public void AcceptsCorrectStatus()
         {
             new ExpectedStatus(200, new ArgumentException()).Verify(
-                new MapOf(
+                new SimpleMessage(
                     new Status(200)
                 )
             );
@@ -59,7 +58,7 @@ namespace Yaapii.Http.Responses.Test
                 built = true;
                 return new ArgumentException();
             }).Verify(
-                new MapOf(
+                new SimpleMessage(
                     new Status(200)
                 )
             );

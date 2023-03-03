@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
@@ -42,13 +41,15 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// The body of a request or response as <see cref="IBytes"/>
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
+            public Of(Task<IMessage> input) : this(
+                new Synced(input)
+            )
             { }
 
             /// <summary>
             /// The body of a request or response as <see cref="IBytes"/>
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 new BytesOf(
                     new Body.Of(input)
                 ).AsBytes()

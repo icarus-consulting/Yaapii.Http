@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 
@@ -35,13 +34,16 @@ namespace Yaapii.Http.Parts.Headers
         /// <summary>
         /// Envelope for extracting header values from a request.
         /// </summary>
-        protected HeaderOfEnvelope(IDictionary<string, string> input, string key) : this(() => input, key)
+        protected HeaderOfEnvelope(IMessage input, string key) : this(
+            () => input,
+            key
+        )
         { }
 
         /// <summary>
         /// Envelope for extracting header values from a request.
         /// </summary>
-        protected HeaderOfEnvelope(Func<IDictionary<string, string>> input, string key) : base(() => 
+        protected HeaderOfEnvelope(Func<IMessage> input, string key) : base(() => 
             new Mapped<IKvp, string>(matchingHeader =>
                 matchingHeader.Value(),
                 new Filtered<IKvp>(header =>

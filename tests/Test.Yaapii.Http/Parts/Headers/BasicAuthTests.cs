@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 
 using Xunit;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -34,8 +33,8 @@ namespace Yaapii.Http.Parts.Headers.Test
             Assert.Equal(
                 $"Basic {new TextBase64("user:password").AsString()}",
                 new BasicAuth("user", "password").Apply(
-                    new MapOf(new MapInputOf())
-                )["header:0:Authorization"]
+                    new SimpleMessage()
+                ).Head()["header:0:Authorization"]
             );
         }
     }

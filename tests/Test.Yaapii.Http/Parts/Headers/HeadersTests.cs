@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 
 using System;
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Headers.Test
 {
@@ -41,8 +40,8 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "second key", "second value",
                     "third key", "third value"
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                )[$"header:{index}:{key}"]
+                    new SimpleMessage()
+                ).Head()[$"header:{index}:{key}"]
             );
         }
         
@@ -59,8 +58,8 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "same key", "second value",
                     "same key", "third value"
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                )[$"header:{index}:same key"]
+                    new SimpleMessage()
+                ).Head()[$"header:{index}:same key"]
             );
         }
 
@@ -72,8 +71,8 @@ namespace Yaapii.Http.Parts.Headers.Test
                     "key", "value",
                     "anotherKey"
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                ).GetEnumerator()
+                    new SimpleMessage()
+                ).Head().GetEnumerator()
             );
         }
     }

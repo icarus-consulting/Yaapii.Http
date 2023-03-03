@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Text;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Text;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Responses;
-using System.Threading.Tasks;
 
 namespace Yaapii.Http.Fake
 {
@@ -43,7 +42,7 @@ namespace Yaapii.Http.Fake
         /// Creates a response from the given parts.
         /// Returns 200/OK by default, but those can be overwritten.
         /// </summary>
-        public FkWire(params IMapInput[] responseParts) : this(
+        public FkWire(params IMessageInput[] responseParts) : this(
             200, 
             "OK", 
             responseParts
@@ -54,8 +53,8 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code and reason.
         /// </summary>
-        public FkWire(int status, string reason, params IMapInput[] extraParts) : this(
-            new ManyOf<IMapInput>(
+        public FkWire(int status, string reason, params IMessageInput[] extraParts) : this(
+            new ManyOf<IMessageInput>(
                 new Status(status),
                 new Reason(reason),
                 new Parts.Joined(extraParts)
@@ -67,7 +66,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns 200/OK and the specified body.
         /// </summary>
-        public FkWire(string body, params IMapInput[] extraParts) : this(
+        public FkWire(string body, params IMessageInput[] extraParts) : this(
             new TextOf(body),
             extraParts
         )
@@ -77,7 +76,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns 200/OK and the specified body.
         /// </summary>
-        public FkWire(IText body, params IMapInput[] extraParts) : this(
+        public FkWire(IText body, params IMessageInput[] extraParts) : this(
             200,
             "OK",
             body,
@@ -89,7 +88,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code, reason and body.
         /// </summary>
-        public FkWire(int status, string reason, string body, params IMapInput[] extraParts) : this(
+        public FkWire(int status, string reason, string body, params IMessageInput[] extraParts) : this(
             status,
             reason,
             new TextOf(body),
@@ -101,8 +100,8 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code, reason and body.
         /// </summary>
-        public FkWire(int status, string reason, IText body, params IMapInput[] extraParts) : this(
-            new ManyOf<IMapInput>(
+        public FkWire(int status, string reason, IText body, params IMessageInput[] extraParts) : this(
+            new ManyOf<IMessageInput>(
                 new Status(status),
                 new Reason(reason),
                 new Body(body),
@@ -115,7 +114,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns 200/OK and the specified headers.
         /// </summary>
-        public FkWire(IDictionary<string, string> headers, params IMapInput[] extraParts) : this(
+        public FkWire(IDictionary<string, string> headers, params IMessageInput[] extraParts) : this(
             200,
             "OK",
             headers,
@@ -127,8 +126,8 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code, reason and headers.
         /// </summary>
-        public FkWire(int status, string reason, IDictionary<string, string> headers, params IMapInput[] extraParts) : this(
-            new ManyOf<IMapInput>(
+        public FkWire(int status, string reason, IDictionary<string, string> headers, params IMessageInput[] extraParts) : this(
+            new ManyOf<IMessageInput>(
                 new Status(status),
                 new Reason(reason),
                 new Headers(headers),
@@ -141,7 +140,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns 200/OK and the specified headers and body.
         /// </summary>
-        public FkWire(IDictionary<string, string> headers, string body, params IMapInput[] extraParts) : this(
+        public FkWire(IDictionary<string, string> headers, string body, params IMessageInput[] extraParts) : this(
             headers,
             new TextOf(body),
             extraParts
@@ -152,7 +151,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns 200/OK and the specified headers and body.
         /// </summary>
-        public FkWire(IDictionary<string, string> headers, IText body, params IMapInput[] extraParts) : this(
+        public FkWire(IDictionary<string, string> headers, IText body, params IMessageInput[] extraParts) : this(
             200,
             "OK",
             headers,
@@ -165,7 +164,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code, reason, headers and body.
         /// </summary>
-        public FkWire(int status, string reason, IDictionary<string, string> headers, string body, params IMapInput[] extraParts) : this(
+        public FkWire(int status, string reason, IDictionary<string, string> headers, string body, params IMessageInput[] extraParts) : this(
             status,
             reason,
             headers,
@@ -178,8 +177,8 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Returns the specified status code, reason, headers and body.
         /// </summary>
-        public FkWire(int status, string reason, IDictionary<string, string> headers, IText body, params IMapInput[] extraParts) : this(
-            new ManyOf<IMapInput>(
+        public FkWire(int status, string reason, IDictionary<string, string> headers, IText body, params IMessageInput[] extraParts) : this(
+            new ManyOf<IMessageInput>(
                 new Status(status),
                 new Reason(reason),
                 new Headers(headers),
@@ -192,8 +191,8 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response from the given parts.
         /// </summary>
-        public FkWire(IEnumerable<IMapInput> responseParts) : this(req => 
-            new MapOf(responseParts)
+        public FkWire(IEnumerable<IMessageInput> responseParts) : this(req => 
+            new SimpleMessage(responseParts)
         )
         { }
 
@@ -201,10 +200,10 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Executes the given action for each request and returns 200/OK.
         /// </summary>
-        public FkWire(Action<IDictionary<string, string>> requestAction) : this(req =>
+        public FkWire(Action<IMessage> requestAction) : this(req =>
         {
             requestAction(req);
-            return new Task<IDictionary<string,string>>(() => new Response.Of(200, "OK"));
+            return new Task<IMessage>(() => new Response.Of(200, "OK"));
         })
         { }
 
@@ -212,7 +211,7 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response using the given function.
         /// </summary>
-        public FkWire(Func<IDictionary<string, string>, string> responseBody) : this(req => 
+        public FkWire(Func<IMessage, string> responseBody) : this(req => 
             new Response.Of(200, "OK", responseBody(req))
         )
         { }
@@ -221,14 +220,16 @@ namespace Yaapii.Http.Fake
         /// A fake wire to convert http requests into responses.
         /// Creates a response using the given function.
         /// </summary>
-        public FkWire(Func<IDictionary<string, string>, IDictionary<string, string>> syncResponse) : this(req => new Task<IDictionary<string, string>>(() => syncResponse(req)))
+        public FkWire(Func<IMessage, IMessage> syncResponse) : this(req =>
+            new Task<IMessage>(() => syncResponse(req))
+        )
         { }
 
         /// <summary>
         /// A fake wire to convert http requests into responses.
         /// Creates a response using the given function.
         /// </summary>
-        public FkWire(Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response) : base((req) => {
+        public FkWire(Func<IMessage, Task<IMessage>> response) : base((req) => {
             var task = response(req);
             task.Start();
             return task;

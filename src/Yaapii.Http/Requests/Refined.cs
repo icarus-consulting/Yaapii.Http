@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,29 +22,27 @@
 
 using System.Collections.Generic;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Requests
 {
     /// <summary>
     /// A request with additional parts added to it.
     /// </summary>
-    public sealed class Refined : MapEnvelope
+    public sealed class Refined : MessageEnvelope
     {
         /// <summary>
         /// A request with additional parts added to it.
         /// </summary>
-        public Refined(IDictionary<string, string> origin, params IMapInput[] additional) : this(origin, new ManyOf<IMapInput>(additional))
+        public Refined(IMessage origin, params IMessageInput[] additional) : this(origin, new ManyOf<IMessageInput>(additional))
         { }
 
         /// <summary>
         /// A request with additional parts added to it.
         /// </summary>
-        public Refined(IDictionary<string, string> origin, IEnumerable<IMapInput> additional) : base(() =>
+        public Refined(IMessage origin, IEnumerable<IMessageInput> additional) : base(
             new Parts.Joined(additional).Apply(
                 origin
-            ),
-            live: false
+            )
         )
         { }
     }

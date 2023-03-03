@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,9 @@ namespace Yaapii.Http.Parts.Headers.Test
                 "this is a token",
                 new FirstOf<string>(
                     new BearerTokenAuth.Of(
-                        new MapOf("header:0:Authorization", $"Bearer this is a token")
+                        new SimpleMessage(
+                            new MapOf("header:0:Authorization", $"Bearer this is a token")
+                        )
                     )
                 ).Value()
             );

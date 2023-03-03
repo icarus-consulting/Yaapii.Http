@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,10 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.IO;
-using Yaapii.Atoms.Scalar;
+using Yaapii.Http.Facets;
 using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Parts.Bodies
@@ -37,54 +34,29 @@ namespace Yaapii.Http.Parts.Bodies
         /// Gets the body of a request or response.
         /// The body will be decoded from base 64.
         /// </summary>
-        public sealed class Of : IInput
+        public sealed class Of : InputEnvelope
         {
-            private readonly IScalar<IInput> input;
-
             /// <summary>
             /// The body of a request or response.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Synced(input))
-            { }
-
-            /// <summary>
-            /// The body of a request or response.
-            /// </summary>
-            public Of(IDictionary<string, string> input) : this(
-                new ScalarOf<IInput>(() =>
-                {
-                    IInput result = new DeadInput();
-                    if(input.ContainsKey(Body.KEY))
-                    {
-                        result =
-                            new InputOf(
-                                new Base64Bytes(
-                                    new BytesOf(
-                                        input[KEY]
-                                    )
-                                )
-                            );
-                    }
-                    return result;
-                }
-                    
-                )
+            public Of(Task<IMessage> input) : this(
+                new Synced(input)
             )
             { }
 
-            private Of(IScalar<IInput> input)
-            {
-                this.input = input;
-            }
-
             /// <summary>
-            /// The body of a request or response
+            /// The body of a request or response.
             /// </summary>
-            /// <returns></returns>
-            public Stream Stream()
+            public Of(IMessage input) : base(() =>
             {
-                return this.input.Value().Stream();
-            }
+                IInput result = new DeadInput();
+                if(input.HasBody())
+                {
+                    result = input.Body();
+                }
+                return result;
+            })
+            { }
         }
     }
 }

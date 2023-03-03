@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
@@ -36,25 +34,33 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// JSON data received as a response from the given wire.
         /// </summary>
-        public JsonResponse(IWire wire, IVerification verification) : this(new Verified(wire, verification))
+        public JsonResponse(IWire wire, IVerification verification) : this(
+            new Verified(wire, verification)
+        )
         { }
 
         /// <summary>
         /// JSON data received as a response from the given wire.
         /// </summary>
-        public JsonResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
+        public JsonResponse(IWire wire) : this(
+            wire,
+            new SimpleMessage()
+        )
         { }
 
         /// <summary>
         /// JSON data received as a response from the given wire.
         /// </summary>
-        public JsonResponse(IWire wire, IVerification verification, IDictionary<string, string> request) : this(new Verified(wire, verification), request)
+        public JsonResponse(IWire wire, IVerification verification, IMessage request) : this(
+            new Verified(wire, verification),
+            request
+        )
         { }
 
         /// <summary>
         /// JSON data received as a response from the given wire.
         /// </summary>
-        public JsonResponse(IWire wire, IDictionary<string, string> request) : base(() =>
+        public JsonResponse(IWire wire, IMessage request) : base(() =>
             new JsonBody.Of(
                 wire.Response(request)
             )

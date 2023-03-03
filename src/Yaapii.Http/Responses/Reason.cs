@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -29,20 +29,24 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// Adds a reason phrase to a response.
     /// </summary>
-    public sealed partial class Reason : MapInputEnvelope
+    public sealed partial class Reason : MessageInputEnvelope
     {
         private const string KEY = "reason";
 
         /// <summary>
         /// Adds a reason phrase to a response.
         /// </summary>
-        public Reason(string reason) : this( new TextOf(reason))
+        public Reason(string reason) : this(
+            new TextOf(reason)
+        )
         { }
 
         /// <summary>
         /// Adds a reason phrase to a response.
         /// </summary>
-        public Reason(IText reason) : base(new KvpOf(KEY, () => reason.AsString()))
+        public Reason(IText reason) : base(
+            new KvpOf(KEY, () => reason.AsString())
+        )
         { }
     }
 }

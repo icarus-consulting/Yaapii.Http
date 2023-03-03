@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,20 +21,19 @@
 //SOFTWARE.
 
 using System;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts
 {
     /// <summary>
     /// Only adds a part if a given condition applies.
     /// </summary>
-    public sealed class Conditional : MapInputEnvelope
+    public sealed class Conditional : MessageInputEnvelope
     {
         /// <summary>
         /// Only adds a part if a given condition applies.
         /// </summary>
-        public Conditional(Func<bool> condition, IMapInput consequence) : base(dict => 
-            condition() ? consequence.Apply(dict) : dict
+        public Conditional(Func<bool> condition, IMessageInput consequence) : base(dict => 
+            condition.Invoke() ? consequence.Apply(dict) : dict
         )
         { }
     }

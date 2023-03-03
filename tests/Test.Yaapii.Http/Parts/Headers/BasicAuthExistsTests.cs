@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new BasicAuth.Exists(
-                    new MapOf("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                    new SimpleMessage(
+                        new MapOf("header:0:Authorization", $"Basic {new TextBase64("user:password").AsString()}")
+                    )
                 ).Value()
             );
         }
@@ -43,7 +45,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new BasicAuth.Exists(
-                    new MapOf(new MapInputOf())
+                    new SimpleMessage()
                 ).Value()
             );
         }

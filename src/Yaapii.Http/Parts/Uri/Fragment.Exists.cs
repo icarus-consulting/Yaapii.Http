@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using Yaapii.Http.Facets;
 
 namespace Yaapii.Http.Parts.Uri
@@ -35,7 +34,9 @@ namespace Yaapii.Http.Parts.Uri
             /// <summary>
             /// Checks if the fragment part of a <see cref="System.Uri"/> has been specified for a request.
             /// </summary>
-            public Exists(IDictionary<string, string> input) : base(() => input.Keys.Contains(KEY))
+            public Exists(IMessage input) : base(() =>
+                input.Head().Keys.Contains(KEY)
+            )
             { }
         }
     }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -28,12 +28,15 @@ namespace Yaapii.Http.Parts.Headers
     /// <summary>
     /// Envelope for adding a header field to a request.
     /// </summary>
-    public abstract class HeaderEnvelope : MapInputEnvelope
+    public abstract class HeaderEnvelope : MessageInputEnvelope
     {
         /// <summary>
         /// Envelope for adding a header field to a request.
         /// </summary>
-        protected HeaderEnvelope(string key, string value) : this(() => key, () => value)
+        protected HeaderEnvelope(string key, string value) : this(
+            () => key,
+            () => value
+        )
         { }
 
         /// <summary>

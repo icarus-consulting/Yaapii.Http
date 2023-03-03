@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Nito.AsyncEx;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -45,7 +44,7 @@ namespace Yaapii.Http.Wires
                 AsyncContext.Run(() => origin.Response(request));
 
             verification.Verify(response);
-            return new TaskFactory().StartNew<IDictionary<string, string>>(() => response);
+            return new TaskFactory().StartNew<IMessage>(() => response);
         })
         { }
     }

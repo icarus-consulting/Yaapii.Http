@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -29,32 +29,40 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds the user info part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class User : MapInputEnvelope
+    public sealed partial class User : MessageInputEnvelope
     {
         private const string KEY = "user";
 
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(string user) : this(() => user)
+        public User(string user) : this(() =>
+            user
+        )
         { }
 
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(IText user) : this(() => user.AsString())
+        public User(IText user) : this(() =>
+            user.AsString()
+        )
         { }
 
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(IScalar<string> user) : this(() => user.Value())
+        public User(IScalar<string> user) : this(() =>
+            user.Value()
+        )
         { }
 
         /// <summary>
         /// Adds the user info part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public User(Func<string> user) : base(new KvpOf(KEY, user))
+        public User(Func<string> user) : base(
+            new KvpOf(KEY, user)
+        )
         { }
     }
 }

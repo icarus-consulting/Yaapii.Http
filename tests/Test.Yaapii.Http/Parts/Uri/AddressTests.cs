@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +32,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https",
                 new Scheme.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -46,7 +45,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "someUser",
                 new User.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -59,7 +58,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "somehost",
                 new Host.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -72,7 +71,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 1337,
                 new Port.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsInt()
@@ -85,7 +84,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "/this/is/a/path",
                 new Path.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()
@@ -100,7 +99,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 expected,
                 new QueryParams.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 )[key]
@@ -113,7 +112,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "someFragment",
                 new Fragment.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Address("https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment")
                     )
                 ).AsString()

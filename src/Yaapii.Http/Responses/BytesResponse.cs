@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
@@ -38,28 +36,36 @@ namespace Yaapii.Http.Responses
         /// Bytes received as a response from the given wire.
         /// Bytes will be decoded from base 64.
         /// </summary>
-        public BytesResponse(IWire wire, IVerification verification) : this(new Verified(wire, verification))
+        public BytesResponse(IWire wire, IVerification verification) : this(
+            new Verified(wire, verification)
+        )
         { }
 
         /// <summary>
         /// Bytes received as a response from the given wire.
         /// Bytes will be decoded from base 64.
         /// </summary>
-        public BytesResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
+        public BytesResponse(IWire wire) : this(
+            wire,
+            new SimpleMessage()
+        )
         { }
 
         /// <summary>
         /// Bytes received as a response from the given wire.
         /// Bytes will be decoded from base 64.
         /// </summary>
-        public BytesResponse(IWire wire, IVerification verification, IDictionary<string, string> request) : this(new Verified(wire, verification), request)
+        public BytesResponse(IWire wire, IVerification verification, IMessage request) : this(
+            new Verified(wire, verification),
+            request
+        )
         { }
 
         /// <summary>
         /// Bytes received as a response from the given wire.
         /// Bytes will be decoded from base 64.
         /// </summary>
-        public BytesResponse(IWire wire, IDictionary<string, string> request) : base(() =>
+        public BytesResponse(IWire wire, IMessage request) : base(() =>
             new BytesBody.Of(
                 wire.Response(request)
             ).AsBytes()

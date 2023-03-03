@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Requests;
@@ -56,8 +55,8 @@ namespace Yaapii.Http.Parts.Test
                     return dict;
                 })
             ).Apply(
-                new MapOf(new MapInputOf())
-            ).GetEnumerator();
+                new SimpleMessage()
+            ).Head();
             Assert.Equal(15, sum);
         }
 
@@ -75,7 +74,7 @@ namespace Yaapii.Http.Parts.Test
                     new Joined(
                         new Header("same key", "second value")
                     )
-                )[$"header:{index}:same key"]
+                ).Head()[$"header:{index}:same key"]
             );
         }
     }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.True(
                 new Header.Exists(
-                    new MapOf("header:0:some key", "some value"),
+                    new SimpleMessage(
+                        new MapOf("header:0:some key", "some value")
+                    ),
                     "some key"
                 ).Value()
             );
@@ -43,7 +45,7 @@ namespace Yaapii.Http.Parts.Headers.Test
         {
             Assert.False(
                 new Header.Exists(
-                    new MapOf(new MapInputOf()),
+                    new SimpleMessage(),
                     "some key"
                 ).Value()
             );

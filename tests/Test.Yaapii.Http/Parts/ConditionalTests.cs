@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,12 +33,12 @@ namespace Yaapii.Http.Parts.Test
             Assert.Empty(
                 new Conditional(
                     () => false,
-                    new MapInputOf(
+                    new SimpleMessageInput(
                         new KvpOf("not empty", "do not apply this input")
                     )
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                ).Keys
+                    new SimpleMessage()
+                ).Head().Keys
             );
         }
 
@@ -48,12 +48,12 @@ namespace Yaapii.Http.Parts.Test
             Assert.NotEmpty(
                 new Conditional(
                     () => true,
-                    new MapInputOf(
+                    new SimpleMessageInput(
                         new KvpOf("some input", "apply this")
                     )
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                ).Keys
+                    new SimpleMessage()
+                ).Head().Keys
             );
         }
     }

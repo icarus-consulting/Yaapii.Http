@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,9 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -37,7 +35,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 "| <-- stick figure body",
                 new TextOf(
                     new Body.Of(
-                        new MapOf(
+                        new SimpleMessage(
                             new Body("| <-- stick figure body")
                         )
                     )
@@ -51,7 +49,9 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.Empty(
                 new BytesOf(
-                    new Body.Of(new MapOf("", ""))
+                    new Body.Of(
+                        new SimpleMessage()
+                    )
                 ).AsBytes()
             );
         }

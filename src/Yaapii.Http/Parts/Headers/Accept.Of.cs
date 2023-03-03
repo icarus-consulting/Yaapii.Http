@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Http.Responses;
 
@@ -38,14 +37,16 @@ namespace Yaapii.Http.Parts.Headers
             /// Gets the values of the 'Accept' header field from a request.
             /// Specifies media type(s) that is/are acceptable as a response.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            public Of(Task<IMessage> response) : this(
+                new Synced(response)
+            )
             { }
 
             /// <summary>
             /// Gets the values of the 'Accept' header field from a request.
             /// Specifies media type(s) that is/are acceptable as a response.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(input, KEY)
+            public Of(IMessage input) : base(input, KEY)
             { }
         }
     }

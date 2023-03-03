@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -41,8 +39,8 @@ namespace Yaapii.Http.Parts.Uri.Test
                     "second key", "second value",
                     "third key", "third value"
                 ).Apply(
-                    new MapOf(new MapInputOf())
-                )[$"query:{key}"]
+                    new SimpleMessage()
+                ).Head()[$"query:{key}"]
             );
         }
 
@@ -53,8 +51,8 @@ namespace Yaapii.Http.Parts.Uri.Test
                 new QueryParams(
                     ""
                 ).Apply(
-                    new Dictionary<string, string>()
-                )
+                    new SimpleMessage()
+                ).Head()
             );
         }
     }

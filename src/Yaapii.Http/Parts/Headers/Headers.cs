@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ namespace Yaapii.Http.Parts.Headers
     /// Adds header fields to a request.
     /// The same key can be used multiple times to add multiple values to the same header field.
     /// </summary>
-    public sealed partial class Headers : MapInputEnvelope
+    public sealed partial class Headers : MessageInputEnvelope
     {
         private const string KEY_PREFIX = "header:";
         private const string INDEX_SEPARATOR = ":";
@@ -128,14 +128,14 @@ namespace Yaapii.Http.Parts.Headers
         /// Adds header fields to a request.
         /// The same key can be used multiple times to add multiple values to the same header field.
         /// </summary>
-        public Headers(IEnumerable<IKvp> headers) : base(input =>
+        public Headers(IEnumerable<IKvp> headers) : base((message) =>
         {
             int index =
                 new Atoms.Enumerable.LengthOf(
-                    new Headers.Of(input)
+                    new Headers.Of(message)
                 ).Value();
             return
-                new MapInputOf(
+                new SimpleMessageInput(
                     new Atoms.Enumerable.Mapped<IKvp, IKvp>(kvp =>
                         new KvpOf(
                             $"{KEY_PREFIX}{index++}{INDEX_SEPARATOR}{kvp.Key()}",
@@ -143,7 +143,7 @@ namespace Yaapii.Http.Parts.Headers
                         ),
                         headers
                     )
-                ).Apply(input);
+                ).Apply(message);
         })
         { }
     }

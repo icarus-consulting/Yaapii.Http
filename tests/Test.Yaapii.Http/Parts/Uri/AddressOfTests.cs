@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,7 +32,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https://someUser@somehost:1337/this/is/a/path?someQuery=yes&moreQuery=moreYes#someFragment",
                 new Address.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Scheme("https"),
                         new User("someUser"),
                         new Host("somehost"),
@@ -53,7 +52,7 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "https://somehost/",
                 new Address.Of(
-                    new MapOf(
+                    new SimpleMessage(
                         new Scheme("https"),
                         new Host("somehost")
                     )

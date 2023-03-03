@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,12 +21,10 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Parts.Headers;
@@ -35,8 +33,6 @@ namespace Yaapii.Http.Parts.Bodies
 {
     public sealed partial class TextBody
     {
-        private const string KEY = "body";
-
         /// <summary>
         /// The body of a request or response as <see cref="IText"/>
         /// </summary>
@@ -45,13 +41,15 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// The body of a request or response as <see cref="IText"/>
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Responses.Synced(input))
+            public Of(Task<IMessage> input) : this(
+                new Responses.Synced(input)
+            )
             { }
 
             /// <summary>
             /// The body of a request or response as <see cref="IText"/>
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 {
                     var encoding = "utf-8";
                     if(new ContentType.Exists(input).Value())
@@ -72,16 +70,14 @@ namespace Yaapii.Http.Parts.Bodies
                         }
                     }
 
+                    if(!input.HasBody())
+                    {
+                        throw new InvalidOperationException("Failed to extract body as text. No body found.");
+                    }
+
                     return
                         new TextOf(
-                            new Base64Bytes(
-                                new BytesOf(
-                                    new FallbackMap(
-                                        input,
-                                        key => throw new InvalidOperationException("Failed to extract body as text. No body found.")
-                                    )[TextBody.KEY]
-                                )
-                            ),
+                            input.Body(),
                             new MapOf<Encoding>(
                                 new KvpOf<Encoding>("utf-7", Encoding.UTF7),
                                 new KvpOf<Encoding>("utf-8", Encoding.UTF8),

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 using Nito.AsyncEx;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -100,7 +101,7 @@ namespace Yaapii.Http.Wires
                 );
         }
 
-        public async Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public async Task<IMessage> Response(IMessage request)
         {
             this.requestVerification.Verify(request);
 
@@ -110,12 +111,11 @@ namespace Yaapii.Http.Wires
 
             using (var aspnetResponse = AspNetResponse(AspNetRequest(request)))
             using (var responseContent = aspnetResponse.Content)
-            using (var responseStream = await responseContent.ReadAsStreamAsync())
+            using(var responseStream = await responseContent.ReadAsStreamAsync())
             {
-                var body =
-                    new BytesOf(
-                        new InputOf(responseStream)
-                    ).AsBytes(); // read stream to end, before it gets disposed
+                var body = new MemoryStream();
+                await responseStream.CopyToAsync(body); // read stream to end, before it gets disposed
+                body.Position = 0;
                 var response =
                     new Responses.Response.Of(
                         new Status((int)aspnetResponse.StatusCode),
@@ -123,7 +123,9 @@ namespace Yaapii.Http.Wires
                         new Headers(ResponseHeaders(aspnetResponse)),
                         new Conditional(
                             () => body.Length > 0,
-                            new Body(body)
+                            new Body(
+                                new InputOf(body)
+                            )
                         )
                     );
 
@@ -151,7 +153,7 @@ namespace Yaapii.Http.Wires
             return headers;
         }
 
-        private HttpRequestMessage AspNetRequest(IDictionary<string, string> request)
+        private HttpRequestMessage AspNetRequest(IMessage request)
         {
             var headers = new Headers.Of(request);
             var aspnetRequest =
@@ -193,7 +195,7 @@ namespace Yaapii.Http.Wires
                 AsyncContext.Run(() => response);
         }
 
-        private HttpContent Content(IDictionary<string, string> request)
+        private HttpContent Content(IMessage request)
         {
             HttpContent body = new ByteArrayContent(new EmptyBytes().AsBytes());
             if (new FormParams.Of(request).Keys.Count > 0)
@@ -202,12 +204,12 @@ namespace Yaapii.Http.Wires
             }
             else if (new Body.Exists(request).Value())
             {
-                body = BytesContent(request);
+                body = StreamContent(request);
             }
             return body;
         }
 
-        private HttpContent FormContent(IDictionary<string, string> request)
+        private HttpContent FormContent(IMessage request)
         {
             var content = new FormParams.Of(request);
             return
@@ -219,11 +221,11 @@ namespace Yaapii.Http.Wires
                 );
         }
 
-        private HttpContent BytesContent(IDictionary<string, string> request)
+        private HttpContent StreamContent(IMessage request)
         {
             return
-                new ByteArrayContent(
-                    new BytesBody.Of(request).AsBytes()
+                new StreamContent(
+                    new Body.Of(request).Stream()
                 );
         }
 

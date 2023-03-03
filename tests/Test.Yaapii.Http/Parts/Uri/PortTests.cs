@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri.Test
 {
@@ -33,8 +32,8 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 "1337",
                 new Port(1337).Apply(
-                    new MapOf(new MapInputOf())
-                )["port"]
+                    new SimpleMessage()
+                ).Head()["port"]
             );
         }
     }

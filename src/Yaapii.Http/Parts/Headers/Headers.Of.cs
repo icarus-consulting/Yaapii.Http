@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -26,7 +26,6 @@ using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Parts.Headers
 {
@@ -42,18 +41,20 @@ namespace Yaapii.Http.Parts.Headers
             /// Extracts header values from a request or response.
             /// The same key can occur multiple times, if a header field had multiple values.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> response) : this(new Responses.Synced(response))
+            public Of(Task<IMessage> response) : this(
+                new Responses.Synced(response)
+            )
             { }
 
             /// <summary>
             /// Extracts header values from a request or response.
             /// The same key can occur multiple times, if a header field had multiple values.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(
+            public Of(IMessage input) : base(
                 new ScalarOf<IEnumerable<IKvp>>(() =>
                 {
                     var headers = new List<IKvp>();
-                    foreach (var key in input.Keys)
+                    foreach (var key in input.Head().Keys)
                     {
                         if (key.StartsWith(KEY_PREFIX))
                         {
@@ -63,7 +64,7 @@ namespace Yaapii.Http.Parts.Headers
                                         .Remove(0, KEY_PREFIX.Length)
                                         .TrimStart('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')
                                         .Remove(0, INDEX_SEPARATOR.Length),
-                                    input[key]
+                                    input.Head()[key]
                                 )
                             );
                         }

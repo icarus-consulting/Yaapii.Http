@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 using Yaapii.Atoms.Map;
@@ -37,12 +36,12 @@ namespace Yaapii.Http.Responses.Test
                 "this is a test",
                 Assert.Throws<InvalidOperationException>(() =>
                     new Synced(
-                        Task.Run<IDictionary<string, string>>(
-                            (Func<IDictionary<string, string>>)(
+                        Task.Run<IMessage>(
+                            (Func<IMessage>)(
                                 () => throw new InvalidOperationException("this is a test")
                             )
                         )
-                    ).GetEnumerator()
+                    ).Head()
                 ).Message
             );
         }
@@ -53,10 +52,12 @@ namespace Yaapii.Http.Responses.Test
             Assert.Equal(
                 "this is a test",
                 new Synced(
-                    Task.Run<IDictionary<string, string>>(() =>
-                        new MapOf("test", "this is a test")
+                    Task.Run<IMessage>(() =>
+                        new SimpleMessage(
+                            new MapOf("test", "this is a test")
+                        )
                     )
-                )["test"]
+                ).Head()["test"]
             );
         }
     }

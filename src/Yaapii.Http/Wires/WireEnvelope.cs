@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Yaapii.Http.Wires
@@ -31,17 +30,17 @@ namespace Yaapii.Http.Wires
     /// </summary>
     public abstract class WireEnvelope : IWire
     {
-        private readonly Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response;
+        private readonly Func<IMessage, Task<IMessage>> response;
 
         /// <summary>
         /// Envelope for a <see cref="IWire"/>.
         /// </summary>
-        protected WireEnvelope(Func<IDictionary<string, string>, Task<IDictionary<string, string>>> response)
+        protected WireEnvelope(Func<IMessage, Task<IMessage>> response)
         {
             this.response = response;
         }
 
-        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public Task<IMessage> Response(IMessage request)
         {
             return this.response(request);
         }

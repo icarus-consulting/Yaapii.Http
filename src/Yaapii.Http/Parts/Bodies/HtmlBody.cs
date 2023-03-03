@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,11 +20,8 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
-using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -32,20 +29,24 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a body to a request.
     /// Sets the content type header to text/html.
     /// </summary>
-    public sealed class HtmlBody : MapInputEnvelope
+    public sealed class HtmlBody : MessageInputEnvelope
     {
         /// <summary>
         /// Adds a body to a request.
         /// Sets the content type header to text/html.
         /// </summary>
-        public HtmlBody(string body) : this(new TextOf(body))
+        public HtmlBody(string body) : this(
+            new TextOf(body)
+        )
         { }
 
         /// <summary>
         /// Adds a body to a request.
         /// Sets the content type header to text/html.
         /// </summary>
-        public HtmlBody(IText body) : base(()=>new Body(body, "text/html"))
+        public HtmlBody(IText body) : base(
+            new Body(body, "text/html")
+        )
         { }
     }
 }

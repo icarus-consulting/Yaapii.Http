@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,7 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
 
@@ -38,7 +36,7 @@ namespace Yaapii.Http.Parts.Uri
             /// <summary>
             /// Extracts query parameters from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 new MapOf(
                     new MappedDictionary<IKvp>((key, value) =>
                         new KvpOf(
@@ -47,7 +45,7 @@ namespace Yaapii.Http.Parts.Uri
                         ),
                         new FilteredDictionary((key, value) =>
                             key.StartsWith(KEY_PREFIX),
-                            input
+                            input.Head()
                         )
                     )
                 ),

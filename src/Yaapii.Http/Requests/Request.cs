@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -32,20 +31,22 @@ namespace Yaapii.Http.Requests
     /// <summary>
     /// A request from the given parts.
     /// </summary>
-    public sealed class Request : MapEnvelope
+    public sealed class Request : MessageEnvelope
     {
         /// <summary>
         /// A request from the given parts.
         /// </summary>
-        public Request(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
+        public Request(params IMessageInput[] parts) : this(
+            new ManyOf<IMessageInput>(parts)
+        )
         { }
 
         /// <summary>
         /// A request with the specified method and the given parts.
         /// </summary>
-        public Request(string method, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Request(string method, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Method(method)
             )
         )
@@ -54,9 +55,9 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request with the specified <see cref="System.Uri"/> and the given parts.
         /// </summary>
-        public Request(Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Request(Uri uri, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Address(uri)
             )
         )
@@ -65,9 +66,9 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request with the specified method, <see cref="System.Uri"/> and the given parts.
         /// </summary>
-        public Request(string method, Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Request(string method, Uri uri, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Method(method),
                 new Address(uri)
             )
@@ -77,9 +78,9 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request with the specified method, <see cref="System.Uri"/> and the given parts.
         /// </summary>
-        public Request(string method, string uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Request(string method, string uri, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Method(method),
                 new Address(uri)
             )
@@ -89,7 +90,9 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request from the given parts.
         /// </summary>
-        public Request(IEnumerable<IMapInput> parts) : base(() => new MapOf(parts), live: false)
+        public Request(IEnumerable<IMessageInput> parts) : base(
+            new SimpleMessage(parts)
+        )
         { }
     }
 }

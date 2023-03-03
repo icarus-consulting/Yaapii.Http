@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -29,32 +29,40 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds the host part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Host : MapInputEnvelope
+    public sealed partial class Host : MessageInputEnvelope
     {
         private const string KEY = "host";
 
         /// <summary>
         /// Adds the host part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Host(string host) : this(() => host)
+        public Host(string host) : this(() =>
+            host
+        )
         { }
 
         /// <summary>
         /// Adds the host part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Host(IText host) : this(() => host.AsString())
+        public Host(IText host) : this(() =>
+            host.AsString()
+        )
         { }
 
         /// <summary>
         /// Adds the host part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Host(IScalar<string> host) : this(() => host.Value())
+        public Host(IScalar<string> host) : this(() =>
+            host.Value()
+        )
         { }
 
         /// <summary>
         /// Adds the host part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Host(Func<string> host) : base(new KvpOf(KEY, host))
+        public Host(Func<string> host) : base(
+            new KvpOf(KEY, host)
+        )
         { }
     }
 }

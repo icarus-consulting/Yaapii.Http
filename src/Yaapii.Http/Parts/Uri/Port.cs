@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,32 +30,43 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds the port of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Port : MapInputEnvelope
+    public sealed partial class Port : MessageInputEnvelope
     {
         private const string KEY = "port";
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(int port) : this(new Live<int>(port))
+        public Port(int port) : this(
+            new Live<int>(port)
+        )
         { }
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(INumber port) : this(() => port.AsInt())
+        public Port(INumber port) : this(() =>
+            port.AsInt()
+        )
         { }
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(Func<int> port) : this(new ScalarOf<int>(port))
+        public Port(Func<int> port) : this(
+            new ScalarOf<int>(port)
+        )
         { }
 
         /// <summary>
         /// Adds the port of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Port(IScalar<int> port) : base(new KvpOf(KEY, () => $"{port.Value()}"))
+        public Port(IScalar<int> port) : base(
+            new KvpOf(
+                KEY,
+                () => $"{port.Value()}"
+            )
+        )
         { }
     }
 }

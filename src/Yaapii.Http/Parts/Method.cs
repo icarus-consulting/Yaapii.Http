@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,16 @@ namespace Yaapii.Http.Parts
     /// <summary>
     /// Specifies the method for a request.
     /// </summary>
-    public sealed partial class Method : MapInputEnvelope
+    public sealed partial class Method : MessageInputEnvelope
     {
         private const string KEY = "method";
 
         /// <summary>
         /// Specifies the method for a request.
         /// </summary>
-        public Method(string method) : base(new KvpOf(KEY, method))
+        public Method(string method) : base(
+            new KvpOf(KEY, method)
+        )
         { }
     }
 }

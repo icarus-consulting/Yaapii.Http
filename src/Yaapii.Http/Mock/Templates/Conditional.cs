@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Yaapii.Http.Mock.Templates
@@ -31,24 +30,24 @@ namespace Yaapii.Http.Mock.Templates
     /// </summary>
     public sealed class Conditional : ITemplate
     {
-        private readonly Func<IDictionary<string, string>, bool> condition;
+        private readonly Func<IMessage, bool> condition;
         private readonly IWire wire;
 
         /// <summary>
         /// A conditional wire template. Applies if a given condition is met.
         /// </summary>
-        public Conditional(Func<IDictionary<string, string>, bool> condition, IWire wire)
+        public Conditional(Func<IMessage, bool> condition, IWire wire)
         {
             this.condition = condition;
             this.wire = wire;
         }
 
-        public bool Applies(IDictionary<string, string> request)
+        public bool Applies(IMessage request)
         {
             return this.condition(request);
         }
 
-        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public Task<IMessage> Response(IMessage request)
         {
             return this.wire.Response(request);
         }

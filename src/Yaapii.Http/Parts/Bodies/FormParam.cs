@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds a form param to q request.
     /// Sets the content type header to application/x-www-form-urlencoded.
     /// </summary>
-    public sealed partial class FormParam : MapInputEnvelope
+    public sealed partial class FormParam : MessageInputEnvelope
     {
         private const string KEY_PREFIX = "form:";
 
@@ -41,7 +41,7 @@ namespace Yaapii.Http.Parts.Bodies
         public FormParam(string key, string value) : base(() =>
             new Joined(
                 new ContentType("application/x-www-form-urlencoded"),
-                new MapInputOf(
+                new SimpleMessageInput(
                     new KvpOf(
                         new TextOf(() => $"{KEY_PREFIX}{key}"),
                         value
