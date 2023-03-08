@@ -33,16 +33,16 @@ namespace Yaapii.Http
         /// <summary>
         /// The head of the message.
         /// </summary>
-        public IDictionary<string, string> Head();
+        IDictionary<string, string> Head();
 
         /// <summary>
         /// Check if the message has a body.
         /// </summary>
-        public bool HasBody();
+        bool HasBody();
 
         /// <summary>
         /// The body of the message.
         /// </summary>
-        public IInput Body();
+        IInput Body();
     }
 }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,27 @@
 using Xunit;
 using Yaapii.Atoms.Text;
 using Yaapii.Http.Fake;
+using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
+using Yaapii.Http.Parts.Headers;
+using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 
 namespace Yaapii.Http.Mock.Templates.Test
 {
-    public sealed class JoinedTests
+    public sealed class MatchTests
     {
         [Fact]
-        public void ReturnsPrimaryTemplateResponse()
+        public void HasResponse()
         {
+            var expected = "expected response";
             Assert.Equal(
-                "correct response",
+                expected,
                 new TextOf(
                     new Body.Of(
-                        new Joined(
-                            new Conditional(
-                                req => true,
-                                new FkWire("correct response")
-                            ),
-                            new Conditional(
-                                req => true,
-                                new FkWire("wrong response")
-                            )
+                        new Match(
+                            "path",
+                            new FkWire(expected)
                         ).Response(
                             new Request()
                         )
@@ -54,26 +52,38 @@ namespace Yaapii.Http.Mock.Templates.Test
             );
         }
 
-        [Theory]
-        [InlineData(false, false, false)]
-        [InlineData(false, true, false)]
-        [InlineData(false, false, true)]
-        [InlineData(true, true, true)]
-        public void ChecksAllTemplates(bool expected, bool firstTemplateMatches, bool secondTemplateMatches)
+        [Fact]
+        public void DoesNotApplyForMissingParts()
         {
-            Assert.Equal(
-                expected,
-                new Joined(
-                    new Conditional(
-                        req => firstTemplateMatches,
-                        new FkWire()
-                    ),
-                    new Conditional(
-                        req => secondTemplateMatches,
-                        new FkWire()
-                    )
+            Assert.False(
+                new Match(
+                    new Method("get"),
+                    new FkWire()
                 ).Applies(
-                    new Request()
+                    new Request() // has no method part
+                )
+            );
+        }
+
+        [Fact]
+        public void AppliesForMatchingParts()
+        {
+            Assert.True(
+                new Match(
+                    new Parts.Joined(
+                        new Method("get"),
+                        new Path("some/path"),
+                        new QueryParam("someParam", "someValue"),
+                        new BearerTokenAuth("a valid token"),
+                        new Body("important data")
+                    ),
+                    new FkWire()
+                ).Applies(
+                    new Get(
+                        "http://localhost/some/path?someParam=someValue",
+                        new BearerTokenAuth("a valid token"),
+                        new Body("important data")
+                    )
                 )
             );
         }

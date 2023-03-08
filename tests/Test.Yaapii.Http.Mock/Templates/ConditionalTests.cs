@@ -20,16 +20,45 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-namespace Yaapii.Http
+using Xunit;
+using Yaapii.Atoms.Text;
+using Yaapii.Http.Fake;
+using Yaapii.Http.Parts.Bodies;
+using Yaapii.Http.Requests;
+
+namespace Yaapii.Http.Mock.Templates.Test
 {
-    /// <summary>
-    /// A modification to an <see cref="IMessage"/>.
-    /// </summary>
-    public interface IMessageInput
+    public sealed class ConditionalTests
     {
-        /// <summary>
-        /// Modify the given message.
-        /// </summary>
-        IMessage Apply(IMessage message);
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void AppliesOnCondition(bool expected)
+        {
+            Assert.Equal(
+                expected,
+                new Conditional(
+                    req => expected,
+                    new FkWire()
+                ).Applies(new Request())
+            );
+        }
+
+        [Fact]
+        public void HasResponse()
+        {
+            var expected = "expected response";
+            Assert.Equal(
+                expected,
+                new TextOf(
+                    new Body.Of(
+                        new Conditional(
+                            req => true,
+                            new FkWire(expected)
+                        ).Response(new Request())
+                    )
+                ).AsString()
+            );
+        }
     }
 }
