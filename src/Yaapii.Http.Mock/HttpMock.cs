@@ -243,6 +243,7 @@ namespace Yaapii.Http.Mock
             {
                 var outStream = new MemoryStream();
                 inStream.CopyTo(outStream); // read entire stream before it gets disposed
+                outStream.Position = 0;
                 return new InputOf(outStream);
             }
         }
