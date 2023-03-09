@@ -25,10 +25,12 @@ using System;
 using System.Threading.Tasks;
 using Test.Yaapii.Http.Mock;
 using Xunit;
+using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Parts.Bodies;
+using Yaapii.Http.Parts.Headers;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
@@ -145,7 +147,7 @@ namespace Yaapii.Http.Mock.Test
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
-                                new Port(server.Port),
+                                new Port(port),
                                 new Path("test/asdf")
                             )
                         )
@@ -236,6 +238,93 @@ namespace Yaapii.Http.Mock.Test
                     response.HasBody()
                     ? new XmlBody.Of(response).AsNode().ToString()
                     : "response doesn't have a body"
+                );
+            }
+        }
+
+        [Fact]
+        public void ReturnsMultipleHeaderValues()
+        {
+            var header = "some-header-name";
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(
+                        new Header(header, "value1"),
+                        new Header(header, "value2")
+                    )
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    new ManyOf("value1", "value2"),
+                    new Header.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                             new Get($"http://localhost:{port}")
+                        ),
+                        header
+                    )
+                );
+            }
+        }
+
+        [Fact]
+        public void ReturnsReasonPhrase()
+        {
+            var reason = "because we can";
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(
+                        200,
+                        reason
+                    )
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    reason,
+                    new Reason.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                             new Get($"http://localhost:{port}")
+                        )
+                    ).AsString()
+                );
+            }
+        }
+
+        [Fact]
+        public void ReturnsInternalErrors()
+        {
+            var errorMessage = "I'm sorry Dave, i'm afraid i can not do that.";
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(requestAction:
+                        (req) => throw new InvalidOperationException(errorMessage)
+                    )
+                ).Value()
+            )
+            {
+                Assert.Contains(
+                    errorMessage,
+                    new TextBody.Of(
+                        new Verified(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients(),
+                                new TimeSpan(0, 1, 0)
+                            ),
+                            new ExpectedStatus(500)
+                        ).Response(
+                            new Get($"http://localhost:{port}")
+                        )
+                    ).AsString()
                 );
             }
         }

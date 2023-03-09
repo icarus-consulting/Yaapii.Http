@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Enumerable;
@@ -72,7 +73,7 @@ namespace Yaapii.Http.Wires.Test
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
-                                new Port(server.Port),
+                                new Port(port),
                                 new Path("test/asdf")
                             )
                         )
@@ -103,7 +104,7 @@ namespace Yaapii.Http.Wires.Test
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
-                        new Port(server.Port),
+                        new Port(port),
                         new Header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                     )
                 ).Wait(30000);
@@ -127,6 +128,7 @@ namespace Yaapii.Http.Wires.Test
                     new FkWire(req =>
                     {
                         headers = new Accept.Of(req);
+                        headers.GetEnumerator().MoveNext(); // trigger lazy initialization before request gets disposed
                         return new Response.Of(200, "OK");
                     })
                 ).Value()
@@ -139,7 +141,7 @@ namespace Yaapii.Http.Wires.Test
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
-                        new Port(server.Port),
+                        new Port(port),
                         new Headers(
                             new KvpOf("Accept", "application/json"),
                             new KvpOf("Accept", "application/xml"),
@@ -183,7 +185,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Get(
                                     new Scheme("http"),
                                     new Host("localhost"),
-                                    new Port(server.Port)
+                                    new Port(port)
                                 )
                             ),
                             "Allow"
@@ -228,7 +230,7 @@ namespace Yaapii.Http.Wires.Test
                             new Get(
                                 new Scheme("http"),
                                 new Host("localhost"),
-                                new Port(server.Port)
+                                new Port(port)
                             )
                         ),
                         "Allow"
@@ -262,7 +264,7 @@ namespace Yaapii.Http.Wires.Test
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
-                        new Port(server.Port),
+                        new Port(port),
                         new TextBody("very important content")
                     )
                 ).Wait(30000);
@@ -296,7 +298,7 @@ namespace Yaapii.Http.Wires.Test
                                 new Get(
                                     new Scheme("http"),
                                     new Host("localhost"),
-                                    new Port(server.Port)
+                                    new Port(port)
                                 )
                             )
                         )
@@ -390,12 +392,19 @@ namespace Yaapii.Http.Wires.Test
             var port = new AwaitedPort(new TestPort()).Value();
             string body = "";
             using (var server =
-                new HttpMock(port,
-                    new FkWire(req =>
-                    {
-                        body = new TextBody.Of(req).AsString();
-                    })
-                ).Value()
+                WebHost.CreateDefaultBuilder()
+                    .UseKestrel((opt) => opt.ListenAnyIP(port))
+                    .Configure((app) =>
+                        app.Run((httpContext) =>
+                            Task.Run(() =>
+                            {
+                                body =
+                                    new TextOf(
+                                        httpContext.Request.BodyReader.AsStream()
+                                    ).AsString();
+                            })
+                        )
+                    ).Start()
             )
             {
                 new Verified(
@@ -408,7 +417,7 @@ namespace Yaapii.Http.Wires.Test
                     new Get(
                         new Scheme("http"),
                         new Host("localhost"),
-                        new Port(server.Port),
+                        new Port(port),
                         new FormParam("key-name", "test&+=xyz"),
                         new BearerTokenAuth("Bearer sdfnhiausihfnksajn")
                     )

@@ -359,9 +359,14 @@ See the ```HttpMock``` example code below for more examples of how to use these 
 
 #### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
-It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
-It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 
+It allows it to process incoming requests using an ```IWire```.
+In versions up to 6.0.0, it used [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer).
+In newer versions, it uses an ASP.NET Kestrel server.
+It's an ```IScalar``` (see Yaapii.Atoms) returning an ```IWebHost``` (see Microsoft.AspNetCore.Hosting). 
 Calling ```HttpMock.Value()``` for the first time will initialize the server.
+
+If an error occurs while processing a request, it responds with a status 500 and writes the exception and its stacktrace into the body of the response.
+
 It can either use one wire to handle all requests, regardless of the requested path, or respond to specific paths with a different wire for each path.
 Routing is done using the ```MatchingWire``` and templates described above.
 ```csharp
@@ -403,9 +408,9 @@ using( var server =
 }
 ```
 
-**Always dispose the ```HttpMock``` or the ```MockServer``` it returned!**
+**Always dispose the ```HttpMock``` or the ```IWebHost``` it returned!**
 
-No need to dispose both, disposing ```HttpMock``` will just dispose the ```MockServer``` returned by ```HttpMock.Value()```.
+No need to dispose both, disposing ```HttpMock``` will just dispose the ```IWebHost``` returned by ```HttpMock.Value()```.
 This means calling ```HttpMock.Dispose()``` will do the same thing as calling ```HttpMock.Value().Dispose()```.
 If not disposed, it will keep running in the background, listening for requests, keeping the port occupied.
 The easiest way to do this is to put either ```new HttpMock``` or ```HttpMock.Value()``` in a using block as follows:
@@ -426,7 +431,6 @@ using( var server =
     ).Value() // start the server immediately
 )
 {
-    var port = server.Port;
     // ... testing code goes here
 } // this disposes the server
 ```

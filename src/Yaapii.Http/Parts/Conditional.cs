@@ -32,8 +32,17 @@ namespace Yaapii.Http.Parts
         /// <summary>
         /// Only adds a part if a given condition applies.
         /// </summary>
-        public Conditional(Func<bool> condition, IMessageInput consequence) : base(dict => 
-            condition.Invoke() ? consequence.Apply(dict) : dict
+        public Conditional(Func<bool> condition, IMessageInput consequence) : this(
+            condition,
+            () => consequence
+        )
+        { }
+
+        /// <summary>
+        /// Only adds a part if a given condition applies.
+        /// </summary>
+        public Conditional(Func<bool> condition, Func<IMessageInput> consequence) : base(dict => 
+            condition.Invoke() ? consequence.Invoke().Apply(dict) : dict
         )
         { }
     }

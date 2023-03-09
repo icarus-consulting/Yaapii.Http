@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using MockHttpServer;
 using Newtonsoft.Json.Linq;
 using Xunit;
 using Yaapii.Atoms;
@@ -180,18 +179,17 @@ namespace Yaapii.Http.Parts.Bodies.Test
             var port = new AwaitedPort(new TestPort()).Value();
             IInput result = new DeadInput();
             using (var server =
-                new MockServer(
-                    port,
-                    "{}",
-                    (req, res, prm) =>
+                new HttpMock(port,
+                    new FkWire((req) =>
+                    {
                         result =
                             new InputOf(
                                 new BytesOf(
-                                    new InputOf(req.InputStream)
+                                    new Body.Of(req)
                                 ).AsBytes()
-                            ),
-                    "localhost"
-                )
+                            );
+                    })
+                ).Value()
             )
             {
                 new AspNetCoreWire(
