@@ -23,6 +23,7 @@
 using Nito.AsyncEx;
 using System;
 using System.Threading.Tasks;
+using Test.Yaapii.Http.Mock;
 using Xunit;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
@@ -31,7 +32,6 @@ using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
-using Yaapii.Http.Test;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
 using Yaapii.Xml;

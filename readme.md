@@ -26,8 +26,9 @@ Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.c
     * [Response Verification](#response-verification)
 4. [Unit Testing](#unit-testing)
     * [Fake Classes](#fake-classes)
-    * [Mocking different Paths](#mocking-different-paths)
-    * [HttpMock](#httpmock)
+    * [Yaapii.Http.Mock](#yaapii.http.mock)
+        * [Mocking different Paths](#mocking-different-paths)
+        * [HttpMock](#httpmock)
 
 ## Creating Requests
 Requests are created from separate parts like a method, an address to send it to, headers or a body. For Example:
@@ -323,7 +324,11 @@ new FkWire(req =>
 )
 ```
 
-### Mocking different Paths
+### Yaapii.Http.Mock
+
+For versions up to 6.0.0, the following functionalities were included in the Yaapii.Http NuGet package. For newer versions, Yaapii.Http.Mock is released as its own NuGet package.
+
+#### Mocking different Paths
 
 ```MatchingWire``` allows to mock the behavior of a real web server more closely by routing requests to different wires, depending on the content of the requests.
 This is done using wire templates (classes implementing ```ITemplate```), that encapsulate a check for certain criteria that requests have to meet,
@@ -352,7 +357,7 @@ Current ```ITemplate``` implementations are:
 
 See the ```HttpMock``` example code below for more examples of how to use these templates.
 
-### HttpMock
+#### HttpMock
 Should you need to test with actual http requests, a mock server is provided through ```HttpMock```.
 It encapsulates [jrharmon's MockHttpServer](https://github.com/jrharmon/MockHttpServer) in a way that allows it to process incoming requests using an ```IWire```.
 It's an ```IScalar``` (see Yaapii.Atoms) returning a ```MockServer``` (see MockHttpServer). 

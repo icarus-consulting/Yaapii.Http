@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -94,18 +94,18 @@ namespace Yaapii.Http.Mock.Test
                 new TextOf(
                     new Body.Of(
                         new MatchingWire(
-                            new Match("same/path", 
+                            new Match("same/path",
                                 new Parts.Joined(
                                     new Body("important data"),
                                     new QueryParam("someParam", "first")
-                                ), 
+                                ),
                                 req => "first expected result"
                             ),
                             new Match("same/path",
                                 new Parts.Joined(
                                     new Body("important data"),
                                     new QueryParam("someParam", "second")
-                                ), 
+                                ),
                                 req => "second expected result"
                             )
                         ).Response(

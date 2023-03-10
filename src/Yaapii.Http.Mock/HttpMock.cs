@@ -23,14 +23,13 @@
 using MockHttpServer;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Text;
 using Yaapii.Http.Mock.Templates;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Bodies;
@@ -186,9 +185,7 @@ namespace Yaapii.Http.Mock
 
         private async void Respond(HttpListenerRequest request, HttpListenerResponse response)
         {
-            //var wireResponse = await this.wire.Response(Request(request));
             var wireResponse = new Response(this.wire, Request(request));
-
 
             response.StatusCode = new Status.Of(wireResponse).AsInt();
             response.StatusDescription = new Reason.Of(wireResponse).AsString();
@@ -206,26 +203,20 @@ namespace Yaapii.Http.Mock
                 var formParams = new FormParams.Of(wireResponse);
                 if (formParams.Count > 0)
                 {
-                    using (var body =
-                        new InputOf(
-                            new Yaapii.Atoms.Text.Joined("&",
-                                new Mapped<KeyValuePair<string, string>, string>(kvp =>
-                                    $"{kvp.Key}={kvp.Value}",
-                                    formParams
-                                )
+                    new InputOf(
+                        new Yaapii.Atoms.Text.Joined("&",
+                            new Mapped<KeyValuePair<string, string>, string>(kvp =>
+                                $"{kvp.Key}={kvp.Value}",
+                                formParams
                             )
-                        ).Stream()
-                    )
-                    {
-                        body.CopyTo(stream);
-                    }
+                        )
+                    ).Stream()
+                        .CopyTo(stream);
                 }
                 else if (new Body.Exists(wireResponse).Value())
                 {
-                    using (var body = new Body.Of(wireResponse).Stream())
-                    {
-                        body.CopyTo(stream);
-                    }
+                    new Body.Of(wireResponse).Stream()
+                        .CopyTo(stream);
                 }
             }
         }
@@ -246,18 +237,14 @@ namespace Yaapii.Http.Mock
                 );
         }
 
-        private IText RequestBody(HttpListenerRequest request)
+        private IInput RequestBody(HttpListenerRequest request)
         {
-            using (var stream = request.InputStream)
+            using (var inStream = request.InputStream)
             {
-                return
-                    new TextOf(
-                        new BytesOf(
-                            new InputOf(
-                                stream
-                            )
-                        ).AsBytes() // read entire stream before it gets disposed
-                    );
+                var outStream = new MemoryStream();
+                inStream.CopyTo(outStream); // read entire stream before it gets disposed
+                outStream.Position = 0;
+                return new InputOf(outStream);
             }
         }
     }

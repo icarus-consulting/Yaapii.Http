@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,45 +20,19 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using Xunit;
-using Yaapii.Atoms.Text;
-using Yaapii.Http.Fake;
-using Yaapii.Http.Parts.Bodies;
-using Yaapii.Http.Requests;
+using Yaapii.Atoms.Scalar;
 
-namespace Yaapii.Http.Mock.Templates.Test
+namespace Test.Yaapii.Http.Mock
 {
-    public sealed class ConditionalTests
+    /// <summary>
+    /// Fixed test port.
+    /// </summary>
+    public sealed class TestPort : ScalarEnvelope<int>
     {
-        [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void AppliesOnCondition(bool expected)
-        {
-            Assert.Equal(
-                expected,
-                new Conditional(
-                    req => expected,
-                    new FkWire()
-                ).Applies(new Request())
-            );
-        }
-
-        [Fact]
-        public void HasResponse()
-        {
-            var expected = "expected response";
-            Assert.Equal(
-                expected,
-                new TextOf(
-                    new Body.Of(
-                        new Conditional(
-                            req => true,
-                            new FkWire(expected)
-                        ).Response(new Request())
-                    )
-                ).AsString()
-            );
-        }
+        /// <summary>
+        /// Fixed test port.
+        /// </summary>
+        public TestPort() : base(() => 54213)
+        { }
     }
 }
