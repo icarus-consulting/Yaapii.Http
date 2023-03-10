@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,7 @@ namespace Yaapii.Http.Parts.Bodies
     /// Adds form params to a request.
     /// Sets the content type header to application/x-www-form-urlencoded.
     /// </summary>
-    public sealed partial class FormParams : MapInputEnvelope
+    public sealed partial class FormParams : MessageInputEnvelope
     {
         private const string KEY_PREFIX = "form:";
 
@@ -40,52 +40,64 @@ namespace Yaapii.Http.Parts.Bodies
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params string[] pairSequence) : this(new MapOf(pairSequence))
+        public FormParams(params string[] pairSequence) : this(
+            new MapOf(pairSequence)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<string> pairSequence) : this(new MapOf(pairSequence))
+        public FormParams(IEnumerable<string> pairSequence) : this(
+            new MapOf(pairSequence)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params IKvp[] queryParams) : this(new MapOf(queryParams))
+        public FormParams(params IKvp[] queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<IKvp> queryParams) : this(new MapOf(queryParams))
+        public FormParams(IEnumerable<IKvp> queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(params KeyValuePair<string, string>[] queryParams) : this(new MapOf(queryParams))
+        public FormParams(params KeyValuePair<string, string>[] queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new MapOf(queryParams))
+        public FormParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds form params to a request.
         /// Sets the content type header to application/x-www-form-urlencoded.
         /// </summary>
-        public FormParams(IDictionary<string, string> formParams) : base(() =>
+        public FormParams(IDictionary<string, string> formParams) : base(
             new Joined(
                 new ContentType("application/x-www-form-urlencoded"),
-                new MapInputOf(
+                new SimpleMessageInput(
                     new Mapped<KeyValuePair<string, string>, IKvp>(origin =>
                         new KvpOf($"{KEY_PREFIX}{origin.Key}", origin.Value),
                         formParams

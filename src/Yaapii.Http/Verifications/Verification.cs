@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Error;
 
@@ -35,7 +34,7 @@ namespace Yaapii.Http.Verifications
         /// <summary>
         /// Verifies that a request or response fulfills a given condition.
         /// </summary>
-        public Verification(Func<IDictionary<string, string>, bool> isValid, Func<IDictionary<string, string>, Exception> error) : this(input =>
+        public Verification(Func<IMessage, bool> isValid, Func<IMessage, Exception> error) : this(input =>
             new FailWhen(
                 !isValid(input),
                 error(input)
@@ -46,13 +45,13 @@ namespace Yaapii.Http.Verifications
         /// <summary>
         /// Verifies that a request or response fulfills a given condition.
         /// </summary>
-        public Verification(Func<IDictionary<string, string>, IFail> verify) : this(input => verify(input).Go())
+        public Verification(Func<IMessage, IFail> verify) : this(input => verify(input).Go())
         { }
 
         /// <summary>
         /// Verifies a request or response.
         /// </summary>
-        public Verification(Action<IDictionary<string, string>> verify) : base(verify)
+        public Verification(Action<IMessage> verify) : base(verify)
         { }
     }
 }

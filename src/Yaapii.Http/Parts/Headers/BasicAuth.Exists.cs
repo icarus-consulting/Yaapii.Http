@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Facets;
@@ -38,13 +37,15 @@ namespace Yaapii.Http.Parts.Headers
             /// <summary>
             /// Checks if any basic authorization header field exists.
             /// </summary>
-            public Exists(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            public Exists(Task<IMessage> response) : this(
+                new Synced(response)
+            )
             { }
 
             /// <summary>
             /// Checks if any basic authorization header field exists.
             /// </summary>
-            public Exists(IDictionary<string, string> input) : base(() =>
+            public Exists(IMessage input) : base(() =>
                 new LengthOf(
                     new BasicAuth.Of(input)
                 ).Value() > 0

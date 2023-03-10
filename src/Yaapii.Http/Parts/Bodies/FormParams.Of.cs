@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Map;
@@ -39,13 +38,15 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// Form params from a request.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> input) : this(new Responses.Synced(input))
+            public Of(Task<IMessage> input) : this(
+                new Responses.Synced(input)
+            )
             { }
 
             /// <summary>
             /// Gets the form params from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 {
                     return
                         new MapOf(
@@ -56,7 +57,7 @@ namespace Yaapii.Http.Parts.Bodies
                                 ),
                                 new FilteredDictionary((key, value) =>
                                     key.StartsWith(KEY_PREFIX),
-                                    input
+                                    input.Head()
                                 )
                             )
                         );

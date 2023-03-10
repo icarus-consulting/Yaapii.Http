@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -29,32 +29,40 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Scheme : MapInputEnvelope
+    public sealed partial class Scheme : MessageInputEnvelope
     {
         private const string KEY = "scheme";
 
         /// <summary>
         /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Scheme(string scheme) : this(() => scheme)
+        public Scheme(string scheme) : this(() =>
+            scheme
+        )
         { }
 
         /// <summary>
         /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Scheme(IText scheme) : this(() => scheme.AsString())
+        public Scheme(IText scheme) : this(() =>
+            scheme.AsString()
+        )
         { }
 
         /// <summary>
         /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Scheme(IScalar<string> scheme) : this(() => scheme.Value())
+        public Scheme(IScalar<string> scheme) : this(() =>
+            scheme.Value()
+        )
         { }
 
         /// <summary>
         /// Adds the scheme part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Scheme(Func<string> scheme) : base(new KvpOf(KEY, scheme))
+        public Scheme(Func<string> scheme) : base(
+            new KvpOf(KEY, scheme)
+        )
         { }
     }
 }

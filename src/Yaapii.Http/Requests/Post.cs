@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 using System;
 using System.Collections.Generic;
 using Yaapii.Atoms.Enumerable;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
 
@@ -32,20 +31,20 @@ namespace Yaapii.Http.Requests
     /// <summary>
     /// A request with post method.
     /// </summary>
-    public sealed class Post: MapEnvelope
+    public sealed class Post: MessageEnvelope
     {
         /// <summary>
         /// A request with post method.
         /// </summary>
-        public Post(params IMapInput[] parts) : this(new ManyOf<IMapInput>(parts))
+        public Post(params IMessageInput[] parts) : this(new ManyOf<IMessageInput>(parts))
         { }
 
         /// <summary>
         /// A request with post method.
         /// </summary>
-        public Post(Uri uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Post(Uri uri, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Address(uri)
             )
         )
@@ -54,9 +53,9 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request with post method.
         /// </summary>
-        public Post(string uri, params IMapInput[] parts) : this(
-            new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
-                new ManyOf<IMapInput>(parts),
+        public Post(string uri, params IMessageInput[] parts) : this(
+            new Joined<IMessageInput>(
+                new ManyOf<IMessageInput>(parts),
                 new Address(uri)
             )
         )
@@ -65,14 +64,13 @@ namespace Yaapii.Http.Requests
         /// <summary>
         /// A request with post method.
         /// </summary>
-        public Post(IEnumerable<IMapInput> parts) : base(() => 
-            new MapOf(
-                new Yaapii.Atoms.Enumerable.Joined<IMapInput>(
+        public Post(IEnumerable<IMessageInput> parts) : base(
+            new SimpleMessage(
+                new Joined<IMessageInput>(
                     parts,
                     new Method("post")
                 )
-            ),
-            live: false
+            )
         )
         { }
     }

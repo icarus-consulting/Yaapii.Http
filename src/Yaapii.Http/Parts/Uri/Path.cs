@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,26 +30,32 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds the path of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Path : MapInputEnvelope
+    public sealed partial class Path : MessageInputEnvelope
     {
         private const string KEY = "path";
 
         /// <summary>
         /// Adds the path of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Path(string path) : this(new TextOf(path))
+        public Path(string path) : this(
+            new TextOf(path)
+        )
         { }
 
         /// <summary>
         /// Adds the path of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Path(IScalar<string> path) : this(new TextOf(path))
+        public Path(IScalar<string> path) : this(
+            new TextOf(path)
+        )
         { }
 
         /// <summary>
         /// Adds the path of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Path(Func<string> path) : this(new TextOf(path))
+        public Path(Func<string> path) : this(
+            new TextOf(path)
+        )
         { }
 
         /// <summary>

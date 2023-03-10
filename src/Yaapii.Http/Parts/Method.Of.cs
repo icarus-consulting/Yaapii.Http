@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using Yaapii.Atoms.Map;
 using Yaapii.Atoms.Text;
 
@@ -37,11 +36,11 @@ namespace Yaapii.Http.Parts
             /// <summary>
             /// Gets the method of a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 {
                     return
                         new FallbackMap(
-                            input,
+                            input.Head(),
                             key => throw new InvalidOperationException(
                                 $"Failed to extract {Method.KEY} from request or response. No {Method.KEY} found."
                             )

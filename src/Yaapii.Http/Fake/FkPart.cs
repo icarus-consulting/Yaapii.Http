@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,26 +21,24 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Fake
 {
     /// <summary>
     /// A fake part to build a http request or response from.
     /// </summary>
-    public sealed class FkPart : MapInputEnvelope
+    public sealed class FkPart : MessageInputEnvelope
     {
         /// <summary>
         /// A fake part to build a http request or response from.
         /// </summary>
-        public FkPart(Func<IMapInput> input) : base(input)
+        public FkPart(Func<IMessageInput> input) : base(input)
         { }
 
         /// <summary>
         /// A fake part to build a http request or response from.
         /// </summary>
-        public FkPart(Func<IDictionary<string, string>, IDictionary<string, string>> apply) : base(apply)
+        public FkPart(Func<IMessage, IMessage> apply) : base(apply)
         { }
     }
 }

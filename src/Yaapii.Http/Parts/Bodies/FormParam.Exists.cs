@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Http.Facets;
 
@@ -36,13 +35,18 @@ namespace Yaapii.Http.Parts.Bodies
             /// <summary>
             /// Checks if a form param exists in a request.
             /// </summary>
-            public Exists(Task<IDictionary<string, string>> input, string key) : this(new Responses.Synced(input), key)
+            public Exists(Task<IMessage> input, string key) : this(
+                new Responses.Synced(input),
+                key
+            )
             { }
 
             /// <summary>
             /// Checks if a form param exists in a request.
             /// </summary>
-            public Exists(IDictionary<string, string> input, string key) : base(() => input.Keys.Contains($"{KEY_PREFIX}{key}"))
+            public Exists(IMessage input, string key) : base(() =>
+                input.Head().Keys.Contains($"{KEY_PREFIX}{key}")
+            )
             { }
         }
     }

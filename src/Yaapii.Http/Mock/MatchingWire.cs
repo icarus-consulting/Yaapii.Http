@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,9 @@
 //SOFTWARE.
 
 using System.Collections.Generic;
-using System.Net.Cache;
 using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Mock.Templates;
-using Yaapii.Http.Parts.Uri;
 using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Mock
@@ -43,10 +41,7 @@ namespace Yaapii.Http.Mock
         /// Otherwise returns 404.
         /// </summary>
         public MatchingWire(string path, IWire wire) : this(
-            new Match(
-                new Path(path),
-                wire
-            )
+            new Match(path, wire)
         )
         { }
 
@@ -78,10 +73,10 @@ namespace Yaapii.Http.Mock
             this.templates = templates;
         }
 
-        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public Task<IMessage> Response(IMessage request)
         {
             var response = 
-                new Task<IDictionary<string, string>>(() =>
+                new Task<IMessage>(() =>
                     new Response.Of(
                         404, 
                         "No matching template found.", 

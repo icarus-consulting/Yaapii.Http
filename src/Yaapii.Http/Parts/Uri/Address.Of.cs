@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -38,7 +38,7 @@ namespace Yaapii.Http.Parts.Uri
             /// <summary>
             /// Extracts the <see cref="System.Uri"/> from a request.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
             {
                 new FailWhen(
                     !new Address.Exists(input).Value(),

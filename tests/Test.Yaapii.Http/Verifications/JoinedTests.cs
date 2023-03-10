@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Verifications.Test
 {
@@ -49,7 +48,7 @@ namespace Yaapii.Http.Verifications.Test
                     sum += 8;
                 })
             ).Verify(
-                new MapOf(new MapInputOf())
+                new SimpleMessage()
             );
             Assert.Equal(15, sum);
         }

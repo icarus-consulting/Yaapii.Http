@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ namespace Yaapii.Http.Parts.Test
             Assert.Equal(
                 "post",
                 new Method.Of(
-                    new MapOf("method", "post")
+                    new SimpleMessage(
+                        new MapOf("method", "post")
+                    )
                 ).AsString()
             );
         }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,14 +23,13 @@
 using Xunit;
 using Yaapii.Atoms.IO;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Mock;
 using Yaapii.Http.Requests;
 using Yaapii.Http.Responses;
+using Yaapii.Http.Test;
 using Yaapii.Http.Wires;
 using Yaapii.Http.Wires.AspNetCore;
-using Yaapii.Http.Test;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -43,8 +42,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "text/plain",
                 new TextBody("irrelevant").Apply(
-                    new MapOf(new MapInputOf())
-                )["header:0:Content-Type"]
+                    new SimpleMessage()
+                ).Head()["header:0:Content-Type"]
             );
         }
 
@@ -56,7 +55,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 new TextOf(
                     new Body.Of(
                         new TextBody("some body").Apply(
-                            new MapOf(new MapInputOf())
+                            new SimpleMessage()
                         )
                     )
                 ).AsString()

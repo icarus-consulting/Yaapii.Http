@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,11 +21,8 @@
 //SOFTWARE.
 
 
-using System.Collections.Generic;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
-using Yaapii.Http.Parts.Headers;
 
 namespace Yaapii.Http.Parts.Bodies
 {
@@ -34,14 +31,16 @@ namespace Yaapii.Http.Parts.Bodies
     /// Sets the content type header to text/plain.
     /// Content type can be overwritten by adding another content type header part after this body.
     /// </summary>
-    public sealed partial class TextBody : MapInputEnvelope
+    public sealed partial class TextBody : MessageInputEnvelope
     {
         /// <summary>
         /// Adds a body to a request.
         /// Sets the content type header to text/plain.
         /// Content type can be overwritten by adding another content type header part after this body.
         /// </summary>
-        public TextBody(string body) : this(new TextOf(body))
+        public TextBody(string body) : this(
+            new TextOf(body)
+        )
         { }
 
         /// <summary>
@@ -49,7 +48,9 @@ namespace Yaapii.Http.Parts.Bodies
         /// Sets the content type header to text/plain.
         /// Content type can be overwritten by adding another content type header part after this body.
         /// </summary>
-        public TextBody(IText body) : base(()=>new Body(body, "text/plain"))
+        public TextBody(IText body) : base(
+            new Body(body, "text/plain")
+        )
         { }
     }
 }

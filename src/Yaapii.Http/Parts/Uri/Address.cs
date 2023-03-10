@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -23,43 +23,58 @@
 using System;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Scalar;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Address : MapInputEnvelope
+    public sealed partial class Address : MessageInputEnvelope
     {
         /// <summary>
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Address(string uri) : this(new ScalarOf<System.Uri>(new System.Uri(uri)))
+        public Address(string uri) : this(
+            new ScalarOf<System.Uri>(
+                new System.Uri(uri)
+            )
+        )
         { }
 
         /// <summary>
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Address(System.Uri uri) : this(new Live<System.Uri>(uri))
+        public Address(System.Uri uri) : this(
+            new Live<System.Uri>(uri)
+        )
         { }
 
         /// <summary>
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Address(IText uri) : this(new ScalarOf<System.Uri>(new System.Uri(uri.AsString())))
+        public Address(IText uri) : this(
+            new ScalarOf<System.Uri>(
+                new System.Uri(uri.AsString())
+            )
+        )
         { }
 
         /// <summary>
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Address(IScalar<string> uri) : this(new ScalarOf<System.Uri>(new System.Uri(uri.Value())))
+        public Address(IScalar<string> uri) : this(
+            new ScalarOf<System.Uri>(
+                new System.Uri(uri.Value())
+            )
+        )
         { }
 
         /// <summary>
         /// Adds a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Address(Func<System.Uri> uri) : this(new ScalarOf<System.Uri>(uri))
+        public Address(Func<System.Uri> uri) : this(
+            new ScalarOf<System.Uri>(uri)
+        )
         { }
 
         /// <summary>

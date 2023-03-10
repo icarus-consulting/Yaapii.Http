@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,35 +22,41 @@
 
 using System;
 using Yaapii.Atoms;
-using Yaapii.Atoms.Text;
 using Yaapii.Atoms.Map;
+using Yaapii.Atoms.Text;
 
 namespace Yaapii.Http.Parts.Uri
 {
     /// <summary>
     /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
     /// </summary>
-    public sealed partial class Fragment : MapInputEnvelope
+    public sealed partial class Fragment : MessageInputEnvelope
     {
         private const string KEY = "fragment";
 
         /// <summary>
         /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Fragment(string fragment) : this(new TextOf(fragment))
+        public Fragment(string fragment) : this(
+            new TextOf(fragment)
+        )
         { }
 
         /// <summary>
         /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Fragment(IScalar<string> fragment) : this(new TextOf(fragment))
+        public Fragment(IScalar<string> fragment) : this(
+            new TextOf(fragment)
+        )
         { }
 
 
         /// <summary>
         /// Adds the fragment part of a <see cref="System.Uri"/> to a request.
         /// </summary>
-        public Fragment(Func<string> fragment) : this(new TextOf(fragment))
+        public Fragment(Func<string> fragment) : this(
+            new TextOf(fragment)
+        )
         { }
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,9 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.True(
                 new Scheme.Exists(
-                    new MapOf("scheme", "http")
+                    new SimpleMessage(
+                        new MapOf("scheme", "http")
+                    )
                 ).Value()
             );
         }
@@ -42,7 +44,7 @@ namespace Yaapii.Http.Parts.Uri.Test
         {
             Assert.False(
                 new Scheme.Exists(
-                    new MapOf(new MapInputOf())
+                    new SimpleMessage()
                 ).Value()
             );
         }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,13 +33,13 @@ namespace Yaapii.Http.Wires
         /// <summary>
         /// A wire that adds extra parts to every request.
         /// </summary>
-        public Refined(IWire origin, params IMapInput[] requestParts) : this(origin, new ManyOf<IMapInput>(requestParts))
+        public Refined(IWire origin, params IMessageInput[] requestParts) : this(origin, new ManyOf<IMessageInput>(requestParts))
         { }
 
         /// <summary>
         /// A wire that adds extra parts to every request.
         /// </summary>
-        public Refined(IWire origin, IEnumerable<IMapInput> requestParts) : base(request =>
+        public Refined(IWire origin, IEnumerable<IMessageInput> requestParts) : base(request =>
             origin.Response(
                 new Requests.Refined(
                     request,

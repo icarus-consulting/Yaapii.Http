@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -33,8 +32,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "application/x-www-form-urlencoded",
                 new FormParam("irrelevant", "irrElephant").Apply(
-                    new MapOf(new MapInputOf())
-                )["header:0:Content-Type"]
+                    new SimpleMessage()
+                ).Head()["header:0:Content-Type"]
             );
         }
 
@@ -44,8 +43,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
             Assert.Equal(
                 "some value",
                 new FormParam("some key", "some value").Apply(
-                    new MapOf(new MapInputOf())
-                )["form:some key"]
+                    new SimpleMessage()
+                ).Head()["form:some key"]
             );
         }
     }

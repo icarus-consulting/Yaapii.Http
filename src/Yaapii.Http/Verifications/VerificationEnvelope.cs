@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,6 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 
 namespace Yaapii.Http.Verifications
 {
@@ -30,17 +29,17 @@ namespace Yaapii.Http.Verifications
     /// </summary>
     public abstract class VerificationEnvelope : IVerification
     {
-        private readonly Action<IDictionary<string, string>> verify;
+        private readonly Action<IMessage> verify;
 
         /// <summary>
         /// Envelope to verify a request or response.
         /// </summary>
-        protected VerificationEnvelope(Action<IDictionary<string, string>> verify)
+        protected VerificationEnvelope(Action<IMessage> verify)
         {
             this.verify = verify;
         }
 
-        public void Verify(IDictionary<string, string> input)
+        public void Verify(IMessage input)
         {
             this.verify(input);
         }

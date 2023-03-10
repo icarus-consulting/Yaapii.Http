@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Yaapii.Http.Mock.Templates
@@ -33,11 +32,11 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// Checks if the template applies to the request.
         /// </summary>
-        bool Applies(IDictionary<string, string> request);
+        bool Applies(IMessage request);
 
         /// <summary>
         /// The response to a request.
         /// </summary>
-        Task<IDictionary<string, string>> Response(IDictionary<string, string> request);
+        Task<IMessage> Response(IMessage request);
     }
 }

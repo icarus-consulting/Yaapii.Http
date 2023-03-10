@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Wires;
 
 namespace Yaapii.Http.Responses
@@ -30,32 +27,39 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// Response from a wire.
     /// </summary>
-    public sealed partial class Response : MapEnvelope
+    public sealed partial class Response : MessageEnvelope
     {
         /// <summary>
         /// Verified response from a wire.
         /// </summary>
-        public Response(IWire wire, IVerification verification) : this(new Verified(wire, verification))
+        public Response(IWire wire, IVerification verification) : this(
+            new Verified(wire, verification)
+        )
         { }
 
         /// <summary>
         /// Response from a wire.
         /// </summary>
-        public Response(IWire wire) : this(wire, new MapOf(new MapInputOf()))
+        public Response(IWire wire) : this(
+            wire,
+            new SimpleMessage()
+        )
         { }
 
         /// <summary>
         /// Verified response from a wire.
         /// </summary>
-        public Response(IWire wire, IVerification verification, IDictionary<string, string> request) : this(new Verified(wire, verification), request)
+        public Response(IWire wire, IVerification verification, IMessage request) : this(
+            new Verified(wire, verification),
+            request
+        )
         { }
 
         /// <summary>
         /// Response from a wire.
         /// </summary>
-        public Response(IWire wire, IDictionary<string, string> request) : base(() =>
-            new Synced(wire.Response(request)),
-            live: false
+        public Response(IWire wire, IMessage request) : base(() =>
+            new Synced(wire.Response(request))
         )
         { }
     }

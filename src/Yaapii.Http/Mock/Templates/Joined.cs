@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -52,7 +52,7 @@ namespace Yaapii.Http.Mock.Templates
             this.extraConditions = extraConditions;
         }
 
-        public bool Applies(IDictionary<string, string> request)
+        public bool Applies(IMessage request)
         {
             var applies = this.primary.Applies(request);
             foreach(var condition in this.extraConditions)
@@ -66,7 +66,7 @@ namespace Yaapii.Http.Mock.Templates
             return applies;
         }
 
-        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public Task<IMessage> Response(IMessage request)
         {
             return this.primary.Response(request);
         }

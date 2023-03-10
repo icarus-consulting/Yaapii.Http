@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 //SOFTWARE.
 
 using Xunit;
-using Yaapii.Atoms.Map;
+using Yaapii.Atoms.IO;
 
 namespace Yaapii.Http.Parts.Bodies.Test
 {
@@ -32,7 +32,9 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.True(
                 new Body.Exists(
-                    new MapOf("body", "| <-- stick figure body")
+                    new SimpleMessage(
+                        new InputOf("| <-- stick figure body")
+                    )
                 ).Value()
             );
         }
@@ -42,7 +44,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
         {
             Assert.False(
                 new Body.Exists(
-                    new MapOf(new MapInputOf())
+                    new SimpleMessage()
                 ).Value()
             );
         }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,9 @@ namespace Yaapii.Http.Parts.Headers.Test
                 "some value",
                 new FirstOf<string>(
                     new Header.Of(
-                        new MapOf("header:0:some key", "some value"),
+                        new SimpleMessage(
+                            new MapOf("header:0:some key", "some value")
+                        ),
                         "some key"
                     )
                 ).Value()
@@ -53,10 +55,12 @@ namespace Yaapii.Http.Parts.Headers.Test
                 expected,
                 new ItemAt<string>(
                     new Header.Of(
-                        new MapOf(
-                            "header:0:same key", "first value",
-                            "header:1:same key", "second value",
-                            "header:2:same key", "third value"
+                        new SimpleMessage(
+                            new MapOf(
+                                "header:0:same key", "first value",
+                                "header:1:same key", "second value",
+                                "header:2:same key", "third value"
+                            )
                         ),
                         "same key"
                     ),

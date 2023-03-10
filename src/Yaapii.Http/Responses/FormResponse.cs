@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 using Yaapii.Http.Wires;
@@ -35,25 +34,33 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// Form data received as a response from the given wire.
         /// </summary>
-        public FormResponse(IWire wire, IVerification verification) : this(new Verified(wire, verification))
+        public FormResponse(IWire wire, IVerification verification) : this(
+            new Verified(wire, verification)
+        )
         { }
 
         /// <summary>
         /// Form data received as a response from the given wire.
         /// </summary>
-        public FormResponse(IWire wire) : this(wire, new MapOf(new MapInputOf()))
+        public FormResponse(IWire wire) : this(
+            wire,
+            new SimpleMessage()
+        )
         { }
 
         /// <summary>
         /// Form data received as a response from the given wire.
         /// </summary>
-        public FormResponse(IWire wire, IVerification verification, IDictionary<string, string> request) : this(new Verified(wire, verification), request)
+        public FormResponse(IWire wire, IVerification verification, IMessage request) : this(
+            new Verified(wire, verification),
+            request
+        )
         { }
 
         /// <summary>
         /// Form data received as a response from the given wire.
         /// </summary>
-        public FormResponse(IWire wire, IDictionary<string, string> request) : base(() =>
+        public FormResponse(IWire wire, IMessage request) : base(() =>
             new FormParams.Of(
                 wire.Response(request)
             ),

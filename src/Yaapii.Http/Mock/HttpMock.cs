@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,6 @@ using MockHttpServer;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Enumerable;
@@ -201,7 +199,7 @@ namespace Yaapii.Http.Mock
             SendBody(response, wireResponse);
         }
 
-        private void SendBody(HttpListenerResponse aspNetResponse, IDictionary<string, string> wireResponse)
+        private void SendBody(HttpListenerResponse aspNetResponse, IMessage wireResponse)
         {
             using (var stream = aspNetResponse.OutputStream)
             {
@@ -232,7 +230,7 @@ namespace Yaapii.Http.Mock
             }
         }
 
-        private IDictionary<string, string> Request(HttpListenerRequest request)
+        private IMessage Request(HttpListenerRequest request)
         {
             return
                 new Request(

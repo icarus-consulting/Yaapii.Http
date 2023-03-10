@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Atoms;
+using Yaapii.Atoms.Bytes;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Atoms.Map;
 using Yaapii.Http.Facets;
@@ -38,13 +39,13 @@ namespace Yaapii.Http.Mock.Templates
     public sealed class Match : ITemplate
     {
         private const string HEADER_KEY_PREFIX = "header:";
-        private readonly IDictionary<string, string> template;
+        private readonly IMessage template;
         private readonly IWire wire;
 
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path.
         /// </summary>
-        public Match(string path, Action<IDictionary<string, string>> requestAction) : this(
+        public Match(string path, Action<IMessage> requestAction) : this(
             path,
             new FkWire(requestAction)
         )
@@ -53,7 +54,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path.
         /// </summary>
-        public Match(string path, Func<IDictionary<string, string>, string> responseBody) : this(
+        public Match(string path, Func<IMessage, string> responseBody) : this(
             path,
             new FkWire(responseBody)
         )
@@ -62,7 +63,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path.
         /// </summary>
-        public Match(string path, Func<IDictionary<string, string>, IDictionary<string, string>> response) : this(
+        public Match(string path, Func<IMessage, IMessage> response) : this(
             path,
             new FkWire(response)
         )
@@ -80,7 +81,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path and additional template parts.
         /// </summary>
-        public Match(string path, IMapInput template, Action<IDictionary<string, string>> requestAction) : this(
+        public Match(string path, IMessageInput template, Action<IMessage> requestAction) : this(
             path,
             template,
             new FkWire(requestAction)
@@ -90,7 +91,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path and additional template parts.
         /// </summary>
-        public Match(string path, IMapInput template, Func<IDictionary<string, string>, string> responseBody) : this(
+        public Match(string path, IMessageInput template, Func<IMessage, string> responseBody) : this(
             path,
             template,
             new FkWire(responseBody)
@@ -100,7 +101,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path and additional template parts.
         /// </summary>
-        public Match(string path, IMapInput template, Func<IDictionary<string, string>, IDictionary<string, string>> response) : this(
+        public Match(string path, IMessageInput template, Func<IMessage, IMessage> response) : this(
             path,
             template,
             new FkWire(response)
@@ -110,7 +111,7 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified path and additional template parts.
         /// </summary>
-        public Match(string path, IMapInput template, IWire wire) : this(
+        public Match(string path, IMessageInput template, IWire wire) : this(
             new Parts.Joined(
                 new Parts.Uri.Path(path),
                 template
@@ -122,24 +123,30 @@ namespace Yaapii.Http.Mock.Templates
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified parts.
         /// </summary>
-        public Match(IMapInput template, IWire wire) : this(new MapOf(template), wire)
+        public Match(IMessageInput template, IWire wire) : this(
+            new SimpleMessage(template),
+            wire
+        )
         { }
 
         /// <summary>
         /// A wire template that applies to a request, if the request has the specified parts.
         /// </summary>
-        public Match(IDictionary<string, string> template, IWire wire)
+        public Match(IMessage template, IWire wire)
         {
             this.template = template;
             this.wire = wire;
         }
 
-        public bool Applies(IDictionary<string, string> request)
+        public bool Applies(IMessage request)
         {
-            return HasTemplateHeaders(request) && HasNonHeaderParts(request);
+            return
+                HasTemplateHeaders(request)
+                && HasNonHeaderParts(request)
+                && HasBody(request);
         }
 
-        public Task<IDictionary<string, string>> Response(IDictionary<string, string> request)
+        public Task<IMessage> Response(IMessage request)
         {
             return this.wire.Response(request);
         }
@@ -149,7 +156,7 @@ namespace Yaapii.Http.Mock.Templates
         /// Those numbers may differ between template and request,
         /// so headers can not be compared as raw request parts.
         /// </summary>
-        private bool HasTemplateHeaders(IDictionary<string, string> request)
+        private bool HasTemplateHeaders(IMessage request)
         {
             var templateHeaders = new Headers.Of(this.template);
             var requestHeaders = new Headers.Of(request);
@@ -170,19 +177,19 @@ namespace Yaapii.Http.Mock.Templates
             return applies;
         }
 
-        private bool HasNonHeaderParts(IDictionary<string, string> request)
+        private bool HasNonHeaderParts(IMessage request)
         {
             var templateParts =
                 new MapOf(
                     new FilteredDictionary((key, value) =>
                         !key.StartsWith(HEADER_KEY_PREFIX),
-                        this.template
+                        this.template.Head()
                     )
                 );
             var requestParts =
                 new FilteredDictionary((key, value) =>
                     !key.StartsWith(HEADER_KEY_PREFIX),
-                    request
+                    request.Head()
                 );
             var applies = true;
             foreach (var templatePart in templateParts.Keys)
@@ -199,6 +206,32 @@ namespace Yaapii.Http.Mock.Templates
                 }
             }
             return applies;
+        }
+
+        private bool HasBody(IMessage request)
+        {
+            var result = true;
+            if (this.template.HasBody() && request.HasBody())
+            {
+                var templateBytes = new BytesOf(this.template.Body()).AsBytes();
+                var requestBytes = new BytesOf(request.Body()).AsBytes();
+                if(templateBytes.Length != requestBytes.Length)
+                {
+                    result = false;
+                }
+                else
+                {
+                    for(int i = 0; i < templateBytes.Length; i++)
+                    {
+                        if (templateBytes[i] != requestBytes[i])
+                        {
+                            result = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
         }
     }
 }

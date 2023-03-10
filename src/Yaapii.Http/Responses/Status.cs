@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -27,14 +27,16 @@ namespace Yaapii.Http.Responses
     /// <summary>
     /// Adds a status code to a response.
     /// </summary>
-    public sealed partial class Status : MapInputEnvelope
+    public sealed partial class Status : MessageInputEnvelope
     {
         private const string KEY = "status";
 
         /// <summary>
         /// Adds a status code to a response.
         /// </summary>
-        public Status(int status) : base(new KvpOf(KEY, () => $"{status}"))
+        public Status(int status) : base(
+            new KvpOf(KEY, () => $"{status}")
+        )
         { }
     }
 }

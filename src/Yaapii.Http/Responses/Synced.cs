@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,8 @@
 
 using Nito.AsyncEx;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using Yaapii.Atoms.Map;
 
 namespace Yaapii.Http.Responses
 {
@@ -35,34 +32,34 @@ namespace Yaapii.Http.Responses
     /// In case an AggregateException with a single inner exception is thrown from the task,
     /// this inner exception is thrown.
     /// </summary>
-    public sealed class Synced : MapEnvelope
+    public sealed class Synced : MessageEnvelope
     {
         /// <summary>
         /// The result of a response task. 
         /// In case an AggregateException with a single inner exception is thrown from the task,
         /// this inner exception is thrown.
         /// </summary>
-        public Synced(Task<IDictionary<string, string>> response) : base(() =>
+        public Synced(Task<IMessage> response) : base(() =>
+        {
+            try
             {
-                try
+                return 
+                    RuntimeInformation.OSDescription == "Browser"
+                    ? response.Result
+                    : AsyncContext.Run(() => response);
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerExceptions.Count == 1)
                 {
-                    return 
-                        RuntimeInformation.OSDescription == "Browser" ? response.Result : AsyncContext.Run(() => response);
+                    throw ex.InnerExceptions[0];
                 }
-                catch (AggregateException ex)
+                else
                 {
-                    if (ex.InnerExceptions.Count == 1)
-                    {
-                        throw ex.InnerExceptions[0];
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-            },
-            live:false
-        )
+            }
+        })
         { }
     }
 }

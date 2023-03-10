@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,15 +20,13 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
+using Nito.AsyncEx;
 using System;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Yaapii.Atoms.Text;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts;
 using Yaapii.Http.Parts.Uri;
-using System.Threading.Tasks;
-using Nito.AsyncEx;
-using System.Runtime.InteropServices;
 
 namespace Yaapii.Http.Wires
 {
@@ -69,9 +67,9 @@ namespace Yaapii.Http.Wires
         /// A wire that catches exceptions and retries multiple times to send the request.
         /// Throws an exception created from the given funciton if the last attempt fails.
         /// </summary>
-        public Retry(int attempts, Func<IDictionary<string, string>, Exception, Exception> exception, IWire origin) : base(request =>
+        public Retry(int attempts, Func<IMessage, Exception, Exception> exception, IWire origin) : base(request =>
         {
-            IDictionary<string, string> response = new Dictionary<string, string>();
+            IMessage response = new SimpleMessage();
             for(int i = 1; i <= attempts; i++)
             {
                 try

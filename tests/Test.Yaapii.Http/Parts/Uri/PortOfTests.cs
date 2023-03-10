@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,9 @@ namespace Yaapii.Http.Parts.Uri.Test
             Assert.Equal(
                 1337,
                 new Port.Of(
-                    new MapOf("port", "1337")
+                    new SimpleMessage(
+                        new MapOf("port", "1337")
+                    )
                 ).AsInt()
             );
         }

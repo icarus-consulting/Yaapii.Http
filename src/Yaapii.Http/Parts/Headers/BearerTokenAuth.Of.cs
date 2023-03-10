@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2021 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,6 @@
 //OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 //SOFTWARE.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yaapii.Atoms.Enumerable;
 using Yaapii.Http.Responses;
@@ -37,13 +36,15 @@ namespace Yaapii.Http.Parts.Headers
             /// <summary>
             /// Extracts tokens from bearer token authorization headers.
             /// </summary>
-            public Of(Task<IDictionary<string, string>> response) : this(new Synced(response))
+            public Of(Task<IMessage> response) : this(
+                new Synced(response)
+            )
             { }
 
             /// <summary>
             /// Extracts tokens from bearer token authorization headers.
             /// </summary>
-            public Of(IDictionary<string, string> input) : base(() =>
+            public Of(IMessage input) : base(() =>
                 new Mapped<string, string>(bearerAuth =>
                     bearerAuth.Remove(0, AUTH_PREFIX.Length),
                     new Filtered<string>(auth =>

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace Yaapii.Http.Parts.Uri
     /// <summary>
     /// Adds query parameters to a request.
     /// </summary>
-    public sealed partial class QueryParams : MapInputEnvelope
+    public sealed partial class QueryParams : MessageInputEnvelope
     {
         private const string KEY_PREFIX = "query:";
 
@@ -55,37 +55,49 @@ namespace Yaapii.Http.Parts.Uri
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params string[] pairSequence) : this(new MapOf(pairSequence))
+        public QueryParams(params string[] pairSequence) : this(
+            new MapOf(pairSequence)
+        )
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<string> pairSequence) : this(new MapOf(pairSequence))
+        public QueryParams(IEnumerable<string> pairSequence) : this(
+            new MapOf(pairSequence)
+        )
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params IKvp[] queryParams) : this(new MapOf(queryParams))
+        public QueryParams(params IKvp[] queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<IKvp> queryParams) : this(new MapOf(queryParams))
+        public QueryParams(IEnumerable<IKvp> queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(params KeyValuePair<string, string>[] queryParams) : this(new MapOf(queryParams))
+        public QueryParams(params KeyValuePair<string, string>[] queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>
         /// Adds query parameters to a request.
         /// </summary>
-        public QueryParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(new MapOf(queryParams))
+        public QueryParams(IEnumerable<KeyValuePair<string, string>> queryParams) : this(
+            new MapOf(queryParams)
+        )
         { }
 
         /// <summary>

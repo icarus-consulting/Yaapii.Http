@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -37,10 +37,10 @@ namespace Yaapii.Http.Responses.Test
                 new FkWire(req =>
                 {
                     requestSent = true;
-                    return new MapOf(new MapInputOf());
+                    return new SimpleMessage();
                 }),
                 new Get()
-            ).GetEnumerator();
+            ).Head();
             Assert.True(requestSent);
         }
 
@@ -53,12 +53,12 @@ namespace Yaapii.Http.Responses.Test
                     new FkWire(req =>
                     {
                         count++;
-                        return new MapOf(new MapInputOf());
+                        return new SimpleMessage();
                     }),
                     new Get()
                 );
-            response.GetEnumerator();
-            response.GetEnumerator();
+            response.Head();
+            response.Head();
             Assert.Equal(1, count);
         }
 
@@ -83,14 +83,14 @@ namespace Yaapii.Http.Responses.Test
         public void VerifiesResponse()
         {
             var verified = false;
-            var keys = new Response(
+            new Response(
                 new FkWire(200, "OK"),
                 new Verifications.Verification(res =>
                 {
                     verified = true;
                 }),
                 new Get()
-            ).Keys;
+            ).Head();
             Assert.True(verified);
         }
     }

@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,6 @@
 
 using Yaapii.Atoms;
 using Yaapii.Atoms.Bytes;
-using Yaapii.Atoms.Map;
 using Yaapii.Http.Parts.Bodies;
 
 namespace Yaapii.Http.Responses
@@ -32,37 +31,51 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and a body from the given bytes.
         /// </summary>
-        public sealed class Of : MapEnvelope
+        public sealed class Of : MessageEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing a body from the given bytes.
             /// </summary>
-            public Of(byte[] body, params IMapInput[] extraParts) : this(200, "OK", body, extraParts)
+            public Of(byte[] body, params IMessageInput[] extraParts) : this(
+                200,
+                "OK",
+                body,
+                extraParts
+            )
             { }
 
             /// <summary>
             /// A 200/OK Response containing a body from the given bytes.
             /// </summary>
-            public Of(IBytes body, params IMapInput[] extraParts) : this(200, "OK", body, extraParts)
+            public Of(IBytes body, params IMessageInput[] extraParts) : this(
+                200,
+                "OK",
+                body,
+                extraParts
+            )
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and a body from the given bytes.
             /// </summary>
-            public Of(int status, string reason, byte[] body, params IMapInput[] extraParts) : this(status, reason, new BytesOf(body), extraParts)
+            public Of(int status, string reason, byte[] body, params IMessageInput[] extraParts) : this(
+                status,
+                reason,
+                new BytesOf(body),
+                extraParts
+            )
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and a body from the given bytes.
             /// </summary>
-            public Of(int status, string reason, IBytes body, params IMapInput[] extraParts) : base(() =>
+            public Of(int status, string reason, IBytes body, params IMessageInput[] extraParts) : base(
                 new Response.Of(
                     new Status(status),
                     new Reason(reason),
                     new Body(body),
                     new Parts.Joined(extraParts)
-                ),
-                live: false
+                )
             )
             { }
         }

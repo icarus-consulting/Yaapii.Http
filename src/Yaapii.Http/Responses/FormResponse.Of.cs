@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -31,37 +31,49 @@ namespace Yaapii.Http.Responses
         /// <summary>
         /// A Response containing the given status, reason and form data.
         /// </summary>
-        public sealed class Of : MapEnvelope
+        public sealed class Of : MessageEnvelope
         {
             /// <summary>
             /// A 200/OK Response containing the given form data.
             /// </summary>
-            public Of(params string[] pairSequence) : this(200, "OK", new MapOf(pairSequence))
+            public Of(params string[] pairSequence) : this(
+                200,
+                "OK",
+                new MapOf(pairSequence)
+            )
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and form data.
             /// </summary>
-            public Of(int status, string reason, params string[] pairSequence) : this(status, reason, new MapOf(pairSequence))
+            public Of(int status, string reason, params string[] pairSequence) : this(
+                status,
+                reason,
+                new MapOf(pairSequence)
+            )
             { }
 
             /// <summary>
             /// A 200/OK Response containing the given form data.
             /// </summary>
-            public Of(IDictionary<string, string> formParams, params IMapInput[] extraParts) : this(200, "OK", formParams, extraParts)
+            public Of(IDictionary<string, string> formParams, params IMessageInput[] extraParts) : this(
+                200,
+                "OK",
+                formParams,
+                extraParts
+            )
             { }
 
             /// <summary>
             /// A Response containing the given status, reason and form data.
             /// </summary>
-            public Of(int status, string reason, IDictionary<string, string> formParams, params IMapInput[] extraParts) : base(() =>
+            public Of(int status, string reason, IDictionary<string, string> formParams, params IMessageInput[] extraParts) : base(
                 new Response.Of(
                     new Status(status),
                     new Reason(reason),
                     new FormParams(formParams),
                     new Parts.Joined(extraParts)
-                ),
-                live: false
+                )
             )
             { }
         }
