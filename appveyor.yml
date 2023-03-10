@@ -8,7 +8,7 @@ environment:
   GITHUB_TOKEN:
     secure: HHg9YTykqpuNJUKm2KvjMDtsC0rpZQFq28jPrVcu7IBkf9Q163NGkREb5Zpk3c8K
   NUGET_TOKEN:
-    secure: Heq9vYmBfHAacrNKI417M6EjDP7BZYPmxclZ3by3Dqdnv8AOrfGH7+UB8D21ApGD
+    secure: ndzYrsFYBOktWV7Z/W45PSyLCfZ5J4r2uUoB3VAb+IzdTs5SEQrF0N6S2CVbdjsM
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
 # Automatically register private account and/or project AppVeyor NuGet feeds.
