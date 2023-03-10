@@ -1,4 +1,3 @@
-#tool nuget:?package=GitReleaseManager
 #addin "Cake.Figlet"
 
 var target                  = Argument("target", "Default");
@@ -212,7 +211,6 @@ Task("Credentials")
     {
         Information(Figlet("Credentials"));
 
-        gitHubToken = EnvironmentVariable("GITHUB_TOKEN");
         nuGetToken = EnvironmentVariable("NUGET_TOKEN");
     });
 
