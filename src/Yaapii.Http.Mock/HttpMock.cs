@@ -142,8 +142,10 @@ namespace Yaapii.Http.Mock
             return
                 WebHost.CreateDefaultBuilder()
                     .UseKestrel((opt) =>
-                        opt.ListenAnyIP(port)
-                    )
+                    {
+                        opt.ListenAnyIP(port);
+                        opt.AllowSynchronousIO = true;
+                    })
                     .Configure((app) =>
                         app.Run((httpContext) =>
                             Task.Run(() => Respond(httpContext, wire))
@@ -206,7 +208,7 @@ namespace Yaapii.Http.Mock
 
         private void WriteBody(HttpResponse aspNetResponse, IMessage wireResponse)
         {
-            using (var stream = aspNetResponse.BodyWriter.AsStream())
+            using (var stream = aspNetResponse.Body)
             {
                 var formParams = new FormParams.Of(wireResponse);
                 if (formParams.Count > 0)
@@ -298,7 +300,7 @@ namespace Yaapii.Http.Mock
         private IInput RequestBody(HttpRequest request)
         {
             var stream = new MemoryStream();
-            request.BodyReader.AsStream().CopyTo(stream); // read entire stream before it gets disposed
+            request.Body.CopyTo(stream); // read entire stream before it gets disposed
             stream.Position = 0;
             return new InputOf(stream);
         }
