@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>Async and Task Helpers</Title>
+    <Description>A helper library for the Task-Based Asynchronous Pattern (TAP).</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>async;await;async-await;task;asynchronous;nito;nitro</PackageTags>
+    <IsMetapackage>true</IsMetapackage>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Cancellation\src\Nito.Cancellation\Nito.Cancellation.csproj" />
+    <ProjectReference Include="..\Nito.AsyncEx.Context\Nito.AsyncEx.Context.csproj" />
+    <ProjectReference Include="..\Nito.AsyncEx.Coordination\Nito.AsyncEx.Coordination.csproj" />
+    <ProjectReference Include="..\Nito.AsyncEx.Interop.WaitHandles\Nito.AsyncEx.Interop.WaitHandles.csproj" />
+    <ProjectReference Include="..\Nito.AsyncEx.Oop\Nito.AsyncEx.Oop.csproj" />
+    <ProjectReference Include="..\Nito.AsyncEx.Tasks\Nito.AsyncEx.Tasks.csproj" />
+  </ItemGroup>
+
+</Project>

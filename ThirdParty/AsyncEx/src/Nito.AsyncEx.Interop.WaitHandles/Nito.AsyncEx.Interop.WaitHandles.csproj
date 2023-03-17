@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Task wrappers for WaitHandles.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>$(PackageTags);waithandle</PackageTags>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+    <PackageReference Include="System.Threading.ThreadPool" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nito.AsyncEx.Tasks\Nito.AsyncEx.Tasks.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>IDisposable and IAsyncDisposable helper types.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <PackageTags>idisposable,iasyncdisposable,disposable</PackageTags>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
+  </ItemGroup>
+
+</Project>

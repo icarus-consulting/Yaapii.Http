@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Interfaces and utility methods for combining async with OOP.</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nito.AsyncEx.Coordination\Nito.AsyncEx.Coordination.csproj" />
+  </ItemGroup>
+
+</Project>

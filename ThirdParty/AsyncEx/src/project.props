@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <VersionPrefix>5.1.2</VersionPrefix>
+    <Authors>Stephen Cleary</Authors>
+    <PackageTags>task;async</PackageTags>
+    <RootNamespace>Nito.AsyncEx</RootNamespace>
+  </PropertyGroup>
+</Project>
