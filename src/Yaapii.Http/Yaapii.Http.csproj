@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>8.0.1</VersionPrefix>
+    <VersionPrefix>8.0.2</VersionPrefix>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>ICARUS Consulting GmbH</Authors>
     <Description>Object oriented http client.</Description>
@@ -36,13 +36,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Yaapii.Atoms" Version="3.0.0" />
     <PackageReference Include="Yaapii.JSON" Version="13.3.3" />
     <PackageReference Include="Yaapii.Xml" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx\Nito.AsyncEx.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Context\Nito.AsyncEx.Context.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Coordination\Nito.AsyncEx.Coordination.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Interop.WaitHandles\Nito.AsyncEx.Interop.WaitHandles.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Oop\Nito.AsyncEx.Oop.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Tasks\Nito.AsyncEx.Tasks.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx\Nito.AsyncEx.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Cancellation\src\Nito.Cancellation\Nito.Cancellation.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Deque\src\Nito.Collections.Deque\Nito.Collections.Deque.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Disposables\src\Nito.Disposables\Nito.Disposables.csproj" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Yaapii.Http.Mock\Yaapii.Http.Mock.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Context\Nito.AsyncEx.Context.csproj" />
   </ItemGroup>
 
 </Project>
