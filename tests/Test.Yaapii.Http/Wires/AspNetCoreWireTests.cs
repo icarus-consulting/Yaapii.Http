@@ -261,7 +261,7 @@ namespace Yaapii.Http.Wires.Test
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
-                    new Get(
+                    new Post(
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(port),
@@ -418,7 +418,7 @@ namespace Yaapii.Http.Wires.Test
                     ),
                     new ExpectedStatus(200)
                 ).Response(
-                    new Get(
+                    new Post(
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(port),
