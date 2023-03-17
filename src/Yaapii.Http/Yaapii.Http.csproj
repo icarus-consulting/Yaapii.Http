@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>8.0.0</VersionPrefix>
+    <VersionPrefix>8.0.1</VersionPrefix>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Authors>ICARUS Consulting GmbH</Authors>
     <Description>Object oriented http client.</Description>
@@ -36,10 +36,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nito.AsyncEx.Context" Version="5.1.2" />
     <PackageReference Include="Yaapii.Atoms" Version="3.0.0" />
     <PackageReference Include="Yaapii.JSON" Version="13.3.3" />
     <PackageReference Include="Yaapii.Xml" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx\Nito.AsyncEx.csproj" />
   </ItemGroup>
 
 </Project>

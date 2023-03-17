@@ -29,6 +29,7 @@ Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.c
     * [Yaapii.Http.Mock](#yaapii.http.mock)
         * [Mocking different Paths](#mocking-different-paths)
         * [HttpMock](#httpmock)
+5. [Strong naming and third party libraries](#strong-naming-and-third-party-libraries)
 
 ## Creating Requests
 Requests are created from separate parts like a method, an address to send it to, headers or a body. For Example:
@@ -439,3 +440,10 @@ using( var server =
 
 ```HttpMock``` is for receiving requests, not sending them. 
 Using a wire that sends requests to handle the requests received by ```HttpMock``` would cause each received request to just be sent again, causing an infinite loop.
+
+# Strong naming and third party libraries
+
+This package uses [strong naming](https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/strong-naming). There are some downsides to that, but the way we use this library, the benefit outweighs the cost.
+Unfortunately, some third party libraries we are using (currently [StephenCleary/AsyncEx](https://github.com/StephenCleary/AsyncEx) and some of its dependencies) aren't strong named.
+Therefore we have to build and strong-name the assemblies ourselves, instead of using NuGet Packages.
+The code and the licenses of those libraries can be found in the "ThirdParty" folder.

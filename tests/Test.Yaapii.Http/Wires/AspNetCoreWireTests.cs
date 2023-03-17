@@ -261,7 +261,7 @@ namespace Yaapii.Http.Wires.Test
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
                 ).Response(
-                    new Get(
+                    new Post(
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(port),
@@ -393,14 +393,18 @@ namespace Yaapii.Http.Wires.Test
             string body = "";
             using (var server =
                 WebHost.CreateDefaultBuilder()
-                    .UseKestrel((opt) => opt.ListenAnyIP(port))
+                    .UseKestrel((opt) =>
+                    {
+                        opt.ListenAnyIP(port);
+                        opt.AllowSynchronousIO = true;
+                    })
                     .Configure((app) =>
                         app.Run((httpContext) =>
                             Task.Run(() =>
                             {
                                 body =
                                     new TextOf(
-                                        httpContext.Request.BodyReader.AsStream()
+                                        httpContext.Request.Body
                                     ).AsString();
                             })
                         )
@@ -414,7 +418,7 @@ namespace Yaapii.Http.Wires.Test
                     ),
                     new ExpectedStatus(200)
                 ).Response(
-                    new Get(
+                    new Post(
                         new Scheme("http"),
                         new Host("localhost"),
                         new Port(port),
@@ -444,13 +448,22 @@ namespace Yaapii.Http.Wires.Test
                 {
                     body = new TextOf(req.Body).AsString();
                 });
-                svc.AddMvc().AddApplicationPart(
-                    typeof(HtAction).Assembly
-                ).AddControllersAsServices();
+                svc
+                    .AddMvc()
+                    .AddApplicationPart(
+                        typeof(HtAction).Assembly
+                    )
+                    .AddControllersAsServices();
             });
             host.Configure(app =>
             {
-                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
+                app
+#if NET6_0
+                .UseRouting()
+                .UseEndpoints(endpoints => endpoints.MapControllers());
+#else
+                .UseMvc();
+#endif
             });
 
             using (var built = host.Build())
@@ -506,7 +519,7 @@ namespace Yaapii.Http.Wires.Test
                     foreach (var header in req.Headers["Content-Type"])
                     {
                         contentTypeHeaders.AddRange(
-                            header.Split(", ")
+                            new Split(header, ", ")
                         );
                     }
                 });
@@ -516,7 +529,13 @@ namespace Yaapii.Http.Wires.Test
             });
             host.Configure(app =>
             {
-                app.UseRouting().UseEndpoints(endpoints => endpoints.MapControllers());
+                app
+#if NET6_0
+                .UseRouting()
+                .UseEndpoints(endpoints => endpoints.MapControllers());
+#else
+                .UseMvc();
+#endif
             });
 
             using (var built = host.Build())
