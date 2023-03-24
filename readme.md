@@ -29,6 +29,7 @@ Object oriented http client. C# Port of [Vatavuk's verano-http](https://github.c
     * [Yaapii.Http.Mock](#yaapii.http.mock)
         * [Mocking different Paths](#mocking-different-paths)
         * [HttpMock](#httpmock)
+        * [HTTPS testing with HttpMock](#https-testing-with-httpmock)
 5. [Strong naming and third party libraries](#strong-naming-and-third-party-libraries)
 
 ## Creating Requests
@@ -440,6 +441,30 @@ using( var server =
 
 ```HttpMock``` is for receiving requests, not sending them. 
 Using a wire that sends requests to handle the requests received by ```HttpMock``` would cause each received request to just be sent again, causing an infinite loop.
+
+#### HTTPS testing with HttpMock
+
+```HttpMock``` can optionally be configured to listen for HTTPS requests instead of HTTP requests:
+```csharp
+using (
+    new HttpMock(1337,
+        new FkWire(),
+        useHttps: true
+    ).Value()
+)
+{
+    // ... testing code goes here
+}
+```
+
+The HTTPS server will use the default developer certificate. If no default certificate is configured, an exception will be thrown.
+
+.NET comes with a [command line tool to manage these certificates](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-dev-certs).
+To create and configure a new self-signed default certificate, run the following commands in powershell and click yes on the confirmation prompt:
+```
+dotnet dev-certs https
+dotnet dev-certs https --trust
+```
 
 # Strong naming and third party libraries
 
