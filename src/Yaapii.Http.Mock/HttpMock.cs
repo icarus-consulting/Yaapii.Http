@@ -208,7 +208,7 @@ namespace Yaapii.Http.Mock
 
         private void WriteBody(HttpResponse aspNetResponse, IMessage wireResponse)
         {
-            using (var stream = aspNetResponse.Body)
+            using (var outStream = aspNetResponse.Body)
             {
                 var formParams = new FormParams.Of(wireResponse);
                 if (formParams.Count > 0)
@@ -221,12 +221,13 @@ namespace Yaapii.Http.Mock
                             )
                         )
                     ).Stream()
-                        .CopyTo(stream);
+                        .CopyTo(outStream);
                 }
                 else if (new Body.Exists(wireResponse).Value())
                 {
-                    new Body.Of(wireResponse).Stream()
-                        .CopyTo(stream);
+                    var inStream = new Body.Of(wireResponse).Stream();
+                    inStream.CopyTo(outStream);
+                    inStream.Position = 0;
                 }
             }
         }

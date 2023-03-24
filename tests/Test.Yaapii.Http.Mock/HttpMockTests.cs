@@ -356,5 +356,47 @@ namespace Yaapii.Http.Mock.Test
                 Assert.Equal(expected, result);
             }
         }
+
+        [Fact]
+        public void ReturnsBodyMoreThanOnce()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire("test")
+                ).Value()
+            )
+            {
+                var result = "";
+                result +=
+                    new TextBody.Of(
+                        new Verified(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients(),
+                                new TimeSpan(0, 1, 0)
+                            ),
+                            new ExpectedStatus(200)
+                        ).Response(
+                            new Get($"http://localhost:{port}")
+                        )
+                    ).AsString();
+                result +=
+                    new TextBody.Of(
+                        new Verified(
+                            new AspNetCoreWire(
+                                new AspNetCoreClients(),
+                                new TimeSpan(0, 1, 0)
+                            ),
+                            new ExpectedStatus(200)
+                        ).Response(
+                            new Get($"http://localhost:{port}")
+                        )
+                    ).AsString();
+                Assert.Equal(
+                    "testtest",
+                    result
+                );
+            }
+        }
     }
 }
