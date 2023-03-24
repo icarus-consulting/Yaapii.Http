@@ -399,7 +399,7 @@ namespace Yaapii.Http.Mock.Test
             }
         }
 
-        [Fact]
+        [Fact(Skip = "Appveyor doesn't have a default certificate to use for HTTPS.")]
         public void UsesHttps()
         {
             var port = new AwaitedPort(new TestPort()).Value();
