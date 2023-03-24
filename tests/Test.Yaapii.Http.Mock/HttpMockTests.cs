@@ -328,5 +328,33 @@ namespace Yaapii.Http.Mock.Test
                 );
             }
         }
+
+        [Fact]
+        public void BuildsRequestAddress()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            var result = "";
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(requestAction: (req) =>
+                    {
+                        result = new Address.Of(req).Value().ToString();
+                    })
+                ).Value()
+            )
+            {
+                var expected = $"http://localhost:{port}/t/e/s/t?param1=value1&param2=value2";
+                new Verified(
+                    new AspNetCoreWire(
+                        new AspNetCoreClients(),
+                        new TimeSpan(0, 1, 0)
+                    ),
+                    new ExpectedStatus(200)
+                ).Response(
+                    new Get(expected)
+                );
+                Assert.Equal(expected, result);
+            }
+        }
     }
 }
