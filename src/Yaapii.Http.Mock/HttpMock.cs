@@ -266,7 +266,7 @@ namespace Yaapii.Http.Mock
                     new Scheme(request.Scheme.ToLower()),
                     new Parts.Conditional(
                         () => request.Host.HasValue,
-                        () => new Host(request.Host.Value)
+                        () => new Host(request.Host.Host)
                     ),
                     new Parts.Conditional(
                         () => request.Host.HasValue && request.Host.Port != null,
