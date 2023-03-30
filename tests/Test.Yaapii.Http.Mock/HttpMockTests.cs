@@ -398,5 +398,35 @@ namespace Yaapii.Http.Mock.Test
                 );
             }
         }
+
+        [Fact(Skip = "Appveyor doesn't have a default certificate to use for HTTPS.")]
+        public void UsesHttps()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire(),
+                    useHttps: true
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    200,
+                    new Status.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                            new Get(
+                                new Scheme("https"),
+                                new Host("localhost"),
+                                new Port(port),
+                                new Path("test/asdf")
+                            )
+                        )
+                    ).AsInt()
+                );
+            }
+        }
     }
 }

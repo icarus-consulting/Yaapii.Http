@@ -61,7 +61,21 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, params ITemplate[] templates) : this(
             port,
-            new MatchingWire(templates)
+            new MatchingWire(templates),
+            useHttps: false
+        )
+        { }
+
+        /// <summary>
+        /// Hosts a local http server for unit testing.
+        /// Handles incoming requests using the first wire template that matches the request.
+        /// Always dispose this or the returned <see cref="IWebHost"/> after use.
+        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
+        /// </summary>
+        public HttpMock(int port, bool useHttps, params ITemplate[] templates) : this(
+            port,
+            new MatchingWire(templates),
+            useHttps
         )
         { }
 
@@ -71,8 +85,9 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="IWebHost"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(int port, string path, IWire wire) : this(
+        public HttpMock(int port, string path, IWire wire, bool useHttps = false) : this(
             port,
+            useHttps,
             new KvpOf<IWire>(path, wire)
         )
         { }
@@ -85,7 +100,8 @@ namespace Yaapii.Http.Mock
         /// </summary>
         public HttpMock(int port, params IKvp<IWire>[] pathWirePairs) : this(
             port, 
-            new ManyOf<IKvp<IWire>>(pathWirePairs)
+            new ManyOf<IKvp<IWire>>(pathWirePairs),
+            useHttps: false
         )
         { }
 
@@ -95,9 +111,10 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="IWebHost"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(int port, IEnumerable<IKvp<IWire>> pathWirePairs) : this(
+        public HttpMock(int port, bool useHttps, params IKvp<IWire>[] pathWirePairs) : this(
             port,
-            new MapOf<IWire>(pathWirePairs)
+            new ManyOf<IKvp<IWire>>(pathWirePairs),
+            useHttps
         )
         { }
 
@@ -107,9 +124,23 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="IWebHost"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(int port, IDictionary<string, IWire> wires) : this(
+        public HttpMock(int port, IEnumerable<IKvp<IWire>> pathWirePairs, bool useHttps = false) : this(
             port,
-            new MatchingWire(wires)
+            new MapOf<IWire>(pathWirePairs),
+            useHttps
+        )
+        { }
+
+        /// <summary>
+        /// Hosts a local http server for unit testing.
+        /// Handles incoming requests using the wire specified for that path.
+        /// Always dispose this or the returned <see cref="IWebHost"/> after use.
+        /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
+        /// </summary>
+        public HttpMock(int port, IDictionary<string, IWire> wires, bool useHttps = false) : this(
+            port,
+            new MatchingWire(wires),
+            useHttps
         )
         { }
 
@@ -119,11 +150,11 @@ namespace Yaapii.Http.Mock
         /// Always dispose this or the returned <see cref="IWebHost"/> after use.
         /// DO NOT use a wire that will send a http request (like AspNetCoreWire), that would just forward incoming requests, potentially causing an infinite loop.
         /// </summary>
-        public HttpMock(int port, IWire wire)
+        public HttpMock(int port, IWire wire, bool useHttps = false)
         {
             this.server =
                 new ScalarOf<IWebHost>(() =>
-                    RunServer(port, wire)
+                    RunServer(port, wire, useHttps)
                 );
         }
 
@@ -137,13 +168,22 @@ namespace Yaapii.Http.Mock
             return this.server.Value();
         }
 
-        private IWebHost RunServer(int port, IWire wire)
+        private IWebHost RunServer(int port, IWire wire, bool useHttps)
         {
             return
                 WebHost.CreateDefaultBuilder()
                     .UseKestrel((opt) =>
                     {
-                        opt.ListenAnyIP(port);
+                        opt.ListenAnyIP(
+                            port,
+                            (listenOptions) =>
+                            {
+                                if (useHttps)
+                                {
+                                    listenOptions.UseHttps();
+                                }
+                            }
+                        );
                         opt.AllowSynchronousIO = true;
                     })
                     .Configure((app) =>
