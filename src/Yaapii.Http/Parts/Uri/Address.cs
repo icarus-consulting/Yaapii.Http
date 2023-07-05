@@ -93,7 +93,7 @@ namespace Yaapii.Http.Parts.Uri
                     new Port(uri.Value().Port)
                 ),
                 new Conditional(() =>
-                    uri.Value().AbsolutePath != string.Empty,
+                    uri.Value().AbsolutePath.Trim('/') != string.Empty,
                     new Path(uri.Value().AbsolutePath)
                 ),
                 new Conditional(() =>
