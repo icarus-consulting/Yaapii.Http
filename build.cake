@@ -243,7 +243,8 @@ Task("NuGetFeed")
                 symbol,
                 new NuGetPushSettings {
                     Source = nuGetSource,
-                    ApiKey = nuGetToken
+                    ApiKey = nuGetToken,
+                    SkipDuplicate = true
                 }
             );
         }
