@@ -91,6 +91,20 @@ namespace Yaapii.Http.Parts.Uri.Test
             );
         }
 
+        [Fact]
+        public void DoesNotWriteEmptyPathFromSystemUri()
+        {
+            Assert.False(
+                new Path.Exists(
+                    new SimpleMessage(
+                        new Address(
+                            new System.Uri("https://someUser@somehost:1337/?someQuery=yes&moreQuery=moreYes#someFragment")
+                        )
+                    )
+                ).Value()
+            );
+        }
+
         [Theory]
         [InlineData("someQuery", "yes")]
         [InlineData("moreQuery", "moreYes")]

@@ -75,6 +75,10 @@ namespace Yaapii.Http.Wires
                     new KeyValuePair<string, HttpMethod>("post", HttpMethod.Post),
                     new KeyValuePair<string, HttpMethod>("put", HttpMethod.Put),
                     new KeyValuePair<string, HttpMethod>("trace", HttpMethod.Trace)
+#if NET6_0
+                    ,
+                    new KeyValuePair<string, HttpMethod>("patch", HttpMethod.Patch)
+#endif
                 );
             this.requestVerification =
                 new Verifications.Joined(

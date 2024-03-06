@@ -8,7 +8,7 @@ var configuration           = "Release";
 ///////////////////////////////////////////////////////////////////////////////
 var buildArtifacts          = Directory("./artifacts");
 var deployment              = Directory("./artifacts/deployment");
-var version                 = "8.0.2";
+var version                 = "8.2.0";
 
 ///////////////////////////////////////////////////////////////////////////////
 // MODULES
@@ -243,7 +243,8 @@ Task("NuGetFeed")
                 symbol,
                 new NuGetPushSettings {
                     Source = nuGetSource,
-                    ApiKey = nuGetToken
+                    ApiKey = nuGetToken,
+                    SkipDuplicate = true
                 }
             );
         }
