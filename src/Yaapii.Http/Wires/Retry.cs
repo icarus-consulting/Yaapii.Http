@@ -44,11 +44,30 @@ namespace Yaapii.Http.Wires
         { }
 
         /// <summary>
+        /// A wire that catches exceptions and tries up to 3 times to send the request.
+        /// Throws an exception if the third attempt fails.
+        /// </summary>
+        public Retry(TimeSpan delay, IWire origin) : this(3, delay, origin)
+        { }
+
+        /// <summary>
         /// A wire that catches exceptions and retries multiple times to send the request.
         /// Throws an exception if the last attempt fails.
         /// </summary>
         public Retry(int attempts, IWire origin) : this(
             attempts,
+            new TimeSpan(0),
+            origin
+        )
+        { }
+
+        /// <summary>
+        /// A wire that catches exceptions and retries multiple times to send the request.
+        /// Throws an exception if the last attempt fails.
+        /// </summary>
+        public Retry(int attempts, TimeSpan delay, IWire origin) : this(
+            attempts,
+            delay,
             (req, ex) =>
                 new ApplicationException(
                     new Formatted(
@@ -65,17 +84,30 @@ namespace Yaapii.Http.Wires
 
         /// <summary>
         /// A wire that catches exceptions and retries multiple times to send the request.
-        /// Throws an exception created from the given funciton if the last attempt fails.
+        /// Throws an exception created from the given function if the last attempt fails.
         /// </summary>
-        public Retry(int attempts, Func<IMessage, Exception, Exception> exception, IWire origin) : base(request =>
+        public Retry(int attempts, Func<IMessage, Exception, Exception> exception, IWire origin) : this(
+            attempts,
+            new TimeSpan(0),
+            exception,
+            origin
+        )
+        { }
+
+        /// <summary>
+        /// A wire that catches exceptions and retries multiple times to send the request.
+        /// Throws an exception created from the given function if the last attempt fails.
+        /// </summary>
+        public Retry(int attempts, TimeSpan delay, Func<IMessage, Exception, Exception> exception, IWire origin) : base(request =>
         {
             IMessage response = new SimpleMessage();
+            var isBrowser = RuntimeInformation.OSDescription == "Browser";
             for(int i = 1; i <= attempts; i++)
             {
                 try
                 {
                     response =
-                        RuntimeInformation.OSDescription == "Browser"
+                        isBrowser
                         ?
                         origin.Response(request).Result
                         :
@@ -85,7 +117,15 @@ namespace Yaapii.Http.Wires
                 {
                     if(i == attempts)
                     {
-                        throw exception(request, ex);
+                        throw exception.Invoke(request, ex);
+                    }
+                    else if (isBrowser)
+                    {
+                        Task.Delay(delay).Wait();
+                    }
+                    else
+                    {
+                        AsyncContext.Run(() => Task.Delay(delay));
                     }
                 }
             }

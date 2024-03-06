@@ -21,11 +21,10 @@
 //SOFTWARE.
 
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using Xunit;
 using Yaapii.Http.Fake;
 using Yaapii.Http.Requests;
-using Yaapii.Http.Responses;
 
 namespace Yaapii.Http.Wires.Test
 {
@@ -72,6 +71,35 @@ namespace Yaapii.Http.Wires.Test
                 .Wait(30000)
             );
             Assert.Equal(attempts, attempt);
+        }
+
+        [Fact]
+        public void WaitsBetweenAttempts()
+        {
+            var attempt = 0;
+            var attempts = 5;
+            var delay = new TimeSpan(0, 0, 1);
+            var stopwatch = Stopwatch.StartNew();
+            new Retry(
+                attempts,
+                delay,
+                new FkWire(req =>
+                {
+                    attempt++;
+                    if (attempt < attempts)
+                    {
+                        throw new Exception();
+                    }
+                    else
+                    {
+                        return new Responses.Response.Of(200, "OK");
+                    }
+                })
+            ).Response(new Get());
+            stopwatch.Stop();
+            Assert.True(
+                stopwatch.ElapsedMilliseconds >= (attempts-1) * delay.TotalMilliseconds
+            );
         }
     }
 }
