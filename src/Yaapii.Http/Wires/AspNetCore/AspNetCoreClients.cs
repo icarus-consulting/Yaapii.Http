@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2020 ICARUS Consulting GmbH
+//Copyright(c) 2023 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@ namespace Yaapii.Http.Wires.AspNetCore
     /// </summary>
     public sealed class AspNetCoreClients : IAspHttpClients
     {
-        private readonly IDictionary<long, HttpClient> clients = new Dictionary<long, HttpClient>();
+        private readonly IDictionary<long, HttpClient> clients;
         private readonly Func<TimeSpan, HttpClient> addClient;
         private readonly IAction setup;
 
@@ -55,8 +55,26 @@ namespace Yaapii.Http.Wires.AspNetCore
         /// This will return an existing client, if the same timeout has been used before.
         /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
         /// </summary>
-        public AspNetCoreClients(SecurityProtocolType security) : this(timeout =>
-            new HttpClient()
+        public AspNetCoreClients(SecurityProtocolType security) : this(
+            security,
+            new HttpClientHandler()
+            {
+#if NET6_0
+                AutomaticDecompression = DecompressionMethods.All
+#else
+                AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip
+#endif
+            }
+        )
+        { }
+
+        /// <summary>
+        /// Only add one of these to your application to make sure clients will be reused whenever possible.
+        /// This will return an existing client, if the same timeout has been used before.
+        /// Otherwise, this will create a new client with the given timeout, because the timeout can only be set before the first request is sent.
+        /// </summary>
+        public AspNetCoreClients(SecurityProtocolType security, HttpClientHandler httpClientHandler) : this(timeout =>
+            new HttpClient(httpClientHandler)
             {
                 Timeout = timeout
             },
@@ -74,24 +92,25 @@ namespace Yaapii.Http.Wires.AspNetCore
         /// </summary>
         private AspNetCoreClients(Func<TimeSpan, HttpClient> addClient, IAction setup)
         {
+            this.clients = new Dictionary<long, HttpClient>();
             this.addClient = addClient;
             this.setup = setup;
         }
 
         public HttpClient Client(TimeSpan timeout)
         {
-            lock (clients)
+            lock (this.clients)
             {
                 this.setup.Invoke();
-                if (!clients.Keys.Contains(timeout.Ticks))
+                if (!this.clients.Keys.Contains(timeout.Ticks))
                 {
-                    clients.Add(
+                    this.clients.Add(
                         timeout.Ticks,
                         this.addClient(timeout)
                     );
                 }
             }
-            return clients[timeout.Ticks];
+            return this.clients[timeout.Ticks];
         }
     }
 }
