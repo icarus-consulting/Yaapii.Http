@@ -574,5 +574,39 @@ namespace Yaapii.Http.Wires.Test
                 contentTypeHeaders
             );
         }
+
+#if NET6_0 // patch method isn't supported in netstandard 2.0
+        [Fact]
+        public void SupportsPatchMethodForNet6()
+        {
+            var port = new AwaitedPort(new TestPort()).Value();
+            using (var server =
+                new HttpMock(port,
+                    new FkWire((req) =>
+                        new Method.Of(req).AsString()
+                    )
+                ).Value()
+            )
+            {
+                Assert.Equal(
+                    "patch",
+                    new TextBody.Of(
+                        new AspNetCoreWire(
+                            new AspNetCoreClients(),
+                            new TimeSpan(0, 1, 0)
+                        ).Response(
+                            new Request(
+                                new Method("patch"),
+                                new Scheme("http"),
+                                new Host("localhost"),
+                                new Port(port),
+                                new Path("test/asdf")
+                            )
+                        )
+                    ).AsString()
+                );
+            }
+        }
+#endif
     }
 }
