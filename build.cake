@@ -232,7 +232,8 @@ Task("NuGetFeed")
                 package,
                 new NuGetPushSettings {
                     Source = nuGetSource,
-                    ApiKey = nuGetToken
+                    ApiKey = nuGetToken,
+                    SkipDuplicate = true
                 }
             );
         }
