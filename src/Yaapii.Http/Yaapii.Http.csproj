@@ -20,11 +20,20 @@
 
   <ItemGroup>
     <Content Include="..\..\LICENSE">
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
       <Visible>false</Visible>
+      <Pack>true</Pack>
     </Content>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <Content Include="..\..\THIRD-PARTY-NOTICES">
+      <PackagePath>\</PackagePath>
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\Yaapii.Http.xml</DocumentationFile>
     <OutputPath>bin\Debug</OutputPath>
