@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{168672
 		appveyor.yml = appveyor.yml
 		build.cake = build.cake
 		build.ps1 = build.ps1
+		LICENSE = LICENSE
 		readme.md = readme.md
+		THIRD-PARTY-NOTICES = THIRD-PARTY-NOTICES
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Yaapii.Http", "tests\Test.Yaapii.Http\Test.Yaapii.Http.csproj", "{9CDB0214-FDA6-4C13-B212-BC09AB6F69DC}"
