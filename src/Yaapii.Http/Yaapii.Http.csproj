@@ -49,8 +49,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Yaapii.JSON" Version="13.4.0" />
-    <PackageReference Include="Yaapii.Xml" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,5 +62,20 @@
     <ProjectReference Include="..\..\ThirdParty\Deque\src\Nito.Collections.Deque\Nito.Collections.Deque.csproj" PrivateAssets="all" />
     <ProjectReference Include="..\..\ThirdParty\Disposables\src\Nito.Disposables\Nito.Disposables.csproj" PrivateAssets="all" />
   </ItemGroup>
+
+  <Choose>
+    <When Condition="Exists('..\..\..\..\Monorepo.sln')">
+      <ItemGroup>
+        <ProjectReference Include="..\..\..\Yaapii.JSON\src\Yaapii.JSON\Yaapii.JSON.csproj" />
+        <ProjectReference Include="..\..\..\Yaapii.Xml\src\Yaapii.Xml\Yaapii.Xml.csproj" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="Yaapii.JSON" Version="13.4.0" />
+        <PackageReference Include="Yaapii.Xml" Version="3.0.0" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
 </Project>
