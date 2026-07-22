@@ -16,6 +16,7 @@
     <PackageReleaseNotes>https://github.com/icarus-consulting/Yaapii.Http/releases</PackageReleaseNotes>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+    <UseProjectReferences>False</UseProjectReferences>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\..\LICENSE">
@@ -57,7 +58,7 @@
     <ProjectReference Include="..\..\ThirdParty\Disposables\src\Nito.Disposables\Nito.Disposables.csproj" PrivateAssets="all" />
   </ItemGroup>
   <Choose>
-    <When Condition="'$(Configuration)'=='Release'">
+    <When Condition="'$(UseProjectReferences)'=='True'">
       <ItemGroup>
         <ProjectReference Include="..\..\..\Yaapii.JSON\src\Yaapii.JSON\Yaapii.JSON.csproj" />
         <ProjectReference Include="..\..\..\Yaapii.Xml\src\Yaapii.Xml\Yaapii.Xml.csproj" />
