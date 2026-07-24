@@ -1,68 +1,74 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
-        <VersionPrefix>9.1.0</VersionPrefix>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <Authors>ICARUS Consulting GmbH</Authors>
-        <Description>Object oriented http client.</Description>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-        <NeutralLanguage>en</NeutralLanguage>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright (c) 2026 ICARUS Consulting GmbH</Copyright>
-        <PackageTags>yaapii, elegant objects, cactoos, oop, encapsulation, http</PackageTags>
-        <PackageProjectUrl>https://github.com/icarus-consulting/Yaapii.Http</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/icarus-consulting/Yaapii.Http.git</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
-        <PackageReleaseNotes>https://github.com/icarus-consulting/Yaapii.Http/releases</PackageReleaseNotes>
-        <SignAssembly>True</SignAssembly>
-        <AssemblyOriginatorKeyFile>..\..\sgKey.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\LICENSE">
-            <PackagePath>\</PackagePath>
-            <Visible>false</Visible>
-            <Pack>true</Pack>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\THIRD-PARTY-NOTICES">
-            <PackagePath>\</PackagePath>
-            <Visible>false</Visible>
-            <Pack>true</Pack>
-        </Content>
-    </ItemGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <DocumentationFile>bin\Debug\Yaapii.Http.xml</DocumentationFile>
-        <OutputPath>bin\Debug</OutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <DocumentationFile>bin\Release\Yaapii.Http.xml</DocumentationFile>
-        <OutputPath>bin\Release</OutputPath>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Yaapii.JSON" Version="13.4.1" />
-        <PackageReference Include="Yaapii.Xml" Version="3.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Context\Nito.AsyncEx.Context.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Coordination\Nito.AsyncEx.Coordination.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Interop.WaitHandles\Nito.AsyncEx.Interop.WaitHandles.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Oop\Nito.AsyncEx.Oop.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Tasks\Nito.AsyncEx.Tasks.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx\Nito.AsyncEx.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\Cancellation\src\Nito.Cancellation\Nito.Cancellation.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\Deque\src\Nito.Collections.Deque\Nito.Collections.Deque.csproj" PrivateAssets="all" />
-        <ProjectReference Include="..\..\ThirdParty\Disposables\src\Nito.Disposables\Nito.Disposables.csproj" PrivateAssets="all" />
-    </ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <VersionPrefix>9.1.0</VersionPrefix>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>ICARUS Consulting GmbH</Authors>
+    <Description>Object oriented http client.</Description>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2026 ICARUS Consulting GmbH</Copyright>
+    <PackageTags>yaapii, elegant objects, cactoos, oop, encapsulation, http</PackageTags>
+    <PackageProjectUrl>https://github.com/icarus-consulting/Yaapii.Http</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/icarus-consulting/Yaapii.Http.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/icarus-consulting/Yaapii.Http/releases</PackageReleaseNotes>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\sgKey.snk</AssemblyOriginatorKeyFile>
+    <UseProjectReferences>False</UseProjectReferences>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\LICENSE">
+      <PackagePath>\</PackagePath>
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\THIRD-PARTY-NOTICES">
+      <PackagePath>\</PackagePath>
+      <Visible>false</Visible>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\Yaapii.Http.xml</DocumentationFile>
+    <OutputPath>bin\Debug</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\Yaapii.Http.xml</DocumentationFile>
+    <OutputPath>bin\Release</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Context\Nito.AsyncEx.Context.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Coordination\Nito.AsyncEx.Coordination.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Interop.WaitHandles\Nito.AsyncEx.Interop.WaitHandles.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Oop\Nito.AsyncEx.Oop.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx.Tasks\Nito.AsyncEx.Tasks.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\AsyncEx\src\Nito.AsyncEx\Nito.AsyncEx.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Cancellation\src\Nito.Cancellation\Nito.Cancellation.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Deque\src\Nito.Collections.Deque\Nito.Collections.Deque.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\ThirdParty\Disposables\src\Nito.Disposables\Nito.Disposables.csproj" PrivateAssets="all" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(UseProjectReferences)'=='True'">
+      <ItemGroup>
+        <ProjectReference Include="..\..\..\Yaapii.JSON\src\Yaapii.JSON\Yaapii.JSON.csproj" />
+        <ProjectReference Include="..\..\..\Yaapii.Xml\src\Yaapii.Xml\Yaapii.Xml.csproj" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="Yaapii.JSON" Version="13.4.0" />
+        <PackageReference Include="Yaapii.Xml" Version="3.0.0" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 </Project>
