@@ -54,15 +54,15 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsRequest()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new KvpOf<IWire>("test/asdf",
                         new FkWire()
                     )
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     200,
                     new Status.Of(
@@ -85,10 +85,9 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsHeaders()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var header = "";
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         header = new FirstOf<string>(new Authorization.Of(req)).Value();
@@ -97,6 +96,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -121,10 +121,9 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("text/plain")]
         public void SendsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             IEnumerable<string> headers = new ManyOf<string>();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         headers = new Accept.Of(req);
@@ -134,6 +133,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -159,9 +159,8 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsHeaders()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         return
@@ -174,6 +173,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     "GET",
                     new FirstOf<string>(
@@ -202,9 +202,8 @@ namespace Yaapii.Http.Wires.Test
         [InlineData("PUT")]
         public void ReturnsMultipleHeaderValues(string expected)
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         return
@@ -220,6 +219,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Contains(
                     expected,
                     new Header.Of(
@@ -242,10 +242,9 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SendsBody()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var body = "";
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         body =
@@ -257,6 +256,7 @@ namespace Yaapii.Http.Wires.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -278,15 +278,15 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void ReturnsBody()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(
                         new TextOf("very important content")
                     )
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     "very important content",
                     new TextOf(
@@ -389,13 +389,12 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void EncodesSpecialCharactersInFormBody()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             string body = "";
             using (var server =
                 WebHost.CreateDefaultBuilder()
                     .UseKestrel((opt) =>
                     {
-                        opt.ListenAnyIP(port);
+                        opt.ListenAnyIP(0);
                         opt.AllowSynchronousIO = true;
                     })
                     .Configure((app) =>
@@ -411,6 +410,7 @@ namespace Yaapii.Http.Wires.Test
                     ).Start()
             )
             {
+                var port = new RunningPort(server).Value();
                 new Verified(
                     new AspNetCoreWire(
                         new AspNetCoreClients(),
@@ -437,10 +437,9 @@ namespace Yaapii.Http.Wires.Test
         public void FormBodyWorksWithKestrel()
         {
             var body = "";
-            var port = new AwaitedPort(new TestPort()).Value();
             var host = WebHost.CreateDefaultBuilder();
 
-            host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.UseUrls("http://127.0.0.1:0");
             host.UseKestrel((opt) => opt.AllowSynchronousIO = true);
             host.ConfigureServices(svc =>
             {
@@ -468,7 +467,8 @@ namespace Yaapii.Http.Wires.Test
 
             using (var built = host.Build())
             {
-                built.RunAsync();
+                built.Start();
+                var port = new RunningPort(built).Value();
                 try
                 {
                     new Verified(
@@ -508,10 +508,9 @@ namespace Yaapii.Http.Wires.Test
         public void FormBodyDoesNotAddDuplicateHeaders()
         {
             var contentTypeHeaders = new List<string>();
-            var port = new AwaitedPort(new TestPort()).Value();
             var host = WebHost.CreateDefaultBuilder();
 
-            host.UseUrls($"http://{Environment.MachineName.ToLower()}:{port}");
+            host.UseUrls("http://127.0.0.1:0");
             host.ConfigureServices(svc =>
             {
                 svc.AddSingleton<Action<HttpRequest>>(req => // required to instantiate HtAction from dependecy injection
@@ -540,7 +539,8 @@ namespace Yaapii.Http.Wires.Test
 
             using (var built = host.Build())
             {
-                built.RunAsync();
+                built.Start();
+                var port = new RunningPort(built).Value();
                 try
                 {
                     new Verified(
@@ -579,15 +579,15 @@ namespace Yaapii.Http.Wires.Test
         [Fact]
         public void SupportsPatchMethodForNet6()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire((req) =>
                         new Method.Of(req).AsString()
                     )
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     "patch",
                     new TextBody.Of(

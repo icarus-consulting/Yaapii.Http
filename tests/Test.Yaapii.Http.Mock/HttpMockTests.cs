@@ -46,11 +46,10 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ListensToAnyPath()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var clients = new AspNetCoreClients();
             var requests = 0;
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         requests++;
@@ -59,6 +58,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Task.WaitAll(
                     new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                         new Get($"http://localhost:{port}")
@@ -80,11 +80,10 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void RoutesToPath()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var clients = new AspNetCoreClients();
             var result = 0;
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new KvpOf<IWire>("",
                         new FkWire(req =>
                         {
@@ -109,6 +108,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Task.WaitAll(
                     new AspNetCoreWire(clients, new TimeSpan(0, 1, 0)).Response(
                         new Get($"http://localhost:{port}")
@@ -130,13 +130,13 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns200()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire()
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     200,
                     new Status.Of(
@@ -159,15 +159,15 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void Returns404()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new KvpOf<IWire>("path",
                         new FkWire()
                     )
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     404,
                     new Status.Of(
@@ -185,10 +185,9 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ForwardsQueryParams()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var queryParam = "";
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         queryParam = new QueryParam.Of(req, "importantQueryParam").AsString();
@@ -197,6 +196,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 new AspNetCoreWire(
                     new AspNetCoreClients(),
                     new TimeSpan(0, 1, 0)
@@ -213,9 +213,8 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void DeliversXmlResponse()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                     {
                         return new Response.Of(new Body(new XMLCursor(new InputOf("<test/>"))));
@@ -223,6 +222,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 var response =
                     AsyncContext.Run(() =>
                         new AspNetCoreWire(
@@ -246,9 +246,8 @@ namespace Yaapii.Http.Mock.Test
         public void ReturnsMultipleHeaderValues()
         {
             var header = "some-header-name";
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(
                         new Header(header, "value1"),
                         new Header(header, "value2")
@@ -256,6 +255,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     new ManyOf("value1", "value2"),
                     new Header.Of(
@@ -275,9 +275,8 @@ namespace Yaapii.Http.Mock.Test
         public void ReturnsReasonPhrase()
         {
             var reason = "because we can";
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(
                         200,
                         reason
@@ -285,6 +284,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     reason,
                     new Reason.Of(
@@ -303,15 +303,15 @@ namespace Yaapii.Http.Mock.Test
         public void ReturnsInternalErrors()
         {
             var errorMessage = "I'm sorry Dave, i'm afraid i can not do that.";
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(requestAction:
                         (req) => throw new InvalidOperationException(errorMessage)
                     )
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Contains(
                     errorMessage,
                     new TextBody.Of(
@@ -332,10 +332,9 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void BuildsRequestAddress()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             var result = "";
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(requestAction: (req) =>
                     {
                         result = new Address.Of(req).Value().ToString();
@@ -343,6 +342,7 @@ namespace Yaapii.Http.Mock.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 var expected = $"http://localhost:{port}/t/e/s/t?param1=value1&param2=value2";
                 new Verified(
                     new AspNetCoreWire(
@@ -360,13 +360,13 @@ namespace Yaapii.Http.Mock.Test
         [Fact]
         public void ReturnsBodyMoreThanOnce()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire("test")
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 var result = "";
                 result +=
                     new TextBody.Of(
@@ -402,14 +402,14 @@ namespace Yaapii.Http.Mock.Test
         [Fact(Skip = "Appveyor doesn't have a default certificate to use for HTTPS.")]
         public void UsesHttps()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(),
                     useHttps: true
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     200,
                     new Status.Of(

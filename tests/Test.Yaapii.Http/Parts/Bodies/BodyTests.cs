@@ -136,9 +136,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
         [Fact]
         public void TransmitsZipFile()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                         new Response.Of(
                             new Status(200),
@@ -155,6 +154,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     "this is a test", // content of test.txt in Assets/test.zip
                     new TextOf(
@@ -176,10 +176,9 @@ namespace Yaapii.Http.Parts.Bodies.Test
         [Fact]
         public void TransmitsRawZipFile()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             IInput result = new DeadInput();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire((req) =>
                     {
                         result =
@@ -192,6 +191,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 new AspNetCoreWire(
                     new AspNetCoreClients()
                 ).Response(
