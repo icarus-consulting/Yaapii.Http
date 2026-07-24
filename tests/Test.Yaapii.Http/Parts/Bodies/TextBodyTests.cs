@@ -65,9 +65,8 @@ namespace Yaapii.Http.Parts.Bodies.Test
         [Fact]
         public void TransmitsLongText()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(req =>
                         new Response.Of(
                             new Status(200),
@@ -85,6 +84,7 @@ namespace Yaapii.Http.Parts.Bodies.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     3499,
                     new TextOf(
