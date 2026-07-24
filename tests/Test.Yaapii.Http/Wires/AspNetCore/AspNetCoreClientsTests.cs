@@ -91,15 +91,13 @@ namespace Yaapii.Http.Wires.AspNetCore.Test
         [Fact]
         public void SetsDefaultDecompressionMethods()
         {
-            var port = new AwaitedPort(new TestPort()).Value();
-
             var compressedStream = new System.IO.MemoryStream();
             var zipStream = new GZipStream(compressedStream, CompressionMode.Compress);
             new InputOf("very important content").Stream().CopyTo(zipStream);
             zipStream.Close();
 
             using (var server =
-                new HttpMock(port,
+                new HttpMock(0,
                     new FkWire(
                         new MapOf("Content-Encoding", "gzip"),
                         new Body(
@@ -109,6 +107,7 @@ namespace Yaapii.Http.Wires.AspNetCore.Test
                 ).Value()
             )
             {
+                var port = new RunningPort(server).Value();
                 Assert.Equal(
                     "very important content",
                     new TextOf(
