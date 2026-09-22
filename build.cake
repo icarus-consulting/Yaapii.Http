@@ -29,13 +29,6 @@ var isWindows               = IsRunningOnWindows();
 var owner                   = "icarus-consulting";
 var repository              = "Yaapii.Http";
 
-// For publishing NuGetFeed
-var nuGetSource             = "https://api.nuget.org/v3/index.json";
-
-// API key tokens for deployment
-var gitHubToken             = "";
-var nuGetToken              = "";
-
 ///////////////////////////////////////////////////////////////////////////////
 // Clean
 ///////////////////////////////////////////////////////////////////////////////
@@ -164,94 +157,6 @@ Task("UnitTests")
     });
 
 ///////////////////////////////////////////////////////////////////////////////
-// NuGet
-///////////////////////////////////////////////////////////////////////////////
-Task("NuGet")
-    .IsDependentOn("Clean")
-    .IsDependentOn("Restore")
-    .IsDependentOn("Version")
-    .Does(() => 
-    {
-        Information(Figlet("NuGet"));
-    
-        var settings = new DotNetCorePackSettings()
-        {
-            Configuration = configuration,
-            OutputDirectory = buildArtifacts,
-            NoRestore = true,
-            VersionSuffix = ""
-        };
-        settings.ArgumentCustomization = args => args.Append("--include-symbols").Append("-p:SymbolPackageFormat=snupkg");
-        settings.MSBuildSettings = new DotNetCoreMSBuildSettings().SetVersionPrefix(version);
-        foreach(var module in GetSubDirectories(modules))
-        {
-            var name = module.GetDirectoryName();
-            if(!blacklistedModules.Contains(name))
-            {
-                Information($"Creating NuGet package for {name}");
-            
-                DotNetCorePack(
-                    module.ToString(),
-                    settings
-                );
-            }
-            else
-            {
-                Warning($"Skipping NuGet package for {name}");
-            }
-        }
-    });
-
-///////////////////////////////////////////////////////////////////////////////
-// Credentials
-///////////////////////////////////////////////////////////////////////////////
-Task("Credentials")
-    .WithCriteria(() => isAppVeyor)
-    .Does(() =>
-    {
-        Information(Figlet("Credentials"));
-
-        nuGetToken = EnvironmentVariable("NUGET_TOKEN");
-    });
-
-///////////////////////////////////////////////////////////////////////////////
-// NuGetFeed
-///////////////////////////////////////////////////////////////////////////////
-Task("NuGetFeed")
-    .WithCriteria(() => isAppVeyor && BuildSystem.AppVeyor.Environment.Repository.Tag.IsTag)
-    .IsDependentOn("NuGet")
-    .IsDependentOn("Credentials")
-    .Does(() => 
-    {
-        Information(Figlet("NuGetFeed"));
-    
-        var nugets = GetFiles($"{buildArtifacts.Path}/*.nupkg");
-        foreach(var package in nugets)
-        {
-            NuGetPush(
-                package,
-                new NuGetPushSettings {
-                    Source = nuGetSource,
-                    ApiKey = nuGetToken,
-                    SkipDuplicate = true
-                }
-            );
-        }
-        var symbols = GetFiles($"{buildArtifacts.Path}/*.snupkg");
-        foreach(var symbol in symbols)
-        {
-            NuGetPush(
-                symbol,
-                new NuGetPushSettings {
-                    Source = nuGetSource,
-                    ApiKey = nuGetToken,
-                    SkipDuplicate = true
-                }
-            );
-        }
-    });
-
-///////////////////////////////////////////////////////////////////////////////
 // Default
 ///////////////////////////////////////////////////////////////////////////////
 Task("Default")
@@ -259,8 +164,6 @@ Task("Default")
 .IsDependentOn("Restore")
 .IsDependentOn("Version")
 .IsDependentOn("Build")
-.IsDependentOn("UnitTests")
-.IsDependentOn("NuGet")
-.IsDependentOn("NuGetFeed");
+.IsDependentOn("UnitTests");
 
 RunTarget(target);
