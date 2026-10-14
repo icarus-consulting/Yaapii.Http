@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2023 ICARUS Consulting GmbH
+//Copyright(c) 2026 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yaapii.Atoms;
@@ -608,5 +609,40 @@ namespace Yaapii.Http.Wires.Test
             }
         }
 #endif
+
+        [Fact]
+        public void AddingBodyDoesNotDuplicateNonStandardHeaders()
+        {
+            var headers = new List<IKvp>();
+            using (var server =
+                new HttpMock(0,
+                    new FkWire((req) =>
+                    {
+                        headers = new Headers.Of(req).ToList();
+                    })
+                ).Value()
+            )
+            {
+                var port = new RunningPort(server).Value();
+
+                new ExpectedStatus(200).Verify(
+                    new AspNetCoreWire(
+                        new AspNetCoreClients(),
+                        new TimeSpan(0, 1, 0)
+                    ).Response(
+                        new Get(
+                            $"http://localhost:{port}",
+                            new Header("some-non-standard-header", "2026-03-10"),
+                            new Body("test")
+                        )
+                    ).Result
+                );
+
+                Assert.Single(
+                    headers,
+                    (kvp) => kvp.Key() == "some-non-standard-header"
+                );
+            }
+        }
     }
 }

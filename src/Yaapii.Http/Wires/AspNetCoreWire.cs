@@ -1,6 +1,6 @@
 ﻿//MIT License
 
-//Copyright(c) 2023 ICARUS Consulting GmbH
+//Copyright(c) 2026 ICARUS Consulting GmbH
 
 //Permission is hereby granted, free of charge, to any person obtaining a copy
 //of this software and associated documentation files (the "Software"), to deal
@@ -177,8 +177,11 @@ namespace Yaapii.Http.Wires
                 {
                     IEnumerable<string> tryValues = new List<string>();
                     if (
-                        !aspnetRequest.Content.Headers.TryGetValues(head.Key(), out tryValues)
-                        || !new Contains<string>(tryValues, head.Value()).Value()
+                        !aspnetRequest.Headers.TryGetValues(head.Key(), out _)
+                        && (
+                            !aspnetRequest.Content.Headers.TryGetValues(head.Key(), out tryValues)
+                            || !new Contains<string>(tryValues, head.Value()).Value()
+                        )
                     )
                     {
                         aspnetRequest.Content.Headers.TryAddWithoutValidation(head.Key(), head.Value());
