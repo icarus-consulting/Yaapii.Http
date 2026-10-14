@@ -630,7 +630,7 @@ namespace Yaapii.Http.Wires.Test
                         new AspNetCoreClients(),
                         new TimeSpan(0, 1, 0)
                     ).Response(
-                        new Get(
+                        new Put(
                             $"http://localhost:{port}",
                             new Header("some-non-standard-header", "2026-03-10"),
                             new Body("test")
